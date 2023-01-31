@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/FF_job.iml" filepath="$PROJECT_DIR$/FF_job.iml" />
+      <module fileurl="file://$PROJECT_DIR$/account-service-8001/account-service-8001.iml" filepath="$PROJECT_DIR$/account-service-8001/account-service-8001.iml" />
+      <module fileurl="file://$PROJECT_DIR$/eureka-server-7001/eureka-server-7001.iml" filepath="$PROJECT_DIR$/eureka-server-7001/eureka-server-7001.iml" />
+    </modules>
+  </component>
+</project>

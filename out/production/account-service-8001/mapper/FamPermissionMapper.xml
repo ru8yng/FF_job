@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyr.mapper.FamPermissionMapper">
+
+    <resultMap id="BaseResultMap" type="com.yyr.pojo.FamPermission">
+            <id property="famPermissionId" column="fam_permission_id" jdbcType="VARCHAR"/>
+            <result property="famPermissionName" column="fam_permission_name" jdbcType="VARCHAR"/>
+            <result property="famPermissionPath" column="fam_permission_path" jdbcType="VARCHAR"/>
+            <result property="famPermissionParentid" column="fam_permission_parentId" jdbcType="VARCHAR"/>
+            <result property="createdBy" column="CREATED_BY" jdbcType="VARCHAR"/>
+            <result property="createdTime" column="CREATED_TIME" jdbcType="TIMESTAMP"/>
+            <result property="updatedBy" column="UPDATED_BY" jdbcType="VARCHAR"/>
+            <result property="updatedTime" column="UPDATED_TIME" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        fam_permission_id,fam_permission_name,fam_permission_path,
+        fam_permission_parentId,CREATED_BY,CREATED_TIME,
+        UPDATED_BY,UPDATED_TIME
+    </sql>
+</mapper>
