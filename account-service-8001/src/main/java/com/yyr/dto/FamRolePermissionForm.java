@@ -1,5 +1,6 @@
 package com.yyr.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,13 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FamRolePermissionForm {
-    String fam_role_id;
-    List<String> fam_permission_id;
+    private String fam_role_id;
+    private List<String> fam_permission_id;
+
+    @ApiModelProperty("分页参数 当前页")
+    private Integer page =1;
+
+
+    @ApiModelProperty("分页参数 每页数量")
+    private Integer size = 20;
 }

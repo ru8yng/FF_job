@@ -43,41 +43,31 @@ public class FamRolePermissionServiceImpl extends ServiceImpl<FamRolePermissionM
 
     @Override
     /**
-    * @description:删除该角色的所有家庭权限
-    * @Param: [FamRoleId]
-    * @return: void
-    * @throws:
-    * @author:杨亚茹
-    */
-    public void deleteFamRolePermissionByFamRoleId(String FamRoleId) {
-        QueryWrapper<FamRolePermission> queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("fam_role_id",FamRoleId);
-        List<FamRolePermission> famRolePermissionList=famRolePermissionMapper.selectList(queryWrapper);
-        Assert.notNull(famRolePermissionList,"该角色没有家庭权限!");
-        LambdaQueryWrapper<FamRolePermission> wrapper=new LambdaQueryWrapper<>();
-        wrapper.eq(FamRolePermission::getFamRoleId,FamRoleId);
-        famRolePermissionMapper.delete(wrapper);
-    }
-
-    @Override
-    /**
-    * @description:删除该角色的部分家庭权限
+    * @description:删除该角色的家庭权限
     * @Param: [FamPermId]
     * @return: void
     * @throws:
     * @author:杨亚茹
     */
-    public void deleteFamRolePermissionByFamPermissionId(FamRolePermissionForm form) {
+    public void deleteFamRolePermissionByFamRolePermissionForm(FamRolePermissionForm form) {
+
         QueryWrapper<FamRolePermission> queryWrapper=new QueryWrapper<>();
         queryWrapper.eq("fam_role_id",form.getFam_role_id());
         List<FamRolePermission> famRolePermissionList=famRolePermissionMapper.selectList(queryWrapper);
         Assert.notNull(famRolePermissionList,"该角色没有家庭权限!");
-        form.getFam_permission_id().forEach(FamPermId->{
+        if(form.getFam_permission_id()!=null){
+            form.getFam_permission_id().forEach(FamPermId->{
+                LambdaQueryWrapper<FamRolePermission> wrapper=new LambdaQueryWrapper<>();
+                wrapper.eq(FamRolePermission::getFamRoleId,form.getFam_role_id());
+                wrapper.eq(FamRolePermission::getFamPermissionId,FamPermId);
+                famRolePermissionMapper.delete(wrapper);
+            });
+        }else {
             LambdaQueryWrapper<FamRolePermission> wrapper=new LambdaQueryWrapper<>();
             wrapper.eq(FamRolePermission::getFamRoleId,form.getFam_role_id());
-            wrapper.eq(FamRolePermission::getFamPermissionId,FamPermId);
             famRolePermissionMapper.delete(wrapper);
-        });
+        }
+
     }
 
     @Override
@@ -88,9 +78,9 @@ public class FamRolePermissionServiceImpl extends ServiceImpl<FamRolePermissionM
     * @throws:
     * @author:杨亚茹
     */
-    public List<FamRolePermission> queryFamRolePermissionByFamRoleId(String FamRoleId) {
+    public List<FamRolePermission> queryFamRolePermissionByFamRoleId(FamRolePermissionForm form) {
         LambdaQueryWrapper<FamRolePermission> queryWrapper=new LambdaQueryWrapper<>();
-        queryWrapper.eq(FamRolePermission::getFamRoleId,FamRoleId);
+        queryWrapper.eq(FamRolePermission::getFamRoleId,form.getFam_role_id());
         return this.list(queryWrapper);
     }
 

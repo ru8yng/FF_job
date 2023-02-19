@@ -1,5 +1,6 @@
 package com.yyr.service;
 
+import com.yyr.dto.SysRoleQueryForm;
 import com.yyr.pojo.SysRole;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -14,5 +15,5 @@ public interface SysRoleService extends IService<SysRole> {
     void addSysRole (SysRole sysRole);
     void deleteSysRole(String id);
     void updateSysRole(SysRole sysRole);
-    List<SysRole> querySysRole(SysRole sysRole);
+    List<SysRole> querySysRole(SysRoleQueryForm sysRole);
 }

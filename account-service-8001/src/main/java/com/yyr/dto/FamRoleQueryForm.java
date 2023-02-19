@@ -44,5 +44,5 @@ public class FamRoleQueryForm {
 
 
     @ApiModelProperty("分页参数 每页数量")
-    private Integer size = 100;
+    private Integer size = 20;
 }

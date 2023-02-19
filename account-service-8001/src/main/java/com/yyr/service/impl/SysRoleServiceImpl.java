@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yyr.dto.SysRoleQueryForm;
 import com.yyr.pojo.FamilyRole;
 import com.yyr.pojo.SysRole;
 import com.yyr.service.SysRoleService;
@@ -85,13 +86,19 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole>
     * @throws:
     * @author:杨亚茹
     */
-    public List<SysRole> querySysRole(SysRole sysRole) {
+    public List<SysRole> querySysRole(SysRoleQueryForm sysRole) {
         LambdaQueryWrapper<SysRole> queryWrapper=new LambdaQueryWrapper<>();
         if(sysRole.getSysRoleDesc()!= null && sysRole.getSysRoleDesc().length()!=0){
             queryWrapper.like(SysRole::getSysRoleDesc,sysRole.getSysRoleDesc());
         }
         if(sysRole.getSysRoleName()!=null && sysRole.getSysRoleName().length()!=0){
             queryWrapper.like(SysRole::getSysRoleName,sysRole.getSysRoleName());
+        }
+        if(sysRole.getSysRoleId()!= null && sysRole.getSysRoleId().length()!=0){
+            queryWrapper.eq(SysRole::getSysRoleId,sysRole.getSysRoleId());
+        }
+        if(sysRole.getCreatedBy()!=null && sysRole.getCreatedBy().length()!=0){
+            queryWrapper.eq(SysRole::getCreatedBy,sysRole.getCreatedBy());
         }
 
         return this.list(queryWrapper);

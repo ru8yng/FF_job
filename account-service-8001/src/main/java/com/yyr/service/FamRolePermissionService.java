@@ -14,10 +14,8 @@ import java.util.List;
 public interface FamRolePermissionService extends IService<FamRolePermission> {
     void addFamRolePermissionByFamRoleId(FamRolePermissionForm form);
 
-    void deleteFamRolePermissionByFamRoleId(String FamRoleId);
+    void deleteFamRolePermissionByFamRolePermissionForm(FamRolePermissionForm form);
 
-    void deleteFamRolePermissionByFamPermissionId(FamRolePermissionForm form);
-
-    List<FamRolePermission> queryFamRolePermissionByFamRoleId(String FamRoleId);
+    List<FamRolePermission> queryFamRolePermissionByFamRoleId(FamRolePermissionForm form);
 
 }
