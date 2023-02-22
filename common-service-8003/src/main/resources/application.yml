@@ -1,14 +1,12 @@
 server:
-  port: 8001
+  port: 8003
   tomcat:
-    min-spare-threads: 2
-    max-threads: 200
     max-connections: 10000
     accept-count: 200
 
 spring:
   application:
-    name: ffjob-account-service8001
+    name: ffjob-common-service8003
   servlet:
     multipart:
       max-file-size: 500MB
@@ -19,6 +17,18 @@ spring:
     url: jdbc:mysql://localhost:3306/ff_job?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&useSSL=false
     username: root
     password: '000010'
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:7001/eureka/
+    registry-fetch-interval-seconds: 10
+  instance:
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 15
+info:
+  app.name: yyr-ffjob-common-service8003 #项目的名称
+  company.name: com.yyr #公司的名称
 
 mybatis-plus:
   configuration:

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyr.mapper.SysOperaLogMapper">
+
+    <resultMap id="BaseResultMap" type="com.yyr.pojo.SysOperaLog">
+            <id property="operaLogId" column="opera_log_id" jdbcType="VARCHAR"/>
+            <result property="operaLogName" column="opera_log_name" jdbcType="VARCHAR"/>
+            <result property="operaLog" column="opera_log" jdbcType="VARCHAR"/>
+            <result property="operaLogOperatime" column="opera_log_operaTime" jdbcType="TIMESTAMP"/>
+            <result property="ipaddr" column="ipAddr" jdbcType="VARCHAR"/>
+            <result property="operaLogSysrole" column="opera_log_sysRole" jdbcType="VARCHAR"/>
+            <result property="operaLogOperaby" column="opera_log_operaBy" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        opera_log_id,opera_log_name,opera_log_funcmoudule,
+        opera_log,opera_log_operaTime,ipAddr,
+        opera_log_sysRole,opera_log_operaBy
+    </sql>
+</mapper>
