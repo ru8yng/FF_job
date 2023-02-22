@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yyr.dto.FamRolePermissionForm;
 import com.yyr.dto.FamRoleQueryForm;
 import com.yyr.mapper.FamRolePermissionMapper;
 import com.yyr.pojo.FamRolePermission;
@@ -55,7 +56,9 @@ public class FamilyRoleServiceImpl extends ServiceImpl<FamilyRoleMapper, FamilyR
         FamilyRole familyRole=familyRoleMapper.selectById(id);
         Assert.notNull(familyRole,"该家庭角色不存在");
         familyRoleMapper.deleteById(id);
-        famRolePermissionService.deleteFamRolePermissionByFamRoleId(id);
+        FamRolePermissionForm form=new FamRolePermissionForm();
+        form.setFam_role_id(id);
+        famRolePermissionService.deleteFamRolePermissionByFamRolePermissionForm(form);
     }
 
     /**
