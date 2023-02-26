@@ -1,6 +1,7 @@
 package com.yyr.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yyr.dto.LoginLogForm;
 import com.yyr.pojo.SysLoginLog;
@@ -9,6 +10,7 @@ import com.yyr.mapper.SysLoginLogMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -20,8 +22,9 @@ import java.util.List;
 public class SysLoginLogServiceImpl extends ServiceImpl<SysLoginLogMapper, SysLoginLog>
 implements SysLoginLogService{
 
+
     @Override
-    public List<SysLoginLog> queryLogLoginList(LoginLogForm form) {
+    public List<SysLoginLog> queryLoginLogList(LoginLogForm form) {
         LambdaQueryWrapper<SysLoginLog> queryWrapper=new LambdaQueryWrapper<>();
         if(form.getLogin_log_Id()!=null && form.getLogin_log_Id().length()!=0){
             queryWrapper.eq(SysLoginLog::getLoginLogId,form.getLogin_log_Id());
@@ -44,6 +47,27 @@ implements SysLoginLogService{
         queryWrapper.orderByAsc(SysLoginLog::getLoginTime);
         List<SysLoginLog> list=this.list(queryWrapper);
         return list;
+    }
+
+    @Override
+    public void addLoginLog(LoginLogForm form) {
+        SysLoginLog loginLog=new SysLoginLog();
+        if(form.getUserId()!=null && form.getUserId().length()!=0){
+            loginLog.setUserId(form.getUserId());
+        }
+        if(form.getUsername()!=null && form.getUsername().length()!=0){
+            loginLog.setUserName(form.getUsername());
+        }
+        if(form.getIpAddr()!=null && form.getIpAddr().length()!=0){
+            loginLog.setIpaddr(form.getIpAddr());
+        }
+
+        if(form.getIpAddr()!=null && form.getIpAddr().length()!=0){
+            loginLog.setLoginTime(form.getLoginTime());
+        }
+
+        this.baseMapper.insert(loginLog);
+
     }
 
 }

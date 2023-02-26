@@ -2,6 +2,7 @@ package com.yyr.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yyr.config.logCustom;
 import com.yyr.dto.CommonResponse;
 import com.yyr.dto.FamQueryForm;
 import com.yyr.pojo.Family;
@@ -34,6 +35,7 @@ public class FamController {
     private FamilyService familyService;
 
     @ApiOperation("新增家庭")
+    @logCustom(description = "新增家庭")
     @PostMapping("/addFam")
     public CommonResponse<?> addFam(@RequestBody Family family){
         Assert.notNull(family,"新增家庭不能为空！");
@@ -42,6 +44,7 @@ public class FamController {
     }
 
     @ApiOperation("删除家庭")
+    @logCustom(description = "删除家庭")
     @PostMapping("/deleteFam")
     public CommonResponse<?> deleteFam(String fmId){
         Assert.notNull(fmId,"家庭id不能为空！");
@@ -50,6 +53,7 @@ public class FamController {
     }
 
     @ApiOperation("更新家庭")
+    @logCustom(description = "更新家庭")
     @PostMapping("/updateFam")
     public CommonResponse<?> updateFam(@RequestBody Family fam){
         Assert.notNull(fam,"更新的家庭不能为空！");
@@ -58,6 +62,7 @@ public class FamController {
     }
 
     @ApiOperation("启停单个家庭状态")
+    @logCustom(description = "启停单个家庭状态")
     @PostMapping("/enableFam")
     public CommonResponse<?> enableFam(@RequestBody FamQueryForm form){
         Assert.notNull(form,"FamQueryForm不能为空！");

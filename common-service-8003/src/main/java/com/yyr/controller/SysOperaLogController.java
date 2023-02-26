@@ -43,4 +43,13 @@ public class SysOperaLogController {
         List<SysOperaLog> list=sysOperaLogService.querySysOperaLog(form);
         return CommonResponse.ok(new PageInfo<>(list));
     }
+
+    @ApiOperation("新增登录日志")
+    @RequestMapping("/addSysOperaLog")
+    public CommonResponse<?> addSysOperaLog(@RequestBody OperaLogForm form){
+        Assert.notNull(form,"OperaLogForm不能为空！");
+       sysOperaLogService.addSysOperaLog(form);
+        return CommonResponse.ok();
+    }
+
 }

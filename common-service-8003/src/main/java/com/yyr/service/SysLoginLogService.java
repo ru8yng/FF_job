@@ -20,6 +20,15 @@ public interface SysLoginLogService extends IService<SysLoginLog> {
      * @throws:
      * @author:杨亚茹
      */
-    List<SysLoginLog> queryLogLoginList(LoginLogForm form);
+    List<SysLoginLog> queryLoginLogList(LoginLogForm form);
+
+    /**
+    * @description:新增登录日志
+    * @Param: [form]
+    * @return: void
+    * @throws:
+    * @author:杨亚茹
+    */
+    void addLoginLog(LoginLogForm form);
 
 }

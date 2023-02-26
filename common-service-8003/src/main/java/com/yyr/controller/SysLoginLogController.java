@@ -39,9 +39,19 @@ public class SysLoginLogController {
         if (null != form && null != form.getPage() && null != form.getSize()) {
             PageHelper.startPage(form.getPage(), form.getSize());
         }
-        List<SysLoginLog> list=sysLoginLogService.queryLogLoginList(form);
+        List<SysLoginLog> list=sysLoginLogService.queryLoginLogList(form);
         return CommonResponse.ok(new PageInfo<>(list));
     }
+
+    @ApiOperation("新增登录日志")
+    @RequestMapping("/addSysLoginLog")
+    public CommonResponse<?> addSysLoginLog(@RequestBody LoginLogForm form){
+        Assert.notNull(form,"SysLoginLog不能为空！");
+        sysLoginLogService.addLoginLog(form);
+        return CommonResponse.ok();
+    }
+
+
 
 
 

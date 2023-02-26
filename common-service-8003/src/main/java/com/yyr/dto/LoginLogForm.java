@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 /**
  * @Author 杨亚茹
  * @Date 2023/2/22 15:12
@@ -37,4 +39,6 @@ public class LoginLogForm {
 
     @ApiModelProperty("ip地址")
     private String ipAddr;
+
+    private Date loginTime;
 }

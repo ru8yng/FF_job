@@ -17,6 +17,12 @@ spring:
     url: jdbc:mysql://localhost:3306/ff_job?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&useSSL=false
     username: root
     password: '000010'
+  redis:
+    host: 119.29.86.40
+    port: 6379
+    database: 6
+    timeout: 2000ms
+    password: 000010
 
 eureka:
   client:

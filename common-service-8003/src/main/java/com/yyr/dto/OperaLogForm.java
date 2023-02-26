@@ -41,4 +41,6 @@ public class OperaLogForm {
 
     @ApiParam("创建人user_id")
     private String operaLogOperaby;
+
+    private Date operaTime;
 }

@@ -2,6 +2,7 @@ package com.yyr.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yyr.config.logCustom;
 import com.yyr.dto.CommonResponse;
 import com.yyr.dto.FamRolePermissionForm;
 import com.yyr.dto.FamRoleQueryForm;
@@ -35,6 +36,7 @@ public class FamRolePermissionController {
     private FamRolePermissionService famRolePermissionService;
 
     @ApiOperation("新增家庭角色权限")
+    @logCustom(description = "新增家庭角色权限")
     @RequestMapping("/addFamRole")
     public CommonResponse<?> addSysRole(@RequestBody FamRolePermissionForm form){
         Assert.notNull(form,"新增的家庭角色权限不能为空！");
@@ -43,6 +45,7 @@ public class FamRolePermissionController {
     }
 
     @ApiOperation("根据家庭角色id删除家庭角色权限")
+    @logCustom(description = "根据家庭角色id删除家庭角色权限")
     @RequestMapping("/deleteFamRolePerm")
     public CommonResponse<?> deleteFamRolePermissionByFamRoleId(@RequestBody FamRolePermissionForm form){
         Assert.notNull(form,"form不能为空！");

@@ -50,4 +50,28 @@ implements SysOperaLogService{
 
         return this.list(queryWrapper);
     }
+
+    @Override
+    public void addSysOperaLog(OperaLogForm form) {
+        SysOperaLog sysOperaLog=new SysOperaLog();
+        if(form.getOperaLogName()!=null && form.getOperaLogName().length()!=0){
+            sysOperaLog.setOperaLogName(form.getOperaLogName());
+        }
+        if(form.getOperaLog()!=null && form.getOperaLog().length()!=0){
+            sysOperaLog.setOperaLog(form.getOperaLog());
+        }
+        if(form.getIpaddr()!=null && form.getIpaddr().length()!=0){
+            sysOperaLog.setIpaddr(form.getIpaddr());
+        }
+        if(form.getOperaLogSysroleId()!=null && form.getOperaLogSysroleId().length()!=0){
+            sysOperaLog.setOperaLogId(form.getOperaLogSysroleId());
+        }
+        if(form.getOperaLogOperaby()!=null && form.getOperaLogOperaby().length()!=0){
+            sysOperaLog.setOperaLogOperaby(form.getOperaLogOperaby());
+        }
+        if(form.getOperaTime()!=null && form.getOperaLogOperaby().length()!=0){
+            sysOperaLog.setOperaLogOperatime(form.getOperaTime());
+        }
+        this.baseMapper.insert(sysOperaLog);
+    }
 }

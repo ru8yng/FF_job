@@ -27,7 +27,7 @@ eureka:
     lease-renewal-interval-in-seconds: 5
     lease-expiration-duration-in-seconds: 15
 info:
-  app.name: yyr-ffjob-common-service8003 #项目的名称
+  app.name: ffjob-common-service8003#项目的名称
   company.name: com.yyr #公司的名称
 
 mybatis-plus:

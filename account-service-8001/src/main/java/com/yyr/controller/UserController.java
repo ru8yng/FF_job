@@ -2,6 +2,7 @@ package com.yyr.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yyr.config.logCustom;
 import com.yyr.dto.CommonResponse;
 import com.yyr.dto.UserQueryForm;
 import com.yyr.pojo.User;
@@ -37,6 +38,7 @@ public class UserController {
     private UserService userService;
 
     @ApiOperation("/新增用户")
+    @logCustom(description = "新增用户")
     @Transactional(rollbackFor = Exception.class)
     @PostMapping("/addUser")
     public CommonResponse<?> addUser(@RequestBody User user){
@@ -46,6 +48,7 @@ public class UserController {
     }
 
     @ApiOperation("删除用户")
+    @logCustom(description = "删除用户")
     @PostMapping("/deleteUser")
     public  CommonResponse<?> deleteUser(@RequestBody String id){
         Assert.notNull(id,"用户id不能为空！");
@@ -54,6 +57,7 @@ public class UserController {
     }
 
     @ApiOperation("停用/启动用户")
+    @logCustom(description = "停用/启动用户")
     @PostMapping("/enable")
     public CommonResponse<?> enableUser(String userId,String status){
         Assert.isTrue(userId!=null && status!=null,"用户id不为空且账户状态不为空");
@@ -62,6 +66,7 @@ public class UserController {
     }
 
     @ApiOperation("重置用户密码")
+    @logCustom(description = "重置用户密码")
     @PostMapping("/resetUserPwd")
     public CommonResponse<?> resetUserPwd(String userId){
         Assert.notNull(userId,"用户id不为空！");
@@ -78,6 +83,7 @@ public class UserController {
     }
 
     @ApiOperation("修改用户密码")
+    @logCustom(description = "修改用户密码")
     @PostMapping("/changeUserPwd")
     public CommonResponse<?> changeUserPwd(String id,String pwd){
         Assert.isTrue(id!=null && pwd!=null,"用户id不为空且修改密码不为空");
@@ -86,6 +92,7 @@ public class UserController {
     }
 
     @ApiOperation("修改用户家庭id")
+    @logCustom(description = "修改用户家庭id")
     @PostMapping("/changeUserFmId")
     public CommonResponse<?> changeUserFmId(String userId,String fm_id){
         Assert.isTrue(userId!=null && fm_id!=null,"用户id不为空且家庭id不为空");

@@ -2,6 +2,7 @@ package com.yyr.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yyr.config.logCustom;
 import com.yyr.dto.CommonResponse;
 import com.yyr.dto.FamPermQueryForm;
 import com.yyr.pojo.FamPermission;
@@ -33,6 +34,7 @@ public class FamPermissionController {
     @Autowired
     private FamPermissionService famPermissionService;
     @ApiOperation("新增家庭权限")
+    @logCustom(description = "新增家庭权限")
     @PostMapping("/addFamPerm")
     public CommonResponse<?> addFamPerm(@RequestBody FamPermission famPermission){
         Assert.notNull(famPermission,"家庭权限不能为空！");
@@ -41,6 +43,7 @@ public class FamPermissionController {
     }
 
     @ApiOperation("根据id删除家庭权限")
+    @logCustom(description = "根据id删除家庭权限")
     @PostMapping("/deleteFamPerm")
     public CommonResponse<?> deleteFamPerm(@RequestBody String famPermId){
         Assert.notNull(famPermId,"家庭权限id不能为空！");
@@ -49,6 +52,7 @@ public class FamPermissionController {
     }
 
     @ApiOperation("更新家庭权限")
+    @logCustom(description = "更新家庭权限")
     @PostMapping("/updateFamPerm")
     public CommonResponse<?> updateFamPerm(FamPermission famPermission){
         Assert.notNull(famPermission,"家庭权限不能为空！");

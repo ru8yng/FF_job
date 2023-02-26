@@ -2,6 +2,7 @@ package com.yyr.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yyr.config.logCustom;
 import com.yyr.dto.CommonResponse;
 import com.yyr.dto.FamRoleQueryForm;
 import com.yyr.pojo.FamPermission;
@@ -34,6 +35,7 @@ public class FamRoleController {
     @Autowired
     private FamilyRoleService familyRoleService;
     @ApiOperation("新增家庭角色")
+    @logCustom(description = "新增家庭角色")
     @RequestMapping("/addFamRole")
     public CommonResponse<?> addFamRole(@RequestBody FamilyRole familyRole){
         Assert.notNull(familyRole,"新增的家庭角色不能为空！");
@@ -42,6 +44,7 @@ public class FamRoleController {
     }
 
     @ApiOperation("删除家庭角色")
+    @logCustom(description = "删除家庭角色")
     @RequestMapping("/deleteFamRole")
     public CommonResponse<?> deleteFamRole(@RequestBody String familyRoleId){
         Assert.notNull(familyRoleId,"删除家庭角色id不能为空！");
@@ -50,6 +53,7 @@ public class FamRoleController {
     }
 
     @ApiOperation("更新家庭角色")
+    @logCustom(description = "更新家庭角色")
     @RequestMapping("/updateFamRole")
     public CommonResponse<?> updateFamRole(@RequestBody FamilyRole familyRole){
         Assert.notNull(familyRole,"更新的家庭角色不能为空！");

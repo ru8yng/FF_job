@@ -2,8 +2,9 @@ package com.yyr;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+
 /**
  * @Author 杨亚茹
  * @Date 2023/2/19 17:01
@@ -13,7 +14,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
  * @Version 1.0
  */
 
-@EnableDiscoveryClient
+
 @EnableEurekaClient
 @SpringBootApplication
 public class Common_Service8003Application {
