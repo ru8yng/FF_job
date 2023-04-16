@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyr.mapper.FamBudgetMapper">
+
+    <resultMap id="BaseResultMap" type="com.yyr.pojo.FamBudget">
+            <id property="famBudgetId" column="fam_budget_id" jdbcType="VARCHAR"/>
+            <result property="createdBy" column="CREATED_BY" jdbcType="VARCHAR"/>
+            <result property="createdTime" column="CREATED_TIME" jdbcType="TIMESTAMP"/>
+            <result property="updatedBy" column="UPDATED_BY" jdbcType="VARCHAR"/>
+            <result property="updatedTime" column="UPDATED_TIME" jdbcType="TIMESTAMP"/>
+            <result property="famBudgetAmount" column="fam_budget_amount" jdbcType="VARCHAR"/>
+            <result property="famId" column="fam_id" jdbcType="VARCHAR"/>
+            <result property="userId" column="user_id" jdbcType="VARCHAR"/>
+            <result property="userBudgetAmount" column="user_budget_amount" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        fam_budget_id,CREATED_BY,CREATED_TIME,
+        UPDATED_BY,UPDATED_TIME,fam_budget_amount,
+        fam_id,user_id,user_budget_amount
+    </sql>
+</mapper>

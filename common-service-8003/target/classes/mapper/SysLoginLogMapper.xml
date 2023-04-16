@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyr.mapper.SysLoginLogMapper">
+
+    <resultMap id="BaseResultMap" type="com.yyr.pojo.SysLoginLog">
+            <id property="loginLogId" column="login_log_id" jdbcType="VARCHAR"/>
+            <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+            <result property="userId" column="user_id" jdbcType="VARCHAR"/>
+            <result property="ipaddr" column="ipAddr" jdbcType="VARCHAR"/>
+            <result property="loginTime" column="login_time" jdbcType="TIMESTAMP"/>
+            <result property="createdTime" column="CREATED_TIME" jdbcType="TIMESTAMP"/>
+            <result property="updatedTime" column="UPDATED_TIME" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        login_log_id,user_name,user_id,
+        ipAddr,login_time,CREATED_TIME,
+        UPDATED_TIME
+    </sql>
+
+
+</mapper>

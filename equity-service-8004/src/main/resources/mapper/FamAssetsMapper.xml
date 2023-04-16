@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyr.mapper.FamAssetsMapper">
+
+    <resultMap id="BaseResultMap" type="com.yyr.pojo.FamAssets">
+            <id property="famAssetsId" column="fam_assets_id" jdbcType="VARCHAR"/>
+            <result property="createdBy" column="CREATED_BY" jdbcType="VARCHAR"/>
+            <result property="createdTime" column="CREATED_TIME" jdbcType="TIMESTAMP"/>
+            <result property="updatedBy" column="UPDATED_BY" jdbcType="VARCHAR"/>
+            <result property="assetsName" column="assets_name" jdbcType="VARCHAR"/>
+            <result property="updatedTime" column="UPDATED_TIME" jdbcType="TIMESTAMP"/>
+            <result property="assetsLocation" column="assets_location" jdbcType="VARCHAR"/>
+            <result property="assetsBuytime" column="assets_buytime" jdbcType="TIMESTAMP"/>
+            <result property="famId" column="fam_id" jdbcType="VARCHAR"/>
+            <result property="assetsInstalment" column="assets_instalment" jdbcType="VARCHAR"/>
+            <result property="instalmentSurplus" column="instalment_surplus" jdbcType="VARCHAR"/>
+            <result property="instalmentPrice" column="instalment_price" jdbcType="VARCHAR"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        fam_assets_id,CREATED_BY,CREATED_TIME,
+        UPDATED_BY,assets_name,UPDATED_TIME,
+        assets_location,assets_buytime,fam_id,
+        assets_instalment,instalment_surplus,instalment_price,
+        remark
+    </sql>
+</mapper>

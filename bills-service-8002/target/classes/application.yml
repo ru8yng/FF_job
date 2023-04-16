@@ -1,0 +1,62 @@
+server:
+  port: 8002
+  tomcat:
+    max-connections: 10000
+    accept-count: 200
+
+spring:
+  application:
+    name: ffjob-bills-service8002
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 500MB
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource #数据库 #数据库
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/ff_job?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: '000010'
+  redis:
+    host: 119.29.86.40
+    port: 6379
+    timeout: 2000ms
+    password: '000010' #服务器本机 不是docker
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:7001/eureka/
+    registry-fetch-interval-seconds: 10
+  instance:
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 15
+info:
+  app.name: ffjob-bills-service8002 #项目的名称
+  company.name: com.yyr #公司的名称
+
+mybatis-plus:
+  configuration:
+    jdbc-type-for-null: 'null'
+    map-underscore-to-camel-case: true
+    call-setters-on-nulls: true
+    #    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    local-cache-scope: statement
+  global-config:
+    db-config:
+      id-type: assign_id
+  type-enums-package: com.yyr.pojo
+  type-aliases-package: com.yyr.pojo
+
+logging:
+#  level:
+#    org.springframework.boot.autoconfigure: error
+#    root: info
+  config: classpath:logback.xml
+
+pagehelper:
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+  auto-runtime-dialect: true

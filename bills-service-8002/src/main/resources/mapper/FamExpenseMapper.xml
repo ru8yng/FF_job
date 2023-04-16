@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyr.mapper.FamExpenseMapper">
+
+    <resultMap id="BaseResultMap" type="com.yyr.pojo.FamExpense">
+            <result property="famExpenseId" column="fam_expense_id" jdbcType="VARCHAR"/>
+            <result property="createdBy" column="CREATED_BY" jdbcType="VARCHAR"/>
+            <result property="createdTime" column="CREATED_TIME" jdbcType="TIMESTAMP"/>
+            <result property="updatedBy" column="UPDATED_BY" jdbcType="VARCHAR"/>
+            <result property="userId" column="user_id" jdbcType="VARCHAR"/>
+            <result property="updatedTime" column="UPDATED_TIME" jdbcType="TIMESTAMP"/>
+            <result property="expenseTime" column="expense_time" jdbcType="TIMESTAMP"/>
+            <result property="famId" column="fam_id" jdbcType="VARCHAR"/>
+            <result property="famExpenseAmount" column="fam_expense_amount" jdbcType="VARCHAR"/>
+            <result property="famExpenseTypeId" column="fam_expense_type_id" jdbcType="VARCHAR"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        fam_expense_id,CREATED_BY,CREATED_TIME,
+        UPDATED_BY,user_id,UPDATED_TIME,
+        expense_time,fam_id,fam_expense_amount,
+        fam_expense_type_id,remark
+    </sql>
+</mapper>

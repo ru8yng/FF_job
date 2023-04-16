@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyr.mapper.FamIncomeMapper">
+
+    <resultMap id="BaseResultMap" type="com.yyr.pojo.FamIncome">
+            <id property="famIncomeId" column="fam_income_id" jdbcType="VARCHAR"/>
+            <result property="createdBy" column="CREATED_BY" jdbcType="VARCHAR"/>
+            <result property="createdTime" column="CREATED_TIME" jdbcType="TIMESTAMP"/>
+            <result property="updatedBy" column="UPDATED_BY" jdbcType="VARCHAR"/>
+            <result property="updatedTime" column="UPDATED_TIME" jdbcType="TIMESTAMP"/>
+            <result property="famId" column="fam_id" jdbcType="VARCHAR"/>
+            <result property="userId" column="user_id" jdbcType="VARCHAR"/>
+            <result property="famIncomeTime" column="fam_income_time" jdbcType="TIMESTAMP"/>
+            <result property="famIncomeAmount" column="fam_income_amount" jdbcType="VARCHAR"/>
+            <result property="famIncomeTypeId" column="fam_income_type_id" jdbcType="VARCHAR"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        fam_income_id,CREATED_BY,CREATED_TIME,
+        UPDATED_BY,UPDATED_TIME,fam_id,
+        user_id,fam_income_time,fam_income_amount,
+        fam_income_type_id,remark
+    </sql>
+</mapper>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyr.mapper.IncomeTypeMapper">
+
+    <resultMap id="BaseResultMap" type="com.yyr.pojo.IncomeType">
+            <id property="incomeTypeId" column="income_type_id" jdbcType="VARCHAR"/>
+            <result property="createdBy" column="CREATED_BY" jdbcType="VARCHAR"/>
+            <result property="createdTime" column="CREATED_TIME" jdbcType="TIMESTAMP"/>
+            <result property="updatedBy" column="UPDATED_BY" jdbcType="VARCHAR"/>
+            <result property="updatedTime" column="UPDATED_TIME" jdbcType="TIMESTAMP"/>
+            <result property="incomeTypeName" column="income_type_name" jdbcType="VARCHAR"/>
+            <result property="incomeTypeDesc" column="income_type_desc" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        income_type_id,CREATED_BY,CREATED_TIME,
+        UPDATED_BY,UPDATED_TIME,income_type_name,
+        income_type_desc
+    </sql>
+</mapper>

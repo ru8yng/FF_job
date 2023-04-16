@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyr.mapper.FundMapper">
+
+    <resultMap id="BaseResultMap" type="com.yyr.pojo.Fund">
+            <id property="fundCode" column="fund_code" jdbcType="VARCHAR"/>
+            <result property="createdBy" column="CREATED_BY" jdbcType="VARCHAR"/>
+            <result property="createdTime" column="CREATED_TIME" jdbcType="TIMESTAMP"/>
+            <result property="updatedBy" column="UPDATED_BY" jdbcType="VARCHAR"/>
+            <result property="updatedTime" column="UPDATED_TIME" jdbcType="TIMESTAMP"/>
+            <result property="fundName" column="fund_name" jdbcType="VARCHAR"/>
+            <result property="fundType" column="fund_type" jdbcType="VARCHAR"/>
+            <result property="currentNetValue" column="current_net_value" jdbcType="DECIMAL"/>
+            <result property="sourceRate" column="source_rate" jdbcType="DECIMAL"/>
+            <result property="rate" column="rate" jdbcType="DECIMAL"/>
+            <result property="millionCopiesIncome" column="million_copies_income" jdbcType="DECIMAL"/>
+            <result property="amount" column="amount" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        fund_code,CREATED_BY,CREATED_TIME,
+        UPDATED_BY,UPDATED_TIME,fund_name,
+        fund_type,current_net_value,source_rate,
+        rate,million_copies_income,amount
+    </sql>
+</mapper>

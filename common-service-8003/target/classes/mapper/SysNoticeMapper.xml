@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyr.mapper.SysNoticeMapper">
+
+    <resultMap id="BaseResultMap" type="com.yyr.pojo.SysNotice">
+            <id property="sysNoticeId" column="sys_notice_id" jdbcType="VARCHAR"/>
+            <result property="createdBy" column="CREATED_BY" jdbcType="VARCHAR"/>
+            <result property="createdTime" column="CREATED_TIME" jdbcType="TIMESTAMP"/>
+            <result property="updatedBy" column="UPDATED_BY" jdbcType="VARCHAR"/>
+            <result property="updatedTime" column="UPDATED_TIME" jdbcType="TIMESTAMP"/>
+            <result property="noticeTitle" column="notice_title" jdbcType="VARCHAR"/>
+            <result property="noticeContent" column="notice_content" jdbcType="VARCHAR"/>
+            <result property="noticeStarttime" column="notice_starttime" jdbcType="TIMESTAMP"/>
+            <result property="noticeEndtime" column="notice_endtime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        sys_notice_id,CREATED_BY,CREATED_TIME,
+        UPDATED_BY,UPDATED_TIME,notice_title,
+        notice_content,notice_starttime,notice_endtime
+    </sql>
+</mapper>

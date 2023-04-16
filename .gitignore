@@ -1,0 +1,3 @@
+# Project exclude paths
+/account-service-8001/target/
+/eureka-server-7001/target/
