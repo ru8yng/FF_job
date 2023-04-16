@@ -79,6 +79,10 @@ public class Fund implements Serializable {
      */
     private BigDecimal amount;
 
+    private String famId;
+
+    private String userId;
+
     @TableField(exist = false)
     private BigDecimal currentProfit;
 

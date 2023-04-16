@@ -4,6 +4,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yyr.dto.CommonResponse;
 import com.yyr.dto.StockForm;
+import com.yyr.dto.StockVS;
+import com.yyr.dto.StockVSForm;
 import com.yyr.pojo.Stock;
 import com.yyr.service.StockService;
 import io.swagger.annotations.Api;
@@ -33,11 +35,31 @@ public class StockController {
 
     @Autowired
     private StockService stockService;
+
+    @ApiOperation("查询实时股票")
+    //@logCustom(description = "新增股票类型")
+    @PostMapping("/queryStockCurrent")
+    public CommonResponse<?> queryStockCurrent(@RequestBody StockVSForm form){
+        Assert.notNull(form,"查询股票不能为空！");
+        StockVS vs=stockService.queryStockCurrent(form);
+        return CommonResponse.ok(vs);
+    }
+
+    @ApiOperation("收藏股票")
+    //@logCustom(description = "新增股票类型")
+    @PostMapping("/collectStock")
+    public CommonResponse<?> collectStock(@RequestBody StockVSForm form){
+        Assert.notNull(form,"股票代码不能为空！");
+        stockService.collectStock(form);
+        return CommonResponse.ok("收藏成功！");
+    }
+
+
     @ApiOperation("新增股票")
     //@logCustom(description = "新增股票类型")
     @PostMapping("/addStock")
     public CommonResponse<?> addStock(@RequestBody StockForm form){
-        Assert.notNull(form,"新增股票类型不能为空！");
+        Assert.notNull(form,"新增股票不能为空！");
         stockService.addStock(form);
         return CommonResponse.ok("新增股票类型成功！");
     }
@@ -46,18 +68,18 @@ public class StockController {
     //@logCustom(description = "删除股票类型")
     @PostMapping("/deleteStock")
     public CommonResponse<?> deleteStock(String StockId){
-        Assert.notNull(StockId,"股票类型id不能为空！");
+        Assert.notNull(StockId,"股票id不能为空！");
         stockService.deleteStock(StockId);
-        return CommonResponse.ok("删除股票类型成功！");
+        return CommonResponse.ok("删除股票成功！");
     }
 
     @ApiOperation("更新股票")
     //@logCustom(description = "更新股票类型")
     @PostMapping("/updateStock")
     public CommonResponse<?> updateStock(@RequestBody StockForm form){
-        Assert.notNull(form,"更新的股票类型不能为空！");
+        Assert.notNull(form,"更新的股票不能为空！");
         stockService.updateStock(form);
-        return CommonResponse.ok("更新股票类型成功！");
+        return CommonResponse.ok("更新股票成功！");
     }
 
 

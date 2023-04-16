@@ -4,13 +4,19 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yyr.dto.StockForm;
+import com.yyr.dto.StockTypeEnum;
+import com.yyr.dto.StockVS;
+import com.yyr.dto.StockVSForm;
 import com.yyr.pojo.Stock;
 import com.yyr.service.StockService;
 import com.yyr.mapper.StockMapper;
+import com.yyr.service.bp.StockBp;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,6 +30,9 @@ public class StockServiceImpl extends ServiceImpl<StockMapper, Stock>
 
     @Autowired
     private StockMapper stockMapper;
+
+    @Autowired
+    private StockBp stockBp;
 
     @Override
     public void addStock(StockForm form) {
@@ -140,6 +149,27 @@ public class StockServiceImpl extends ServiceImpl<StockMapper, Stock>
             queryWrapper.eq(Stock::getFamId,form.getFamId());
         }
         return null;
+    }
+
+    @Override
+    public StockVS queryStockCurrent(StockVSForm form) {
+        return stockBp.getStockVS(form);
+    }
+
+    @Override
+    public void collectStock(StockVSForm form) {
+        Stock stock=new Stock();
+        StockVS vs=queryStockCurrent(form);
+        Assert.notNull(vs,"该股票未查询到信息");
+        stock.setStockType(vs.getStock_type());
+        stock.setStockCode(form.getStockCode());
+        stock.setStockName(vs.getName());
+        stock.setStockPrice(vs.getCurrent());
+        stock.setStockTime(new Date());
+        stock.setUserId(form.getUserId());
+        stock.setFamId(form.getFmId());
+
+        stockMapper.insert(stock);
     }
 }
 

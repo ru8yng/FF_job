@@ -1,9 +1,6 @@
 package com.yyr.service;
 
-import com.yyr.dto.CurrentFundNetValue;
-import com.yyr.dto.FundForm;
-import com.yyr.dto.FundcodeSearch;
-import com.yyr.dto.HistoricalFundNetValue;
+import com.yyr.dto.*;
 import com.yyr.pojo.Fund;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -30,6 +27,6 @@ public interface FundService extends IService<Fund> {
 
     List<FundcodeSearch> queryFundcodeSearch();
 
-    void collectFund(String fundCode);
+    void collectFund(FundCollectForm form);
 
 }

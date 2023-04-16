@@ -3,10 +3,7 @@ package com.yyr.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yyr.dto.CurrentFundNetValue;
-import com.yyr.dto.FundForm;
-import com.yyr.dto.FundcodeSearch;
-import com.yyr.dto.HistoricalFundNetValue;
+import com.yyr.dto.*;
 import com.yyr.pojo.Fund;
 import com.yyr.service.FundService;
 import com.yyr.mapper.FundMapper;
@@ -41,9 +38,12 @@ public class FundServiceImpl extends ServiceImpl<FundMapper, Fund>
         if(form.getFundCode()!=null &&form.getFundCode().length()!=0){
             fund.setFundCode(form.getFundCode());
         }
-//        if(form.getCurrentProfit()!=null){
-//            fund.setCurrentProfit(form.getCurrentProfit());
-//        }
+        if(form.getUserId()!=null && form.getUserId().length()!=0){
+            fund.setUserId(form.getUserId());
+        }
+        if(form.getFamId()!=null && form.getFamId().length()!=0){
+            fund.setFamId(form.getFamId());
+        }
         if(form.getUpdatedBy()!=null &&form.getUpdatedBy().length()!=0){
             fund.setUpdatedBy(form.getUpdatedBy());
         }
@@ -92,9 +92,14 @@ public class FundServiceImpl extends ServiceImpl<FundMapper, Fund>
         if(form.getFundCode()!=null &&form.getFundCode().length()!=0){
             updateWrapper.set(Fund::getFundCode,form.getFundCode());
         }
-//        if(form.getCurrentProfit()!=null){
-//            updateWrapper.set(Fund::getCurrentProfit,form.getCurrentProfit());
-//        }
+        if(form.getUserId()!=null &&form.getUserId().length()!=0){
+            updateWrapper.set(Fund::getUserId,form.getUserId());
+        }
+
+        if(form.getFamId()!=null &&form.getFamId().length()!=0){
+            updateWrapper.set(Fund::getFamId,form.getFamId());
+        }
+
         if(form.getUpdatedBy()!=null &&form.getUpdatedBy().length()!=0){
             updateWrapper.set(Fund::getUpdatedBy,form.getUpdatedBy());
         }
@@ -141,6 +146,13 @@ public class FundServiceImpl extends ServiceImpl<FundMapper, Fund>
         if(form.getFundType()!=null && form.getFundType().length()!=0){
             queryWrapper.eq(Fund::getFundType,form.getFundType());
         }
+        if(form.getUserId()!=null && form.getUserId().length()!=0){
+            queryWrapper.like(Fund::getUserId,form.getUserId());
+        }
+        if(form.getFamId()!=null && form.getFamId().length()!=0){
+            queryWrapper.eq(Fund::getFamId,form.getFamId());
+        }
+
         return this.list(queryWrapper);
     }
 
@@ -160,18 +172,20 @@ public class FundServiceImpl extends ServiceImpl<FundMapper, Fund>
     }
 
     @Override
-    public void collectFund(String fundCode) {
-        FundForm form=new FundForm();
-        form.setFundCode(fundCode);
-        Assert.isTrue(queryFund(form)!=null,"");
+    public void collectFund(FundCollectForm form) {
+        FundForm form1=new FundForm();
+        form1.setFundCode(form.getFundCode());
+        Assert.isTrue(queryFund(form1)!=null,"未查询到该基金信息");
         Fund fund=new Fund();
-        fund.setFundCode(fundCode);
-        HistoricalFundNetValue historical=queryHistoricalFundNetValueByCode(fundCode);
-        CurrentFundNetValue value=queryCurrentFundNetValueByCode(fundCode);
+        fund.setFundCode(form.getFundCode());
+        HistoricalFundNetValue historical=queryHistoricalFundNetValueByCode(form.getFundCode());
+        CurrentFundNetValue value=queryCurrentFundNetValueByCode(form.getFundCode());
         fund.setCurrentNetValue(value.getDwjz());
         fund.setFundName(value.getName());
         fund.setSourceRate(historical.getFund_sourceRate());
         fund.setRate(historical.getFund_Rate());
+        fund.setFamId(form.getFamId());
+        fund.setUserId(form.getUserId());
 
         fundMapper.insert(fund);
 

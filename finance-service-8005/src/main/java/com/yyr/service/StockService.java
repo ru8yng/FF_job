@@ -1,6 +1,8 @@
 package com.yyr.service;
 
 import com.yyr.dto.StockForm;
+import com.yyr.dto.StockVS;
+import com.yyr.dto.StockVSForm;
 import com.yyr.pojo.Stock;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -20,5 +22,9 @@ public interface StockService extends IService<Stock> {
     void updateStock(StockForm form);
 
     List<Stock> queryStock(StockForm form);
+
+    StockVS queryStockCurrent(StockVSForm form);
+
+    void collectStock(StockVSForm form);
 
 }

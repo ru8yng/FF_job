@@ -57,10 +57,10 @@ public class FundController {
 
     @ApiOperation("收藏基金")
     //@logCustom(description = "收藏基金")
-    @GetMapping("/collectFund")
-    public CommonResponse<?> addFucollectFundnd(String fundCode){
-        Assert.notNull(fundCode,"基金代码不能为空！");
-        fundService.collectFund(fundCode);
+    @PostMapping("/collectFund")
+    public CommonResponse<?> addFucollectFundnd(@RequestBody FundCollectForm form){
+        Assert.notNull(form,"基金代码不能为空！");
+        fundService.collectFund(form);
         return CommonResponse.ok("收藏基金成功！");
     }
 
@@ -69,9 +69,9 @@ public class FundController {
     //@logCustom(description = "新增基金类型")
     @PostMapping("/addFund")
     public CommonResponse<?> addFund(@RequestBody FundForm form){
-        Assert.notNull(form,"新增基金类型不能为空！");
+        Assert.notNull(form,"新增基金不能为空！");
         fundService.addFund(form);
-        return CommonResponse.ok("新增基金类型成功！");
+        return CommonResponse.ok("新增基金成功！");
     }
 
     @ApiOperation("删除基金")
@@ -80,16 +80,16 @@ public class FundController {
     public CommonResponse<?> deleteFund(String fundId){
         Assert.notNull(fundId,"基金类型id不能为空！");
         fundService.deleteFund(fundId);
-        return CommonResponse.ok("删除基金类型成功！");
+        return CommonResponse.ok("删除基金成功！");
     }
 
     @ApiOperation("更新基金")
     //@logCustom(description = "更新基金类型")
     @PostMapping("/updateFund")
     public CommonResponse<?> updateFund(@RequestBody FundForm form){
-        Assert.notNull(form,"更新的基金类型不能为空！");
+        Assert.notNull(form,"更新的基金不能为空！");
         fundService.updateFund(form);
-        return CommonResponse.ok("更新基金类型成功！");
+        return CommonResponse.ok("更新基金成功！");
     }
 
 

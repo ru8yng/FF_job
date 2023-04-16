@@ -24,6 +24,10 @@ import java.util.Date;
 public class FundForm {
     private String fundCode;
 
+    private String userId;
+
+    private String famId;
+
     private String fundId;
 
     /**

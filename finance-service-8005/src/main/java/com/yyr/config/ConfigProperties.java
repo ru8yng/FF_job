@@ -27,6 +27,10 @@ public class ConfigProperties {
     @Value("http://fund.eastmoney.com/pingzhongdata/")
     private String HISTORICAL_FUND_NET_VALUE_URL;
 
+    //http://qt.gtimg.cn/q=s_sh600519
+    @Value("http://qt.gtimg.cn/q=s_")
+    private String STOCK_V_S;
+
 
 
 
