@@ -4,9 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yyr.dto.FamRolePermissionForm;
+import com.yyr.dto.FamRolePermissionUpdateDto;
 import com.yyr.pojo.FamRolePermission;
+import com.yyr.pojo.FamilyRole;
 import com.yyr.service.FamRolePermissionService;
 import com.yyr.mapper.FamRolePermissionMapper;
+import com.yyr.service.FamilyRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -23,6 +26,9 @@ public class FamRolePermissionServiceImpl extends ServiceImpl<FamRolePermissionM
     implements FamRolePermissionService{
     @Autowired
     private FamRolePermissionMapper famRolePermissionMapper;
+
+    @Autowired
+    private FamilyRoleService familyRoleService;
 
     @Override
     /**
@@ -82,6 +88,35 @@ public class FamRolePermissionServiceImpl extends ServiceImpl<FamRolePermissionM
         LambdaQueryWrapper<FamRolePermission> queryWrapper=new LambdaQueryWrapper<>();
         queryWrapper.eq(FamRolePermission::getFamRoleId,form.getFam_role_id());
         return this.list(queryWrapper);
+    }
+
+    @Override
+    public void updateByRoleId(FamRolePermissionUpdateDto dto) {
+        FamilyRole role=familyRoleService.getById(dto.getRoleId());
+        Assert.notNull(role,"该角色不存在");
+        List<FamRolePermission> list=famRolePermissionMapper.selectList(new LambdaQueryWrapper<FamRolePermission>().eq(FamRolePermission::getFamRoleId,dto.getRoleId()));
+
+        if(!dto.getPermissionList().isEmpty() && !list.isEmpty()){
+            list.forEach(role1->{
+                famRolePermissionMapper.deleteById(role1.getFamRolePermissionId());
+            });
+        }
+
+        dto.getPermissionList().forEach(famPermission -> {
+            FamRolePermission famRolePermission=new FamRolePermission();
+            famRolePermission.setFamPermissionId(famPermission.getFamPermissionId());
+            famRolePermission.setFamRoleId(dto.getRoleId());
+            famRolePermissionMapper.insert(famRolePermission);
+            //子菜单
+            if(!famPermission.getChild().isEmpty()){
+                famPermission.getChild().forEach(famPermission1 -> {
+                    FamRolePermission famRolePermission1 = new FamRolePermission();
+                    famRolePermission1.setFamPermissionId(famPermission1.getFamPermissionId());
+                    famRolePermission1.setFamRoleId(dto.getRoleId());
+                    famRolePermissionMapper.insert(famRolePermission1);
+                });
+            }
+        });
     }
 
 

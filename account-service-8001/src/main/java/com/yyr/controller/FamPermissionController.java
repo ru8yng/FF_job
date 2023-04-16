@@ -63,7 +63,7 @@ public class FamPermissionController {
     @ApiOperation("查询家庭权限列表")
     @PostMapping("/queryFamPermList")
     public CommonResponse<?> queryFamPermList(@RequestBody FamPermQueryForm form){
-        Assert.isTrue(form!=null,"form不能为空");
+        //Assert.isTrue(form!=null,"form不能为空");
         if (null != form && null != form.getPage() && null != form.getSize()) {
             PageHelper.startPage(form.getPage(), form.getSize());
         }

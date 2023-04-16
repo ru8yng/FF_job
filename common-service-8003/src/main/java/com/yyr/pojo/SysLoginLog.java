@@ -15,7 +15,7 @@ public class SysLoginLog implements Serializable {
     /**
      * 
      */
-    @TableId
+    @TableId(type=IdType.ASSIGN_ID)
     private String loginLogId;
 
     /**
@@ -41,11 +41,13 @@ public class SysLoginLog implements Serializable {
     /**
      * 创建时间
      */
+    @TableField(fill= FieldFill.INSERT)
     private Date createdTime;
 
     /**
      * 更新时间
      */
+    @TableField(fill=FieldFill.INSERT_UPDATE)
     private Date updatedTime;
 
     @TableField(exist = false)

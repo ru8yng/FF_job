@@ -12,6 +12,11 @@
         <module>eureka-server-7001</module>
         <module>account-service-8001</module>
         <module>common-service-8003</module>
+        <module>bills-service-8002</module>
+        <module>equity-service-8004</module>
+        <module>finance-service-8005</module>
+        <module>report-service-8006</module>
+        <module>gataway-service-7002</module>
 
     </modules>
 

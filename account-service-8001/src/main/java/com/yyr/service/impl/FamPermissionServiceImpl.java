@@ -10,6 +10,7 @@ import com.yyr.pojo.FamPermission;
 import com.yyr.pojo.FamilyRole;
 import com.yyr.service.FamPermissionService;
 import com.yyr.mapper.FamPermissionMapper;
+import com.yyr.service.FamilyRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -27,6 +28,9 @@ public class FamPermissionServiceImpl extends ServiceImpl<FamPermissionMapper, F
     @Autowired
     private FamPermissionMapper famPermissionMapper;
 
+    @Autowired
+    private FamilyRoleService familyRoleService;
+
     @Override
     /**
     * @description:新增家庭权限
@@ -37,7 +41,7 @@ public class FamPermissionServiceImpl extends ServiceImpl<FamPermissionMapper, F
     */
     public void addFamPermission(FamPermission famPermission) {
         Assert.isTrue(famPermission.getFamPermissionName()!=null&&famPermission.getFamPermissionPath()!=null,"家庭权限名及路径不为空！");
-
+        famPermission.setFamPermissionId("");
         famPermissionMapper.insert(famPermission);
     }
 
@@ -80,6 +84,9 @@ public class FamPermissionServiceImpl extends ServiceImpl<FamPermissionMapper, F
         if(famPermission.getFamPermissionParentid()!=null && famPermission.getFamPermissionParentid().length()!=0){
             updateWrapper.set(FamPermission::getFamPermissionParentid,famPermission.getFamPermissionParentid());
         }
+        if(famPermission.getIcon()!=null && famPermission.getIcon().length()!=0){
+            updateWrapper.set(FamPermission::getIcon,famPermission.getIcon());
+        }
         this.update(updateWrapper);
     }
 
@@ -106,7 +113,10 @@ public class FamPermissionServiceImpl extends ServiceImpl<FamPermissionMapper, F
         if(form.getCreatedBy()!=null && form.getCreatedBy().length()!=0){
             queryWrapper.eq(FamPermission::getCreatedBy,form.getCreatedBy());
         }
-        return this.list(queryWrapper);
+
+        List<FamPermission> tree=familyRoleService.buildTree(this.list(queryWrapper));
+
+        return tree;
     }
 }
 

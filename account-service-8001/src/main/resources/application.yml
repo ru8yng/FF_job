@@ -14,15 +14,14 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource #数据库 #数据库
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/ff_job?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&useSSL=false
+    url: jdbc:mysql://localhost:3306/ff_job?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&useSSL=false&useSSL=false&allowPublicKeyRetrieval=true
     username: root
     password: '000010'
   redis:
-    host: 119.29.86.40
+    host: 43.139.26.87
     port: 6379
-    database: 6
     timeout: 2000ms
-    password: 000010
+    password: '000010' #服务器本机 不是docker
 
 eureka:
   client:

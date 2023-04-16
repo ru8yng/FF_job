@@ -8,6 +8,7 @@ import com.yyr.service.SysOperaLogService;
 import com.yyr.mapper.SysOperaLogMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,6 +55,7 @@ implements SysOperaLogService{
     @Override
     public void addSysOperaLog(OperaLogForm form) {
         SysOperaLog sysOperaLog=new SysOperaLog();
+        sysOperaLog.setOperaLogId("");
         if(form.getOperaLogName()!=null && form.getOperaLogName().length()!=0){
             sysOperaLog.setOperaLogName(form.getOperaLogName());
         }
@@ -69,9 +71,25 @@ implements SysOperaLogService{
         if(form.getOperaLogOperaby()!=null && form.getOperaLogOperaby().length()!=0){
             sysOperaLog.setOperaLogOperaby(form.getOperaLogOperaby());
         }
-        if(form.getOperaTime()!=null && form.getOperaLogOperaby().length()!=0){
+        if(form.getOperaTime()!=null ){
             sysOperaLog.setOperaLogOperatime(form.getOperaTime());
         }
-        this.baseMapper.insert(sysOperaLog);
+        this.save(sysOperaLog);
+    }
+
+    @Override
+    public List<String> querySysOperaLogType() {
+
+        List<String> types=new ArrayList<>();
+        LambdaQueryWrapper<SysOperaLog> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.inSql(SysOperaLog::getOperaLog,"select distinct opera_log from sys_opera_log");
+        List<SysOperaLog> list=this.list(queryWrapper);
+        list.forEach(log->{
+            if(!types.contains(log.getOperaLog())){
+                types.add(log.getOperaLog());
+            }
+
+        });
+        return types;
     }
 }

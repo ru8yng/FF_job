@@ -36,7 +36,21 @@ public class FamilyServiceImpl extends ServiceImpl<FamilyMapper, Family>
     @Override
     public void addFamily(Family fm) {
         Assert.isTrue(fm.getFamilyName()!=null,"家庭名不为空");
-        familyMapper.insert(fm);
+        Family family=new Family();
+        if(fm.getFamilyName()!=null &&fm.getFamilyName().length()!=0){
+            family.setFamilyName(fm.getFamilyName());
+        }
+        if(fm.getFamilyDesc()!=null &&fm.getFamilyDesc().length()!=0){
+            family.setFamilyDesc(fm.getFamilyDesc());
+        }
+        if(fm.getCreatedBy()!=null &&fm.getCreatedBy().length()!=0){
+            family.setCreatedBy(fm.getCreatedBy());
+        }
+
+        if(fm.getUpdatedBy()!=null &&fm.getUpdatedBy().length()!=0){
+            family.setUpdatedBy(fm.getUpdatedBy());
+        }
+        familyMapper.insert(family);
     }
 
     /**
@@ -84,7 +98,7 @@ public class FamilyServiceImpl extends ServiceImpl<FamilyMapper, Family>
     }
 
     /**
-    * @description:c查询家庭
+    * @description:查询家庭
      * @Param: [form]
     * @return: java.util.List<com.yyr.pojo.Family>
     * @throws:

@@ -8,9 +8,11 @@ import com.yyr.dto.CommonResponse;
 import com.yyr.dto.LoginLogForm;
 import com.yyr.pojo.SysLoginLog;
 import com.yyr.service.SysLoginLogService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +27,7 @@ import java.util.List;
  * @Description: TODO
  * @Version 1.0
  */
-
+@Api(tags = "登录日志接口")
 @RestController
 @RequestMapping("/sysLoginLog")
 public class SysLoginLogController {
@@ -33,7 +35,7 @@ public class SysLoginLogController {
     private SysLoginLogService sysLoginLogService;
 
     @ApiOperation("查询登录日志")
-    @RequestMapping("/querySysLoginLog")
+    @PostMapping("/querySysLoginLog")
     public CommonResponse<?> querySysLoginLog(@RequestBody LoginLogForm form){
         Assert.notNull(form,"SysLoginLog不能为空！");
         if (null != form && null != form.getPage() && null != form.getSize()) {
@@ -44,7 +46,7 @@ public class SysLoginLogController {
     }
 
     @ApiOperation("新增登录日志")
-    @RequestMapping("/addSysLoginLog")
+    @PostMapping("/addSysLoginLog")
     public CommonResponse<?> addSysLoginLog(@RequestBody LoginLogForm form){
         Assert.notNull(form,"SysLoginLog不能为空！");
         sysLoginLogService.addLoginLog(form);

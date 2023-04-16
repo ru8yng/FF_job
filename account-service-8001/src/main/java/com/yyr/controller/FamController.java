@@ -38,6 +38,7 @@ public class FamController {
     @logCustom(description = "新增家庭")
     @PostMapping("/addFam")
     public CommonResponse<?> addFam(@RequestBody Family family){
+
         Assert.notNull(family,"新增家庭不能为空！");
         familyService.addFamily(family);
         return CommonResponse.ok("新增家庭成功！");

@@ -36,7 +36,21 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole>
     */
     public void addSysRole(SysRole sysRole) {
         Assert.isTrue(sysRole.getSysRoleName()!=null);
-        sysRoleMapper.insert(sysRole);
+        SysRole sysRole1=new SysRole();
+        if(sysRole.getSysRoleName()!=null &&sysRole.getSysRoleName().length()!=0){
+            sysRole1.setSysRoleName(sysRole.getSysRoleName());
+        }
+        if(sysRole.getSysRoleDesc()!=null &&sysRole.getSysRoleDesc().length()!=0){
+            sysRole1.setSysRoleDesc(sysRole.getSysRoleDesc());
+        }
+        if(sysRole.getCreatedBy()!=null &&sysRole.getCreatedBy().length()!=0){
+            sysRole1.setCreatedBy(sysRole.getCreatedBy());
+        }
+        if(sysRole.getUpdatedBy()!=null &&sysRole.getUpdatedBy().length()!=0){
+            sysRole1.setUpdatedBy(sysRole.getUpdatedBy());
+        }
+
+        sysRoleMapper.insert(sysRole1);
     }
 
     @Override

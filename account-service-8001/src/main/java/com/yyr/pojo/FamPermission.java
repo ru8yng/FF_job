@@ -1,10 +1,11 @@
 package com.yyr.pojo;
 
 import com.baomidou.mybatisplus.annotation.*;
-
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
-
+import java.util.List;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -63,6 +64,16 @@ public class FamPermission implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+    @TableField(exist = false)
+    private List<FamPermission> child = new ArrayList<>();
+
+    @ApiModelProperty("检查选中没选中 ， 0未选中，1选中")
+    @TableField(exist = false)
+    private String check;
+
+
+    private String icon;
 
     @Override
     public boolean equals(Object that) {

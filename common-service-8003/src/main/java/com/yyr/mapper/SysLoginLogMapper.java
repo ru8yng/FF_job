@@ -1,12 +1,8 @@
 package com.yyr.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.yyr.dto.LoginLogForm;
 import com.yyr.pojo.SysLoginLog;
-import org.apache.ibatis.annotations.Param;
-import org.mapstruct.Mapper;
-
-import java.util.List;
+import org.apache.ibatis.annotations.Mapper;
 
 
 /**

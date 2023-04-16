@@ -2,6 +2,7 @@ package com.yyr.mapper;
 
 import com.yyr.pojo.SysOperaLog;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
 * @author sheep
@@ -9,6 +10,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2023-02-19 17:10:03
 * @Entity com.yyr.pojo.SysOperaLog
 */
+@Mapper
 public interface SysOperaLogMapper extends BaseMapper<SysOperaLog> {
 
 

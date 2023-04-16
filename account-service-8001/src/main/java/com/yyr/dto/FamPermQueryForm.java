@@ -26,6 +26,7 @@ public class FamPermQueryForm {
     private String famPermissionName;
     private String famPermissionParentid;
 
+
     /**
      * 创建人(user_id)
      */

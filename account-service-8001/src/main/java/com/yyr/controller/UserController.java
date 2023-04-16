@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yyr.config.logCustom;
 import com.yyr.dto.CommonResponse;
+import com.yyr.dto.StatusChangeDto;
 import com.yyr.dto.UserQueryForm;
 import com.yyr.pojo.User;
 import com.yyr.service.UserService;
@@ -12,10 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -41,7 +39,7 @@ public class UserController {
     @logCustom(description = "新增用户")
     @Transactional(rollbackFor = Exception.class)
     @PostMapping("/addUser")
-    public CommonResponse<?> addUser(@RequestBody User user){
+    public CommonResponse<?> addUser(@RequestBody UserQueryForm user){
         Assert.notNull(user,"新增的用户不能为空");
         userService.addUser(user);
         return CommonResponse.ok("新增用户成功！");
@@ -52,16 +50,17 @@ public class UserController {
     @PostMapping("/deleteUser")
     public  CommonResponse<?> deleteUser(@RequestBody String id){
         Assert.notNull(id,"用户id不能为空！");
-        userService.deleteUser(id);
+        String userId=id.replace("\"","").replace("\"","");
+        userService.deleteUser(userId);
         return CommonResponse.ok("删除成功！");
     }
 
     @ApiOperation("停用/启动用户")
     @logCustom(description = "停用/启动用户")
     @PostMapping("/enable")
-    public CommonResponse<?> enableUser(String userId,String status){
-        Assert.isTrue(userId!=null && status!=null,"用户id不为空且账户状态不为空");
-        userService.enable(userId,status);
+    public CommonResponse<?> enableUser(@RequestBody StatusChangeDto form){
+        Assert.isTrue(form!=null && form.getStatus()!=null && form.getId()!=null,"id不为空且账户状态不为空");
+        userService.enable(form.getId(), form.getStatus());
         return CommonResponse.ok("用户状态修改成功！");
     }
 
@@ -70,7 +69,8 @@ public class UserController {
     @PostMapping("/resetUserPwd")
     public CommonResponse<?> resetUserPwd(String userId){
         Assert.notNull(userId,"用户id不为空！");
-        userService.resetPwd(userId);
+        String id=userId.replace("\"","").replace("\"","");
+        userService.resetPwd(id);
         return CommonResponse.ok("重置密码成功！");
     }
 

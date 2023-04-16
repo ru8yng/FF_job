@@ -1,9 +1,13 @@
 package com.yyr.dto;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.yyr.pojo.FamPermission;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 /**
  * @Author 杨亚茹
@@ -39,6 +43,9 @@ public class FamRoleQueryForm {
      * 创建人(user_id)
      */
     private String createdBy;
+
+
+
     @ApiModelProperty("分页参数 当前页")
     private Integer page =1;
 

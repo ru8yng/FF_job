@@ -28,6 +28,8 @@ public class FamQueryForm {
 
     private String createdBy;
 
+    private String fam_desc;
+
     private String status;
     @ApiModelProperty("分页参数 当前页")
     private Integer page =1;

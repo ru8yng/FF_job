@@ -4,6 +4,8 @@ import com.yyr.pojo.FamRolePermission;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
 * @author sheep
 * @description 针对表【fam_role_permission(家庭角色权限)】的数据库操作Mapper
@@ -12,6 +14,8 @@ import org.apache.ibatis.annotations.Mapper;
 */
 @Mapper
 public interface FamRolePermissionMapper extends BaseMapper<FamRolePermission> {
+
+    List<String> selectPermissionIdByRoleId(String roleId);
 
 }
 

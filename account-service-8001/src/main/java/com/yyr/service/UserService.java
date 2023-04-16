@@ -13,7 +13,7 @@ import java.util.List;
 */
 public interface UserService extends IService<User> {
 
-    void addUser(User user);
+    void addUser(UserQueryForm form);
 
     void deleteUser(String id);
 

@@ -34,9 +34,35 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     * @author:杨亚茹
     */
     @Override
-    public void addUser(User user) {
-        Assert.isTrue(user.getUserName()!=null&&user.getUserPwd()!=null,"用户名不为空且用户密码不为空");
-        user.setUserPwd(MD5Util.encodeByMD5(user.getUserPwd()));
+    public void addUser(UserQueryForm form) {
+        Assert.isTrue(form.getUserName()!=null&&form.getUserPwd()!=null,"用户名不为空且用户密码不为空");
+        User user=new User();
+        user.setUserPwd(MD5Util.encodeByMD5(form.getUserPwd()));
+        if(form.getUserName()!=null && form.getUserName().length()!=0){
+            user.setUserName(form.getUserName());
+        }
+        if(form.getSex()!=null && form.getSex().length()!=0){
+            user.setSex(form.getSex());
+        }
+        if(form.getBirthday()!=null ){
+            user.setBirthday(form.getBirthday());
+        }
+        if(form.getEmail()!=null && form.getEmail().length()!=0){
+            user.setEmail(form.getEmail());
+        }
+        if(form.getQqnum()!=null && form.getQqnum().length()!=0){
+            user.setQqnum(form.getQqnum());
+        }
+        if(form.getFamRoleId()!=null && form.getFamRoleId().length()!=0){
+            user.setFamRoleId(form.getFamRoleId());
+        }
+        if(form.getFamilyId()!=null && form.getFamilyId().length()!=0){
+            user.setFamilyId(form.getFamilyId());
+        }
+        if(form.getStatus()!=null && form.getStatus().length()!=0){
+            user.setStatus(form.getStatus());
+        }
+
         userMapper.insert(user);
     }
 

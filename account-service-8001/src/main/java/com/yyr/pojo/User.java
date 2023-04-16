@@ -4,8 +4,10 @@ import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +21,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User implements Serializable {
     /**
      * 
@@ -94,6 +97,9 @@ public class User implements Serializable {
      */
     @TableField(fill=FieldFill.INSERT_UPDATE)
     private Date updatedTime;
+
+    @TableField(exist = false)
+    private List<FamPermission> permissionList;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

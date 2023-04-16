@@ -1,6 +1,7 @@
 package com.yyr.service;
 
 import com.yyr.dto.FamRolePermissionForm;
+import com.yyr.dto.FamRolePermissionUpdateDto;
 import com.yyr.pojo.FamRolePermission;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -17,5 +18,7 @@ public interface FamRolePermissionService extends IService<FamRolePermission> {
     void deleteFamRolePermissionByFamRolePermissionForm(FamRolePermissionForm form);
 
     List<FamRolePermission> queryFamRolePermissionByFamRoleId(FamRolePermissionForm form);
+
+    void updateByRoleId(FamRolePermissionUpdateDto dto);
 
 }

@@ -14,4 +14,6 @@ import java.util.List;
 public interface SysOperaLogService extends IService<SysOperaLog> {
     List<SysOperaLog> querySysOperaLog(OperaLogForm form);
     void addSysOperaLog(OperaLogForm form);
+
+    List<String> querySysOperaLogType();
 }

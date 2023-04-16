@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -60,6 +61,10 @@ public class FamilyRole implements Serializable {
      */
     @TableField(fill=FieldFill.INSERT_UPDATE)
     private Date updatedTime;
+
+
+    @TableField(exist = false)
+    private List<FamPermission> permissionList;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

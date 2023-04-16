@@ -15,7 +15,7 @@ public class SysOperaLog implements Serializable {
     /**
      * 
      */
-    @TableId
+    @TableId(type=IdType.ASSIGN_ID)
     private String operaLogId;
 
     /**
