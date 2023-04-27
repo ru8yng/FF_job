@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -102,6 +101,17 @@ public class UserController {
 
 
     @ApiOperation("根据UserQueryFrom查询用户列表")
+    @PostMapping("/queryUserListPage")
+    public CommonResponse<?> queryUserListPage(@RequestBody UserQueryForm form){
+        Assert.isTrue(form!=null,"UserQueryForm不为空");
+        if (null != form && null != form.getPage() && null != form.getSize()) {
+            PageHelper.startPage(form.getPage(), form.getSize());
+        }
+        List<User> userList= userService.queryUserListByFrom(form);
+        return CommonResponse.ok(new PageInfo<>(userList));
+    }
+
+    @ApiOperation("根据UserQueryFrom查询用户列表")
     @PostMapping("/queryUserList")
     public CommonResponse<?> queryUserList(@RequestBody UserQueryForm form){
         Assert.isTrue(form!=null,"UserQueryForm不为空");
@@ -109,7 +119,7 @@ public class UserController {
             PageHelper.startPage(form.getPage(), form.getSize());
         }
         List<User> userList= userService.queryUserListByFrom(form);
-        return CommonResponse.ok(new PageInfo<>(userList));
+        return CommonResponse.ok(userList);
     }
 
 

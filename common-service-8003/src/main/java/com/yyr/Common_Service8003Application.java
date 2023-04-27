@@ -13,6 +13,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * @Version 1.0
  */
 
+
 @EnableDiscoveryClient
 @SpringBootApplication
 public class Common_Service8003Application {

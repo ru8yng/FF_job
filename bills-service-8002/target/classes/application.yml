@@ -18,7 +18,7 @@ spring:
     username: root
     password: '000010'
   redis:
-    host: 119.29.86.40
+    host: 43.139.26.87
     port: 6379
     timeout: 2000ms
     password: '000010' #服务器本机 不是docker

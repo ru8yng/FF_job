@@ -1,10 +1,8 @@
 package com.yyr.controller;
 
-import com.yyr.config.logCustom;
+
 import com.yyr.dto.CommonResponse;
-import com.yyr.dto.ExpenseTypeForm;
-import com.yyr.dto.FamIncomeForm;
-import com.yyr.dto.IAE;
+import com.yyr.dto.IAEForm;
 import com.yyr.service.FamExpenseService;
 import com.yyr.service.FamIncomeService;
 import com.yyr.service.IAEService;
@@ -12,7 +10,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -30,20 +27,16 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j(topic = "IAE")
 public class IncomeAndExpenseController {
 
-    @Autowired
-    private FamExpenseService famExpenseService;
 
-    @Autowired
-    private FamIncomeService famIncomeService;
 
     @Autowired
     private IAEService iaeService;
 
-    @ApiOperation("查询本月收入支出")
+    @ApiOperation("查询收入支出预算")
     //@logCustom(description = "查询本月收入支出")
-    @GetMapping("/queryIaeBCurrentMonth")
-    public CommonResponse<?> queryIaeBCurrentMonth(){
+    @PostMapping("/queryIaeCurrent")
+    public CommonResponse<?> queryIaeCurrent(@RequestBody IAEForm iae){
 
-        return CommonResponse.ok(iaeService.queryIaeBCurrentMonth());
+        return CommonResponse.ok(iaeService.queryIaeCurrent(iae));
     }
 }

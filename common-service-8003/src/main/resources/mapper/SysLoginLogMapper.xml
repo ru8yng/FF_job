@@ -14,11 +14,5 @@
             <result property="updatedTime" column="UPDATED_TIME" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <sql id="Base_Column_List">
-        login_log_id,user_name,user_id,
-        ipAddr,login_time,CREATED_TIME,
-        UPDATED_TIME
-    </sql>
-
 
 </mapper>

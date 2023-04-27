@@ -4,11 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  * @Author 杨亚茹
- * @Date 2023/3/28 15:45
+ * @Date 2023/4/24 17:37
  * @PackageName:com.yyr.dto
- * @ClassName: IAE
+ * @ClassName: BillsForm
  * @Description: TODO
  * @Version 1.0
  */
@@ -16,12 +18,14 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class IAE {
-    Double income;
+public class BillsForm {
 
-    Double expense;
+    String date;
 
-    Double budget;
+    String famId;
 
+    String userId;
+    List<ClaimsAndDebt> cads;
 
+    List<FamAssets> assets;
 }

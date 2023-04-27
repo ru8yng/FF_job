@@ -43,7 +43,7 @@ public class SwaggerConfig {
                 //文档描述
                 .description("接口说明")
                 //服务条款URL
-                .termsOfServiceUrl("http://localhost:8001/")
+                .termsOfServiceUrl("http://localhost:8002/")
                 //版本号
                 .version("1.0.0")
                 .build();

@@ -39,7 +39,7 @@ public class OperaLogForm {
     @ApiParam("操作角色id")
     private String operaLogSysroleId;
 
-    @ApiParam("创建人user_id")
+    @ApiParam("家庭id")
     private String operaLogOperaby;
 
     private Date operaTime;

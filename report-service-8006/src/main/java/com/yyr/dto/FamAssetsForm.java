@@ -1,15 +1,9 @@
 package com.yyr.dto;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.checkerframework.common.aliasing.qual.NonLeaked;
 
 import java.util.Date;
 
@@ -17,7 +11,7 @@ import java.util.Date;
  * @Author 杨亚茹
  * @Date 2023/3/24 9:42
  * @PackageName:com.yyr.dto
- * @ClassName: ClaimsAndDebtForm
+ * @ClassName: FamAssetsForm
  * @Description: TODO
  * @Version 1.0
  */
@@ -25,14 +19,12 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ClaimsAndDebtForm {
-
-    private String cadId;
+public class FamAssetsForm {
+    private String famAssetsId;
 
     /**
      * 创建人
      */
-    @ApiParam("userId")
     private String createdBy;
 
 
@@ -42,62 +34,47 @@ public class ClaimsAndDebtForm {
      */
     private String updatedBy;
 
-
-
     /**
-     * 0借入1借出
+     *
      */
-    private String cadType;
+    private String assetsName;
 
-    /**
-     * 债权人
-     */
-    private String creditor;
-
-    /**
-     * 债务人
-     */
-    private String obligor;
 
     /**
      *
      */
-    private String creditorTel;
+    private String assetsLocation;
 
     /**
      *
      */
-    private String obligorTel;
+    private Date assetsBuytime;
 
     /**
      *
      */
-    private String cadAmount;
+    private String famId;
 
     /**
-     * 借入/借出时间
+     * 资产分期(0为不分期1为分期)
      */
-    private Date cadTime;
+    private String assetsInstalment;
 
     /**
-     * 偿还时间
+     * 剩余期限/月
      */
-    private Date cadRepaymentTime;
+    private String instalmentSurplus;
 
     /**
-     * 预计偿还时间
+     * 每期还款金额
      */
-    private Date cadPlanRepaymentTime;
+    private String instalmentPrice;
+
 
     /**
      *
      */
     private String remark;
-
-    /**
-     * 0已完成1仍存在
-     */
-    private String cadStatus;
 
     @ApiModelProperty("分页参数 当前页")
     private Integer page =1;
@@ -111,5 +88,4 @@ public class ClaimsAndDebtForm {
 
     @ApiModelProperty("结束时间")
     private Date endTime;
-
 }

@@ -1,10 +1,6 @@
 package com.yyr.service;
 
-import com.yyr.dto.FamIncomeForm;
-import com.yyr.dto.IAE;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.annotation.Resource;
+import com.yyr.dto.IAEForm;
 
 /**
  * @Author 杨亚茹
@@ -18,6 +14,6 @@ import javax.annotation.Resource;
 
 public interface IAEService {
 
-    IAE queryIaeBCurrentMonth();
+    IAEForm queryIaeCurrent(IAEForm iae);
 
 }
