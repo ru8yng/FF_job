@@ -1,10 +1,9 @@
 package com.yyr.controller;
 
+import account8001.dto.FamPermQueryForm;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yyr.config.logCustom;
-import com.yyr.dto.CommonResponse;
-import com.yyr.dto.FamPermQueryForm;
 import com.yyr.pojo.FamPermission;
 import com.yyr.service.FamPermissionService;
 import io.swagger.annotations.Api;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import utils.CommonResponse;
 
 import java.util.List;
 
@@ -36,7 +36,7 @@ public class FamPermissionController {
     @ApiOperation("新增家庭权限")
     @logCustom(description = "新增家庭权限")
     @PostMapping("/addFamPerm")
-    public CommonResponse<?> addFamPerm(@RequestBody FamPermission famPermission){
+    public CommonResponse<?> addFamPerm(@RequestBody FamPermQueryForm famPermission){
         Assert.notNull(famPermission,"家庭权限不能为空！");
         famPermissionService.addFamPermission(famPermission);
         return CommonResponse.ok("新增家庭权限成功！");
@@ -54,7 +54,7 @@ public class FamPermissionController {
     @ApiOperation("更新家庭权限")
     @logCustom(description = "更新家庭权限")
     @PostMapping("/updateFamPerm")
-    public CommonResponse<?> updateFamPerm(FamPermission famPermission){
+    public CommonResponse<?> updateFamPerm(@RequestBody FamPermQueryForm famPermission){
         Assert.notNull(famPermission,"家庭权限不能为空！");
         famPermissionService.updateFamPermission(famPermission);
         return CommonResponse.ok("更新家庭权限成功！");

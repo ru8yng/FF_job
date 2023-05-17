@@ -2,14 +2,14 @@ package com.yyr.service.bp;
 
 import com.ctc.wstx.util.StringUtil;
 import com.yyr.config.ConfigProperties;
-import com.yyr.dto.StockTypeEnum;
-import com.yyr.dto.StockVS;
-import com.yyr.dto.StockVSForm;
 import com.yyr.service.StockService;
-import com.yyr.utils.HttpClient;
+import finance8005.dto.StockTypeEnum;
+import finance8005.dto.StockVS;
+import finance8005.dto.StockVSForm;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import utils.HttpClient;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -33,10 +33,8 @@ public class StockBp {
         StockVS vs=new StockVS();
         BigDecimal zero= BigDecimal.valueOf(0);
         String url= configProperties.getSTOCK_V_S()+form.getType()+form.getStockCode();
-        String response= HttpClient.doGet(url);
-        System.out.println("++++++++++++++++++form+++++++++"+form);
+        String response= HttpClient.doGetStock(url);
         String[] result= StringUtils.substringBetween(response,"=\"","\";").split("~");
-        System.out.println("+++++++++++++++++++re++++++++++++++++"+ Arrays.toString(result));
         vs.setStock_type(StockTypeEnum.getDescpForCode(result[0]));
         vs.setName(result[1]);
         vs.setCode(result[2]);

@@ -1,6 +1,7 @@
 package com.yyr.service;
 
-import com.yyr.dto.ExpenseTypeForm;
+
+import bills8002.dto.ExpenseTypeForm;
 import com.yyr.pojo.ExpensesType;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.apache.ibatis.annotations.Mapper;

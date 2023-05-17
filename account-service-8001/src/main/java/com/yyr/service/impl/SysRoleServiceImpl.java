@@ -1,18 +1,19 @@
 package com.yyr.service.impl;
 
+import account8001.dto.SysRoleQueryForm;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yyr.dto.SysRoleQueryForm;
-import com.yyr.pojo.FamilyRole;
 import com.yyr.pojo.SysRole;
 import com.yyr.service.SysRoleService;
 import com.yyr.mapper.SysRoleMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,7 +35,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole>
     * @throws:
     * @author:杨亚茹
     */
-    public void addSysRole(SysRole sysRole) {
+    public void addSysRole(SysRoleQueryForm sysRole) {
         Assert.isTrue(sysRole.getSysRoleName()!=null);
         SysRole sysRole1=new SysRole();
         if(sysRole.getSysRoleName()!=null &&sysRole.getSysRoleName().length()!=0){
@@ -100,7 +101,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole>
     * @throws:
     * @author:杨亚茹
     */
-    public List<SysRole> querySysRole(SysRoleQueryForm sysRole) {
+    public List<SysRoleQueryForm> querySysRole(SysRoleQueryForm sysRole) {
         LambdaQueryWrapper<SysRole> queryWrapper=new LambdaQueryWrapper<>();
         if(sysRole.getSysRoleDesc()!= null && sysRole.getSysRoleDesc().length()!=0){
             queryWrapper.like(SysRole::getSysRoleDesc,sysRole.getSysRoleDesc());
@@ -114,8 +115,13 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole>
         if(sysRole.getCreatedBy()!=null && sysRole.getCreatedBy().length()!=0){
             queryWrapper.eq(SysRole::getCreatedBy,sysRole.getCreatedBy());
         }
-
-        return this.list(queryWrapper);
+        List<SysRoleQueryForm> forms=new ArrayList<>();
+        this.list(queryWrapper).forEach(sysRole1 -> {
+            SysRoleQueryForm sysRoleQueryForm=new SysRoleQueryForm();
+            BeanUtils.copyProperties(sysRole1,sysRoleQueryForm);
+            forms.add(sysRoleQueryForm);
+        });
+        return forms;
     }
 }
 

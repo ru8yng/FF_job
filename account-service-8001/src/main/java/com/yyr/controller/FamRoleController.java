@@ -1,11 +1,10 @@
 package com.yyr.controller;
 
+import account8001.dto.FamRolePermissionUpdateDto;
+import account8001.dto.FamRoleQueryForm;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yyr.config.logCustom;
-import com.yyr.dto.CommonResponse;
-import com.yyr.dto.FamRolePermissionUpdateDto;
-import com.yyr.dto.FamRoleQueryForm;
 import com.yyr.pojo.FamilyRole;
 import com.yyr.service.FamilyRoleService;
 import io.swagger.annotations.Api;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import utils.CommonResponse;
 
 import java.util.List;
 
@@ -38,7 +38,7 @@ public class FamRoleController {
     @ApiOperation("新增家庭角色")
     @logCustom(description = "新增家庭角色")
     @PostMapping("/addFamRole")
-    public CommonResponse<?> addFamRole(@RequestBody FamilyRole familyRole){
+    public CommonResponse<?> addFamRole(@RequestBody FamRoleQueryForm familyRole){
         Assert.notNull(familyRole,"新增的家庭角色不能为空！");
         familyRoleService.addFamRole(familyRole);
         return CommonResponse.ok("新增家庭角色成功！");
@@ -70,7 +70,7 @@ public class FamRoleController {
         if (null != form && null != form.getPage() && null != form.getSize()) {
             PageHelper.startPage(form.getPage(), form.getSize());
         }
-        List<FamilyRole> list= familyRoleService.queryFamRoleList(form);
+        List<FamRoleQueryForm> list= familyRoleService.queryFamRoleList(form);
         return CommonResponse.ok(new PageInfo<>(list));
     }
 }

@@ -1,8 +1,9 @@
 package com.yyr.service;
 
-import com.yyr.dto.UserQueryForm;
-import com.yyr.pojo.User;
+
+import account8001.dto.UserQueryForm;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yyr.pojo.User;
 
 import java.util.List;
 
@@ -21,12 +22,12 @@ public interface UserService extends IService<User> {
 
     void resetPwd(String id);
 
-    void updateUserBasicAttributes(User form);
+    void updateUserBasicAttributes(UserQueryForm form);
 
     void changeUserFmId(String id,String fm_id);
 
     void changePwd(String id,String pwd);
 
-    List<User> queryUserListByFrom(UserQueryForm form);
+    List<UserQueryForm> queryUserListByFrom(UserQueryForm form);
 
 }

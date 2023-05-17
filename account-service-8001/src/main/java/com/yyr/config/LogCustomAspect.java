@@ -1,11 +1,9 @@
 package com.yyr.config;
 
-
-import com.yyr.dto.OperaLogForm;
 import com.yyr.pojo.User;
 import com.yyr.service.AuthService;
 import com.yyr.service.CommonService8003;
-import com.yyr.utils.IPUtil;
+import log8003.dto.OperaLogForm;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -15,11 +13,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import utils.IPUtil;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
@@ -84,7 +81,7 @@ public class LogCustomAspect {
         sysLog.setIpaddr(ip);
         sysLog.setOperaLogOperaby(user.getUserId());
         sysLog.setOperaLogSysroleId(user.getSysRoleId());
-//        commonService8003.addSysOperaLog(sysLog);
+        //commonService8003.addSysOperaLog(sysLog);
     }
 
 

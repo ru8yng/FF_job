@@ -1,9 +1,11 @@
 package com.yyr.service;
 
-import com.yyr.dto.*;
+
 import com.yyr.pojo.Fund;
 import com.baomidou.mybatisplus.extension.service.IService;
+import finance8005.dto.*;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,7 +21,7 @@ public interface FundService extends IService<Fund> {
 
     void updateFund(FundForm form);
 
-    List<Fund> queryFund(FundForm form);
+    List<FundForm> queryFund(FundForm form);
 
     CurrentFundNetValue queryCurrentFundNetValueByCode(String fundCode);
 
@@ -28,5 +30,9 @@ public interface FundService extends IService<Fund> {
     List<FundcodeSearch> queryFundcodeSearch();
 
     void collectFund(FundCollectForm form);
+
+
+    List<List<String>> getKLine(Date date);
+
 
 }

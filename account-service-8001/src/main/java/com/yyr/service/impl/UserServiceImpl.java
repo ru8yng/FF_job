@@ -1,19 +1,26 @@
 package com.yyr.service.impl;
 
+import account8001.dto.UserQueryForm;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yyr.constdata.UserConst;
-import com.yyr.dto.UserQueryForm;
+import com.yyr.mapper.FamilyMapper;
+import com.yyr.mapper.FamilyRoleMapper;
+import com.yyr.pojo.Family;
 import com.yyr.pojo.User;
 import com.yyr.service.UserService;
 import com.yyr.mapper.UserMapper;
-import com.yyr.utils.MD5Util;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import utils.MD5Util;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
 * @author sheep
@@ -26,6 +33,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private FamilyMapper familyMapper;
+
+    @Autowired
+    private FamilyRoleMapper familyRoleMapper;
+
     /**
     * @description:新增用户
     * @Param: [user]
@@ -121,7 +135,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     * @author:杨亚茹
     */
     @Override
-    public void updateUserBasicAttributes(User form) throws IllegalArgumentException {
+    public void updateUserBasicAttributes(UserQueryForm form) throws IllegalArgumentException {
         //家庭id改变 fam_role_id置空
         //BasicAttributes
         LambdaUpdateWrapper<User> updateWrapper=new UpdateWrapper<User>().lambda();
@@ -139,9 +153,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         if(form.getEmail()!=null && form.getEmail().length()!=0){
             updateWrapper.set(User::getEmail,form.getEmail());
         }
-        if(form.getSysRoleId()!=null && form.getSysRoleId().length()!=0){
-            updateWrapper.set(User::getSysRoleId,form.getSysRoleId());
-        }
+
         if(form.getFamRoleId()!=null && form.getFamRoleId().length()!=0){
             updateWrapper.set(User::getFamRoleId,form.getFamRoleId());
         }
@@ -193,7 +205,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     * @throws:
     * @author:杨亚茹
     */
-    public List<User> queryUserListByFrom(UserQueryForm form) {
+    public List<UserQueryForm> queryUserListByFrom(UserQueryForm form) {
         LambdaQueryWrapper<User> queryWrapper=new LambdaQueryWrapper<>();
         if(form.getUserId()!=null && form.getUserId().length()!=0){
             queryWrapper.eq(User::getUserId,form.getUserId());
@@ -219,9 +231,22 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         if(form.getStatus()!=null && form.getStatus().length()!=0){
             queryWrapper.eq(User::getStatus,form.getStatus());
         }
+        if(form.getStartTime()!=null && form.getEndTime()!=null){
+            queryWrapper.between(User::getCreatedTime,form.getStartTime(),form.getEndTime());
+        }
+
         queryWrapper.orderByAsc(User::getUserId);
 
-        return this.list(queryWrapper);
+        List<UserQueryForm> forms=new ArrayList<>();
+        List<User> list=this.list(queryWrapper).stream().filter(user -> !user.getFamilyId().isEmpty()).collect(Collectors.toList());
+        list.forEach(user -> {
+            UserQueryForm form1 = new UserQueryForm();
+            user.setFamilyId(familyMapper.selectById(user.getFamilyId()).getFamilyName());
+            user.setFamRoleId(familyRoleMapper.selectById(user.getFamRoleId()).getFamRoleName());
+            BeanUtils.copyProperties(user, form1);
+            forms.add(form1);
+        });
+        return forms;
     }
 
 

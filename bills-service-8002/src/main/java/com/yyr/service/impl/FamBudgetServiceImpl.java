@@ -1,10 +1,17 @@
 package com.yyr.service.impl;
 
+import account8001.dto.UserQueryForm;
+import bills8002.dto.FamBudgetForm;
+import cn.hutool.core.convert.Convert;
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.lang.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yyr.dto.FamBudgetForm;
 import com.yyr.pojo.FamBudget;
+import com.yyr.pojo.FamExpense;
+import com.yyr.service.AccountService8001;
 import com.yyr.service.FamBudgetService;
 import com.yyr.mapper.FamBudgetMapper;
 import org.springframework.beans.BeanUtils;
@@ -12,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,12 +31,21 @@ import java.util.List;
 public class FamBudgetServiceImpl extends ServiceImpl<FamBudgetMapper, FamBudget>
     implements FamBudgetService{
 
+    @Autowired
+    private AccountService8001 accountService8001;
 
     @Autowired
     private FamBudgetMapper famBudgetMapper;
 
     @Override
     public void addFamBudget(FamBudgetForm form) {
+        Date begin = DateUtil.beginOfMonth(new Date());
+        Date end = DateUtil.endOfMonth(new Date());
+        FamBudgetForm budgetForm = new FamBudgetForm();
+        budgetForm.setUserId(form.getUserId());
+        budgetForm.setStartTime(begin);
+        budgetForm.setEndTime(end);
+        Assert.isTrue(queryFamBudget(budgetForm).size()==0,"该用户本月已设置预算！");
         FamBudget famBudget=new FamBudget();
         BeanUtils.copyProperties(form,famBudget);
         this.save(famBudget);
@@ -53,6 +70,11 @@ public class FamBudgetServiceImpl extends ServiceImpl<FamBudgetMapper, FamBudget
         }
         if(form.getUserId()!=null && form.getUserId().length()!=0){
             updateWrapper.set(FamBudget::getUserId,form.getUserId());
+        }
+        if(form.getStartTime()!=null&& form.getEndTime()!=null){
+            updateWrapper.set(FamBudget::getStartTime,form.getStartTime());
+            updateWrapper.set(FamBudget::getEndTime,form.getEndTime());
+
         }
 
         if(form.getCreatedBy()!=null && form.getCreatedBy().length()!=0){
@@ -93,11 +115,22 @@ public class FamBudgetServiceImpl extends ServiceImpl<FamBudgetMapper, FamBudget
         if(form.getUpdatedBy()!=null && form.getUpdatedBy().length()!=0){
             lambdaQueryWrapper.like(FamBudget::getUpdatedBy,form.getUpdatedBy());
         }
-        if(form.getCreatedTime()!=null ){
-            lambdaQueryWrapper.between(FamBudget::getCreatedTime,form.getStartTime(),form.getEndTime());
+        if(form.getStartTime()!=null && form.getEndTime()!=null ){
+            lambdaQueryWrapper.between(FamBudget::getStartTime,form.getStartTime(),form.getEndTime());
+            lambdaQueryWrapper.between(FamBudget::getEndTime,form.getStartTime(),form.getEndTime());
+
         }
 
-        return this.list(lambdaQueryWrapper);
+        List<FamBudget> list=this.list(lambdaQueryWrapper);
+
+        for (FamBudget famBudget : list) {
+            UserQueryForm userQueryForm=new UserQueryForm();
+            userQueryForm.setUserId(famBudget.getUserId());
+            List<UserQueryForm> userlist= Convert.convert(new TypeReference<List<UserQueryForm>>(){},accountService8001.queryUserList(userQueryForm).getData());
+            famBudget.setUserId(userlist.get(0).getUserName());
+        }
+
+        return list;
     }
 }
 

@@ -1,12 +1,9 @@
 package com.yyr.controller;
 
+import account8001.dto.FamRolePermissionForm;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yyr.config.logCustom;
-import com.yyr.dto.CommonResponse;
-import com.yyr.dto.FamRolePermissionForm;
-import com.yyr.dto.FamRolePermissionUpdateDto;
-import com.yyr.dto.FamRoleQueryForm;
 import com.yyr.pojo.FamRolePermission;
 import com.yyr.service.FamRolePermissionService;
 import com.yyr.service.FamilyRoleService;
@@ -15,6 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
+import utils.CommonResponse;
 
 import java.util.List;
 

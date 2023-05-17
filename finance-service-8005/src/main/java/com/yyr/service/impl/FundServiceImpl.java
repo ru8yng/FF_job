@@ -1,17 +1,26 @@
 package com.yyr.service.impl;
 
+import account8001.dto.UserQueryForm;
+import cn.hutool.core.convert.Convert;
+import cn.hutool.core.lang.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yyr.dto.*;
 import com.yyr.pojo.Fund;
+import com.yyr.service.AccountService8001;
 import com.yyr.service.FundService;
 import com.yyr.mapper.FundMapper;
 import com.yyr.service.bp.FundBp;
+import finance8005.dto.*;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-
+import org.springframework.util.CollectionUtils;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,6 +37,9 @@ public class FundServiceImpl extends ServiceImpl<FundMapper, Fund>
 
     @Autowired
     private FundBp fundBp;
+
+    @Autowired
+    private AccountService8001 accountService8001;
 
     @Override
     public void addFund(FundForm form) {
@@ -68,6 +80,9 @@ public class FundServiceImpl extends ServiceImpl<FundMapper, Fund>
         if(form.getAmount()!=null){
             fund.setAmount(form.getAmount());
         }
+        if(form.getCurrentProfit()!=null){
+            fund.setCurrentProfit(form.getCurrentProfit());
+        }
 
         fundMapper.insert(fund);
     }
@@ -85,9 +100,9 @@ public class FundServiceImpl extends ServiceImpl<FundMapper, Fund>
         Fund fund=fundMapper.selectById(form.getFundId());
         Assert.notNull(fund,"该收藏基金不存在");
         LambdaUpdateWrapper<Fund> updateWrapper=new LambdaUpdateWrapper<>();
-        updateWrapper.set(Fund::getFund_id,form.getFundId());
+        updateWrapper.eq(Fund::getFundId,form.getFundId());
         if(form.getCreatedBy()!=null &&form.getCreatedBy().length()!=0){
-            updateWrapper.set(Fund::getFund_id,form.getCreatedBy());
+            updateWrapper.set(Fund::getFundId,form.getCreatedBy());
         }
         if(form.getFundCode()!=null &&form.getFundCode().length()!=0){
             updateWrapper.set(Fund::getFundCode,form.getFundCode());
@@ -124,15 +139,18 @@ public class FundServiceImpl extends ServiceImpl<FundMapper, Fund>
         if(form.getAmount()!=null){
             updateWrapper.set(Fund::getAmount,form.getAmount());
         }
+        if(form.getCurrentProfit()!=null){
+            updateWrapper.set(Fund::getCurrentProfit,form.getCurrentProfit());
+        }
 
         this.update(updateWrapper);
     }
 
     @Override
-    public List<Fund> queryFund(FundForm form) {
+    public List<FundForm> queryFund(FundForm form) {
         LambdaQueryWrapper<Fund> queryWrapper=new LambdaQueryWrapper<>();
         if(form.getCreatedBy()!=null &&form.getCreatedBy().length()!=0){
-            queryWrapper.eq(Fund::getFund_id,form.getCreatedBy());
+            queryWrapper.eq(Fund::getFundId,form.getCreatedBy());
         }
         if(form.getFundCode()!=null &&form.getFundCode().length()!=0){
             queryWrapper.like(Fund::getFundCode,form.getFundCode());
@@ -153,7 +171,23 @@ public class FundServiceImpl extends ServiceImpl<FundMapper, Fund>
             queryWrapper.eq(Fund::getFamId,form.getFamId());
         }
 
-        return this.list(queryWrapper);
+        List<FundForm> list=new ArrayList<>();
+        this.list(queryWrapper).forEach(fund -> {
+            UserQueryForm userQueryForm=new UserQueryForm();
+            userQueryForm.setUserId(fund.getUserId());
+            List<UserQueryForm> list1= Convert.convert(new TypeReference<List<UserQueryForm>>(){},accountService8001.queryUserList(userQueryForm).getData());
+
+            FundForm form1=new FundForm();
+            BeanUtils.copyProperties(fund,form1);
+            form1.setUserId(list1.get(0).getUserName());
+            HistoricalFundNetValue value=queryHistoricalFundNetValueByCode(fund.getFundCode());
+            CurrentFundNetValue value1=queryCurrentFundNetValueByCode(fund.getFundCode());
+            form1.setRate(value.getFund_Rate());
+            form1.setSourceRate(value.getFund_sourceRate());
+            form1.setCurrentNetValue(value1.getDwjz());
+            list.add(form1);
+        });
+        return list;
     }
 
     @Override
@@ -186,9 +220,30 @@ public class FundServiceImpl extends ServiceImpl<FundMapper, Fund>
         fund.setRate(historical.getFund_Rate());
         fund.setFamId(form.getFamId());
         fund.setUserId(form.getUserId());
+        fund.setAmount(new BigDecimal(0));
+        fund.setCurrentProfit(new BigDecimal(0));
 
         fundMapper.insert(fund);
 
+    }
+
+    @Override
+    public List<List<String>> getKLine(Date date) {
+        return fundBp.getKLine(date);
+
+    }
+
+    @Scheduled(cron = "0 30 22 ? * *")
+    void updateProfits() {
+        List<FundForm> list = queryFund(new FundForm());
+        if (!CollectionUtils.isEmpty(list)) {
+            list.forEach(fund -> {
+                CurrentFundNetValue currentFundNetValue = queryCurrentFundNetValueByCode(fund.getFundCode());
+                BigDecimal profit = fund.getAmount().add(fund.getCurrentProfit()).multiply(currentFundNetValue.getDwjz()).subtract(fund.getAmount());
+                fund.setCurrentProfit(profit);
+                updateFund(fund);
+            });
+        }
     }
 }
 

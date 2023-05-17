@@ -1,11 +1,12 @@
 package com.yyr.service.impl;
 
-import cn.hutool.core.date.DateTime;
+import bills8002.dto.FamBudgetForm;
+import bills8002.dto.FamExpenseForm;
+import bills8002.dto.FamIncomeForm;
+import bills8002.dto.IAEForm;
+import cn.hutool.core.date.DateField;
+import cn.hutool.core.date.DateRange;
 import cn.hutool.core.date.DateUtil;
-import com.yyr.dto.FamBudgetForm;
-import com.yyr.dto.FamExpenseForm;
-import com.yyr.dto.FamIncomeForm;
-import com.yyr.dto.IAEForm;
 import com.yyr.pojo.FamBudget;
 import com.yyr.pojo.FamExpense;
 import com.yyr.pojo.FamIncome;
@@ -16,9 +17,12 @@ import com.yyr.service.IAEService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 /**
  * @Author 杨亚茹
@@ -110,5 +114,93 @@ public class IAEServiceImpl implements IAEService {
         //预算
 
         return iae;
+    }
+
+    @Override
+    public List<IAEForm> getExpenseBudgentLine(IAEForm iaeForm) {
+
+        Date begin = DateUtil.beginOfMonth(new Date());
+        Date end = DateUtil.endOfMonth(new Date());
+        //获取时间范围
+        DateRange dateRange = DateUtil.range( begin,  end, DateField.DAY_OF_MONTH);
+        //获取当前月预算
+        FamBudgetForm budgetForm=new FamBudgetForm();
+        budgetForm.setStartTime(begin);
+        budgetForm.setEndTime(end);
+        budgetForm.setUserId(iaeForm.getUserId());
+        List<FamBudget> budgets=famBudgetService.queryFamBudget(budgetForm);
+        double v1 = budgets.size() == 0 ? 0.0 : Double.valueOf(budgets.get(0).getUserBudgetAmount());
+        AtomicReference<Double> bufgentMonth=new AtomicReference<>(v1);
+
+        List<IAEForm> iaeForms=new ArrayList<>();
+        IAEForm iae0=new IAEForm();
+        iae0.setExpense(0.0);
+        iae0.setBudget(bufgentMonth.get());
+        iae0.setDate("0");
+        iaeForms.add(iae0);
+
+        dateRange.forEach(date->{
+            //每天消费
+            Date day_begin = DateUtil.beginOfDay(date);
+            Date day_end = DateUtil.endOfDay(date);
+            FamExpenseForm expenseForm=new FamExpenseForm();
+            expenseForm.setStartTime(day_begin);
+            expenseForm.setEndTime(day_end);
+            expenseForm.setUserId(iaeForm.getUserId());
+            List<FamExpense> expenses=famExpenseService.queryFamExpense(expenseForm);
+
+            if (expenses.size()!=0){
+                //每日消费
+                Double i=0.0;
+                AtomicReference<Double> expen = new AtomicReference<>(i);
+                expenses.forEach(exp->{
+                    expen.updateAndGet(v -> v + Double.parseDouble(exp.getFamExpenseAmount()));
+                });
+                IAEForm iae=new IAEForm();
+                iae.setExpense(expen.get());
+                bufgentMonth.updateAndGet(v -> v - expen.get());
+                iae.setBudget(bufgentMonth.get());
+                iae.setDate(date.toString("dd"));
+                iaeForms.add(iae);
+            }
+
+
+
+        });
+
+
+        return iaeForms;
+    }
+
+    @Override
+    public List<IAEForm> getExpenseAndType(IAEForm iaeForm) {
+
+        List<IAEForm> list=new ArrayList<>();
+        Date begin = DateUtil.beginOfMonth(new Date());
+        Date end = DateUtil.endOfMonth(new Date());
+        FamExpenseForm expenseForm=new FamExpenseForm();
+        expenseForm.setStartTime(begin);
+        expenseForm.setEndTime(end);
+        expenseForm.setUserId(iaeForm.getUserId());
+        List<FamExpense> expenses=famExpenseService.queryFamExpense(expenseForm);
+
+        if(expenses.size()!=0){
+            Map<String, List<FamExpense>> collect = expenses.stream().collect(Collectors.groupingBy(FamExpense::getFamExpenseTypeId));
+            collect.forEach((key,value)->{
+                IAEForm iae=new IAEForm();
+                iae.setBudgetTpye(key);
+                Double i=0.0;
+                AtomicReference<Double> expen = new AtomicReference<>(i);
+                value.forEach(exp->{
+                    expen.updateAndGet(v -> v + Double.parseDouble(exp.getFamExpenseAmount()));
+                });
+                iae.setExpense(expen.get());
+                list.add(iae);
+            });
+        }
+
+
+        return list;
+
     }
 }

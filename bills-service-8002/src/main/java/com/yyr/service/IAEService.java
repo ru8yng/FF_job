@@ -1,6 +1,9 @@
 package com.yyr.service;
 
-import com.yyr.dto.IAEForm;
+
+import bills8002.dto.IAEForm;
+
+import java.util.List;
 
 /**
  * @Author 杨亚茹
@@ -15,5 +18,9 @@ import com.yyr.dto.IAEForm;
 public interface IAEService {
 
     IAEForm queryIaeCurrent(IAEForm iae);
+
+    List<IAEForm> getExpenseBudgentLine(IAEForm iaeForm);
+
+    List<IAEForm> getExpenseAndType(IAEForm iaeForm);
 
 }

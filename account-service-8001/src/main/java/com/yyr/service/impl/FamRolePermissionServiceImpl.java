@@ -1,10 +1,10 @@
 package com.yyr.service.impl;
 
+import account8001.dto.FamRolePermissionForm;
+import account8001.dto.FamRolePermissionUpdateDto;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yyr.dto.FamRolePermissionForm;
-import com.yyr.dto.FamRolePermissionUpdateDto;
 import com.yyr.pojo.FamRolePermission;
 import com.yyr.pojo.FamilyRole;
 import com.yyr.service.FamRolePermissionService;
@@ -108,14 +108,14 @@ public class FamRolePermissionServiceImpl extends ServiceImpl<FamRolePermissionM
             famRolePermission.setFamRoleId(dto.getRoleId());
             famRolePermissionMapper.insert(famRolePermission);
             //子菜单
-            if(!famPermission.getChild().isEmpty()){
-                famPermission.getChild().forEach(famPermission1 -> {
-                    FamRolePermission famRolePermission1 = new FamRolePermission();
-                    famRolePermission1.setFamPermissionId(famPermission1.getFamPermissionId());
-                    famRolePermission1.setFamRoleId(dto.getRoleId());
-                    famRolePermissionMapper.insert(famRolePermission1);
-                });
-            }
+//            if(!famPermission.getChild().isEmpty()){
+//                famPermission.getChild().forEach(famPermission1 -> {
+//                    FamRolePermission famRolePermission1 = new FamRolePermission();
+//                    famRolePermission1.setFamPermissionId(famPermission1.getFamPermissionId());
+//                    famRolePermission1.setFamRoleId(dto.getRoleId());
+//                    famRolePermissionMapper.insert(famRolePermission1);
+//                });
+//            }
         });
     }
 

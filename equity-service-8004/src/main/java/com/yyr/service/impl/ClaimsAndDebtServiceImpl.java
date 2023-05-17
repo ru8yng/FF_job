@@ -3,11 +3,10 @@ package com.yyr.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yyr.dto.ClaimsAndDebtForm;
-import com.yyr.pojo.ClaimsAndDebt;
 import com.yyr.pojo.ClaimsAndDebt;
 import com.yyr.service.ClaimsAndDebtService;
 import com.yyr.mapper.ClaimsAndDebtMapper;
+import equity8004.dto.ClaimsAndDebtForm;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,11 +59,15 @@ implements ClaimsAndDebtService{
             cad.setCadRepaymentTime(form.getCadRepaymentTime());
         }
         if(form.getCadPlanRepaymentTime()!=null){
-            cad.setRemark(form.getRemark());
+            cad.setCadPlanRepaymentTime(form.getCadPlanRepaymentTime());
+
         }
         if(form.getRemark()!=null &&form.getRemark().length()!=0){
-            cad.setCadPlanRepaymentTime(form.getCadPlanRepaymentTime());
+            cad.setRemark(form.getRemark());
         }
+
+        cad.setCadStatus("1");
+
         claimsAndDebtMapper.insert(cad);
     }
 
@@ -107,7 +110,6 @@ implements ClaimsAndDebtService{
             updateWrapper.set(ClaimsAndDebt::getCadTime,form.getCadTime());
         }
         if(form.getCadAmount()!=null &&form.getCadAmount().length()!=0){
-            Assert.isTrue(StringUtils.isNumeric(form.getCadAmount()));
             updateWrapper.set(ClaimsAndDebt::getCadAmount,form.getCadAmount());
         }
         if(form.getCadRepaymentTime()!=null){
@@ -119,6 +121,9 @@ implements ClaimsAndDebtService{
         }
         if(form.getRemark()!=null &&form.getRemark().length()!=0){
             updateWrapper.set(ClaimsAndDebt::getRemark,form.getRemark());
+        }
+        if(form.getCadStatus()!=null &&form.getCadStatus().length()!=0){
+            updateWrapper.set(ClaimsAndDebt::getCadStatus,form.getCadStatus());
         }
         this.update(updateWrapper);
     }
@@ -139,10 +144,10 @@ implements ClaimsAndDebtService{
             queryWrapper.eq(ClaimsAndDebt::getUpdatedBy,form.getUpdatedBy());
         }
         if(form.getCreditor()!=null &&form.getCreditor().length()!=0){
-            queryWrapper.eq(ClaimsAndDebt::getCreditor,form.getCreditor());
+            queryWrapper.like(ClaimsAndDebt::getCreditor,form.getCreditor());
         }
         if(form.getObligor()!=null &&form.getObligor().length()!=0){
-            queryWrapper.eq(ClaimsAndDebt::getObligor,form.getObligor());
+            queryWrapper.like(ClaimsAndDebt::getObligor,form.getObligor());
         }
         if(form.getCreditorTel()!=null &&form.getCreditorTel().length()!=0){
             queryWrapper.eq(ClaimsAndDebt::getCreditorTel,form.getCreditorTel());
@@ -167,6 +172,15 @@ implements ClaimsAndDebtService{
             queryWrapper.eq(ClaimsAndDebt::getRemark,form.getRemark());
         }
 
-        return this.list(queryWrapper);
+        List<ClaimsAndDebt> list=this.list(queryWrapper);
+        for (ClaimsAndDebt claimsAndDebt : list) {
+            if (claimsAndDebt.getCadStatus().equals("0")){
+                claimsAndDebt.setCadStatus("已完成");
+            }else{
+                claimsAndDebt.setCadStatus("未完成");
+            }
+        }
+
+        return list;
     }
 }

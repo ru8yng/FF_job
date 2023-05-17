@@ -1,14 +1,19 @@
 package com.yyr.service.impl;
 
+import account8001.dto.UserQueryForm;
+import bills8002.dto.FamIncomeForm;
+import cn.hutool.core.convert.Convert;
+import cn.hutool.core.lang.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yyr.dto.FamIncomeForm;
-import com.yyr.pojo.FamExpense;
+import com.yyr.mapper.IncomeTypeMapper;
 import com.yyr.pojo.FamIncome;
+import com.yyr.service.AccountService8001;
 import com.yyr.service.FamIncomeService;
 import com.yyr.mapper.FamIncomeMapper;
 import org.apache.commons.lang.StringUtils;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -26,6 +31,12 @@ implements FamIncomeService{
 
     @Autowired
     private FamIncomeMapper famIncomeMapper;
+
+    @Autowired
+    private IncomeTypeMapper incomeTypeMapper;
+
+    @Autowired
+    private AccountService8001 accountService8001;
 
     @Override
     public void addFamIncome(FamIncomeForm form) {
@@ -46,8 +57,6 @@ implements FamIncomeService{
             famIncome.setFamId(form.getFamId());
         }
         if(form.getFamIncomeAmount()!=null &&form.getFamIncomeAmount().length()!=0){
-            //校验字符串是否是数字
-            Assert.isTrue(StringUtils.isNumeric(form.getFamIncomeAmount()));
 
             famIncome.setFamIncomeAmount(form.getFamIncomeAmount());
         }
@@ -90,8 +99,6 @@ implements FamIncomeService{
             updateWrapper.set(FamIncome::getFamId,form.getFamId());
         }
         if(form.getFamIncomeAmount()!=null &&form.getFamIncomeAmount().length()!=0){
-            //校验字符串是否是数字
-            Assert.isTrue(StringUtils.isNumeric(form.getFamIncomeAmount()));
 
             updateWrapper.set(FamIncome::getFamIncomeAmount,form.getFamIncomeAmount());
         }
@@ -121,15 +128,11 @@ implements FamIncomeService{
         if(form.getUserId()!=null &&form.getUserId().length()!=0){
             queryWrapper.eq(FamIncome::getUserId,form.getUserId());
         }
-//        if(form.getExpenseTime()!=null){
-//            queryWrapper.eq(FamExpense::getExpenseTime,form.getExpenseTime());
-//        }
+
         if(form.getFamId()!=null &&form.getFamId().length()!=0){
             queryWrapper.eq(FamIncome::getFamId,form.getFamId());
         }
         if(form.getFamIncomeAmount()!=null &&form.getFamIncomeAmount().length()!=0){
-            //校验字符串是否是数字
-            Assert.isTrue(StringUtils.isNumeric(form.getFamIncomeAmount()));
 
             queryWrapper.eq(FamIncome::getFamIncomeAmount,form.getFamIncomeAmount());
         }
@@ -144,6 +147,16 @@ implements FamIncomeService{
             queryWrapper.between(FamIncome::getFamIncomeTime,form.getStartTime(),form.getEndTime());
         }
 
-        return this.list(queryWrapper);
+        List<FamIncome> famIncomes=this.list(queryWrapper);
+
+        famIncomes.forEach(famIncome -> {
+            famIncome.setFamIncomeTypeId(incomeTypeMapper.selectById(famIncome.getFamIncomeTypeId()).getIncomeTypeName());
+            UserQueryForm userQueryForm=new UserQueryForm();
+            userQueryForm.setUserId(famIncome.getUserId());
+            List<UserQueryForm> list= Convert.convert(new TypeReference<List<UserQueryForm>>(){},accountService8001.queryUserList(userQueryForm).getData());
+            famIncome.setUserId(list.get(0).getUserName());
+        });
+
+        return famIncomes;
     }
 }

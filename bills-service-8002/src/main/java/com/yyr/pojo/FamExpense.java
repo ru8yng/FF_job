@@ -1,9 +1,9 @@
 package com.yyr.pojo;
 
+import lombok.Data;
 import com.baomidou.mybatisplus.annotation.*;
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * 家庭支出

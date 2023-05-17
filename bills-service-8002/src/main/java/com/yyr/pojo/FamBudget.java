@@ -1,10 +1,10 @@
 package com.yyr.pojo;
 
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import com.baomidou.mybatisplus.annotation.*;
-
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * 家庭预算
@@ -60,6 +60,13 @@ public class FamBudget implements Serializable {
      * 
      */
     private String userBudgetAmount;
+
+
+    @ApiModelProperty("开始时间")
+    private Date startTime;
+
+    @ApiModelProperty("结束时间")
+    private Date endTime;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

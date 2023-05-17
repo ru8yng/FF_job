@@ -1,9 +1,9 @@
 package com.yyr.service.impl;
 
+import bills8002.dto.ExpenseTypeForm;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yyr.dto.ExpenseTypeForm;
 import com.yyr.pojo.ExpensesType;
 import com.yyr.pojo.FamExpense;
 import com.yyr.service.ExpensesTypeService;
@@ -41,6 +41,9 @@ implements ExpensesTypeService{
         }
         if(form.getExpenseTypeDesc()!=null &&form.getExpenseTypeDesc().length()!=0){
             type.setExpenseTypeDesc(form.getExpenseTypeDesc());
+        }
+        if(form.getFamId()!=null &&form.getFamId().length()!=0){
+            type.setFamId(form.getFamId());
         }
 
         expensesTypeMapper.insert(type);
@@ -99,6 +102,9 @@ implements ExpensesTypeService{
         }
         if(form.getStartTime()!=null &&form.getEndTime()!=null) {
             queryWrapper.between(ExpensesType::getCreatedTime,form.getStartTime(),form.getEndTime());
+        }
+        if(form.getFamId()!=null &&form.getFamId()!=null) {
+            queryWrapper.eq(ExpensesType::getFamId,form.getFamId());
         }
             return this.list(queryWrapper);
     }

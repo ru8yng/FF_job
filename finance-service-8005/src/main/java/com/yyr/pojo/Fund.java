@@ -1,12 +1,11 @@
 package com.yyr.pojo;
 
 import com.baomidou.mybatisplus.annotation.*;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import lombok.Data;
-
 /**
  * 收藏基金
  * @TableName fund
@@ -18,7 +17,7 @@ public class Fund implements Serializable {
      * 
      */
     @TableId(type=IdType.ASSIGN_ID)
-    private String fund_id;
+    private String fundId;
 
     private String fundCode;
 
@@ -83,7 +82,6 @@ public class Fund implements Serializable {
 
     private String userId;
 
-    @TableField(exist = false)
     private BigDecimal currentProfit;
 
     @TableField(exist = false)

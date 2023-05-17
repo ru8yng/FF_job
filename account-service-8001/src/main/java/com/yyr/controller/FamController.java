@@ -1,20 +1,17 @@
 package com.yyr.controller;
 
+import account8001.dto.FamQueryForm;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yyr.config.logCustom;
-import com.yyr.dto.CommonResponse;
-import com.yyr.dto.FamQueryForm;
 import com.yyr.pojo.Family;
 import com.yyr.service.FamilyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import utils.CommonResponse;
 
 import java.util.List;
 
@@ -37,7 +34,7 @@ public class FamController {
     @ApiOperation("新增家庭")
     @logCustom(description = "新增家庭")
     @PostMapping("/addFam")
-    public CommonResponse<?> addFam(@RequestBody Family family){
+    public CommonResponse<?> addFam(@RequestBody FamQueryForm family){
 
         Assert.notNull(family,"新增家庭不能为空！");
         familyService.addFamily(family);
@@ -46,8 +43,8 @@ public class FamController {
 
     @ApiOperation("删除家庭")
     @logCustom(description = "删除家庭")
-    @PostMapping("/deleteFam")
-    public CommonResponse<?> deleteFam(String fmId){
+    @GetMapping("/deleteFam/{fmId}")
+    public CommonResponse<?> deleteFam(@PathVariable String fmId){
         Assert.notNull(fmId,"家庭id不能为空！");
         familyService.deleteFamily(fmId);
         return CommonResponse.ok("删除家庭成功！");
@@ -56,7 +53,7 @@ public class FamController {
     @ApiOperation("更新家庭")
     @logCustom(description = "更新家庭")
     @PostMapping("/updateFam")
-    public CommonResponse<?> updateFam(@RequestBody Family fam){
+    public CommonResponse<?> updateFam(@RequestBody FamQueryForm fam){
         Assert.notNull(fam,"更新的家庭不能为空！");
         familyService.updateFamily(fam);
         return CommonResponse.ok("更新家庭成功！");

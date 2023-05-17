@@ -1,9 +1,9 @@
 package com.yyr.service;
 
-import com.yyr.dto.FamQueryForm;
+
+import account8001.dto.FamQueryForm;
 import com.yyr.pojo.Family;
 import com.baomidou.mybatisplus.extension.service.IService;
-
 import java.util.List;
 
 /**
@@ -13,11 +13,11 @@ import java.util.List;
 */
 public interface FamilyService extends IService<Family> {
 
-    void addFamily(Family fm);
+    void addFamily(FamQueryForm fm);
 
     void deleteFamily(String id);
 
-    void updateFamily(Family fm);
+    void updateFamily(FamQueryForm fm);
 
     List<Family> queryList(FamQueryForm form);
 

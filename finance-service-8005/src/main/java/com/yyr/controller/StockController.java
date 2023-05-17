@@ -2,20 +2,18 @@ package com.yyr.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.yyr.dto.CommonResponse;
-import com.yyr.dto.StockForm;
-import com.yyr.dto.StockVS;
-import com.yyr.dto.StockVSForm;
+
 import com.yyr.pojo.Stock;
 import com.yyr.service.StockService;
+import finance8005.dto.StockForm;
+import finance8005.dto.StockVS;
+import finance8005.dto.StockVSForm;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import utils.CommonResponse;
 
 import java.util.List;
 
@@ -61,13 +59,13 @@ public class StockController {
     public CommonResponse<?> addStock(@RequestBody StockForm form){
         Assert.notNull(form,"新增股票不能为空！");
         stockService.addStock(form);
-        return CommonResponse.ok("新增股票类型成功！");
+        return CommonResponse.ok("新增股票成功！");
     }
 
     @ApiOperation("删除股票")
     //@logCustom(description = "删除股票类型")
-    @PostMapping("/deleteStock")
-    public CommonResponse<?> deleteStock(String StockId){
+    @GetMapping("/deleteStock/{StockId}")
+    public CommonResponse<?> deleteStock(@PathVariable String StockId){
         Assert.notNull(StockId,"股票id不能为空！");
         stockService.deleteStock(StockId);
         return CommonResponse.ok("删除股票成功！");
@@ -90,7 +88,7 @@ public class StockController {
         if (null != form && null != form.getPage() && null != form.getSize()) {
             PageHelper.startPage(form.getPage(), form.getSize());
         }
-        List<Stock> list=stockService.queryStock(form);
+        List<StockForm> list=stockService.queryStock(form);
         return CommonResponse.ok(new PageInfo<>(list));
 
     }

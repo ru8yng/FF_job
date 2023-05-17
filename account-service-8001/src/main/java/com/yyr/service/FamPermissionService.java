@@ -1,8 +1,9 @@
 package com.yyr.service;
 
-import com.yyr.dto.FamPermQueryForm;
-import com.yyr.pojo.FamPermission;
+
+import account8001.dto.FamPermQueryForm;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yyr.pojo.FamPermission;
 
 import java.util.List;
 
@@ -12,8 +13,8 @@ import java.util.List;
 * @createDate 2022-11-29 12:15:20
 */
 public interface FamPermissionService extends IService<FamPermission> {
-    void addFamPermission(FamPermission famPermission);
+    void addFamPermission(FamPermQueryForm famPermission);
     void deleteFamPermission(String FamPermId);
-    void updateFamPermission(FamPermission famPermission);
+    void updateFamPermission(FamPermQueryForm famPermission);
     List<FamPermission> queryFamPermissionList(FamPermQueryForm form);
 }

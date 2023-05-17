@@ -1,32 +1,31 @@
 package com.yyr.controller;
 
+import account8001.dto.*;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.netflix.discovery.converters.Auto;
 import com.yyr.config.IgnoreSecurity;
-import com.yyr.dto.CommonResponse;
-import com.yyr.dto.LoginForm;
-import com.yyr.dto.LoginLogForm;
-import com.yyr.dto.UserQueryForm;
 import com.yyr.mapper.UserMapper;
-import com.yyr.pojo.User;
-import com.yyr.service.AuthService;
-import com.yyr.service.CommonService8003;
-import com.yyr.service.FamilyService;
-import com.yyr.service.UserService;
+import com.yyr.pojo.*;
+import com.yyr.service.*;
 import com.yyr.service.bp.UserBp;
-import com.yyr.utils.IPUtil;
-import com.yyr.utils.MD5Util;
 import io.swagger.annotations.Api;
+import log8003.dto.LoginLogForm;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.units.qual.A;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import utils.CommonResponse;
+import utils.IPUtil;
+import utils.MD5Util;
+
 
 /**
  * @Author 杨亚茹
@@ -58,6 +57,14 @@ public class AuthController {
     @Autowired
     private CommonService8003 commonService8003;
 
+
+    @Autowired
+    private FamilyRoleService roleService;
+
+
+    @Autowired
+    private FamRolePermissionService famRolePermissionService;
+
     @Autowired
     private FamilyService familyService;
 
@@ -70,7 +77,10 @@ public class AuthController {
         Assert.isTrue(!userList.isEmpty(), "未找到对应用户！");
         User user = userList.get(0);
         if (!user.getUserPwd().equals(MD5Util.encodeByMD5(form.getPassword()))) {
-            throw new IllegalArgumentException("密码错误！");
+            return CommonResponse.error("密码错误！");
+        }
+        if(user.getStatus().equals("0")){
+            return CommonResponse.error("该用户账号未激活！");
         }
         String token = authService.getToken(user);
         JSONObject jsonObject = new JSONObject();
@@ -101,7 +111,7 @@ public class AuthController {
             user1 = userBp.addUserPermission(user);
             Assert.isTrue(user != null, "用户信息已过期！请重新登录！");
         } catch (Exception e) {
-            log.info("登录失败@" + e.getMessage());
+            AuthController.log.info("登录失败@" + e.getMessage());
             return CommonResponse.error(CommonResponse.USER_NOT_LOGIN_ERROR_CODE, e.getMessage());
         }
         return CommonResponse.ok(user1);
@@ -132,20 +142,67 @@ public class AuthController {
     @PostMapping(value = "/register", produces = "application/json;charset=UTF-8")
     @Transactional
     public CommonResponse<?> register(@RequestBody UserQueryForm form){
-        Assert.isTrue(form!=null, "注册的用户信息不为空！");
+        if(form==null){return CommonResponse.error( "注册的用户信息不为空！");}
+        UserQueryForm form2=new UserQueryForm();
+        form2.setEmail(form.getEmail());
+        List<UserQueryForm> forms = userService.queryUserListByFrom(form2);
+        if(forms.size()!=0){return CommonResponse.error( "该邮箱已被注册！");}
         if(form.getFamCheak().equals("1")){
+            //创建用户及家庭
             form.setStatus("1");
+            FamQueryForm family=new FamQueryForm();
+            family.setStatus("1");
+            family.setFamilyDesc(form.getFamDesc());
+            family.setFamilyName(form.getFamName());
+            familyService.addFamily(family);
+            Family family1 = familyService.queryList(family).get(0);
+            form.setFamilyId(family1.getFamilyId());
 
+            //赋予用户角色及权限
+            //创建角色
+            FamRoleQueryForm roleQueryForm=new FamRoleQueryForm();
+            roleQueryForm.setFamRoleId("1658843433679523841");
+            FamRoleQueryForm init=roleService.queryFamRoleList(roleQueryForm).get(0);
+            BeanUtils.copyProperties(init,roleQueryForm);
+            roleQueryForm.setFamRoleId(null);
+            roleQueryForm.setFamId(family1.getFamilyId());
+            roleService.addFamRole(roleQueryForm);
+
+            FamRoleQueryForm roleQueryForm1 = roleService.queryFamRoleList(roleQueryForm).get(0);
+            //关联用户
+            form.setFamRoleId(roleQueryForm1.getFamRoleId());
             userService.addUser(form);
-            UserQueryForm form1=new UserQueryForm();
-            form1.setUserName(form.getUserName());
-            form1.setUserPwd(MD5Util.encodeByMD5(form.getUserPwd()));
-            User user=userService.queryUserListByFrom(form1).get(0);
-            form.getFamily().setCreatedBy(user.getUserId());
-            familyService.addFamily(form.getFamily());
+//            //角色关联权限
+//            FamRolePermissionForm rolePermissionForm=new FamRolePermissionForm();
+//            rolePermissionForm.setFam_role_id("1658843433679523841");
+//            List<String> initRolePermis=famRolePermissionService.queryFamRolePermissionByFamRoleId(rolePermissionForm).stream().map(FamRolePermission::getFamPermissionId).collect(Collectors.toList());
+//            FamRolePermissionForm r=new FamRolePermissionForm();
+//            r.setFam_role_id(roleQueryForm1.getFamRoleId());
+//            r.setFam_permission_id(initRolePermis);
+//            famRolePermissionService.addFamRolePermissionByFamRoleId(r);
+
+
         }
         if(form.getFamCheak().equals("0")){
+            FamRoleQueryForm roleQueryForm=new FamRoleQueryForm();
+            FamPermission init=roleService.queryFamPermissionByFamRoleId("1658843979035512833",true).get(0);
+            BeanUtils.copyProperties(init,roleQueryForm);
+            roleQueryForm.setFamId(form.getFamilyId());
+            roleService.addFamRole(roleQueryForm);
+            FamRoleQueryForm roleQueryForm1 = roleService.queryFamRoleList(roleQueryForm).get(0);
+            //关联用户
+            form.setFamRoleId(roleQueryForm1.getFamRoleId());
             userService.addUser(form);
+            //角色关联权限
+//            FamRolePermissionForm rolePermissionForm=new FamRolePermissionForm();
+//            rolePermissionForm.setFam_role_id("1658843979035512833");
+//            List<String> initRolePermis=famRolePermissionService.queryFamRolePermissionByFamRoleId(rolePermissionForm).stream().map(FamRolePermission::getFamPermissionId).collect(Collectors.toList());
+//            FamRolePermissionForm r=new FamRolePermissionForm();
+//            r.setFam_role_id(roleQueryForm1.getFamRoleId());
+//            r.setFam_permission_id(initRolePermis);
+//            famRolePermissionService.addFamRolePermissionByFamRoleId(r);
+
+
         }
 
         return CommonResponse.ok("注册成功！");

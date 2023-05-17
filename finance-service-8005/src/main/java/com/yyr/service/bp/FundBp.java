@@ -1,16 +1,19 @@
 package com.yyr.service.bp;
 
+import cn.hutool.core.convert.Convert;
+import cn.hutool.core.lang.TypeReference;
 import com.alibaba.fastjson.JSONObject;
 import com.yyr.config.ConfigProperties;
-import com.yyr.dto.CurrentFundNetValue;
-import com.yyr.dto.FundcodeSearch;
-import com.yyr.dto.HistoricalFundNetValue;
-import com.yyr.utils.HttpClient;
+import finance8005.dto.*;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
+import utils.HttpClient;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -31,10 +34,12 @@ public class FundBp {
 
     public static  final String HISTORICAL_FUND_TIME_STAMP=".js?v=20160518155842";
 
+
+    public static final String KLINE_PARAM=",,365,qfq";
+
     public CurrentFundNetValue getCurrentFundNetValue(String fundCode){
         String url=configProperties.getCURRENT_FUND_NET_VALUE_URL()+fundCode+CURRENT_FUND_TIME_STAMP;
         String response= HttpClient.doGet(url);
-        //System.out.println("回复"+response);
         String result=response.replace("jsonpgz(","").replace(");","");
         CurrentFundNetValue value= JSONObject.parseObject(result, CurrentFundNetValue.class);
         return value;
@@ -77,4 +82,28 @@ public class FundBp {
     }
 
 
+    public List<List<String>> getKLine(Date date) {
+        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+        String url=configProperties.getKLINE()+format.format(date)+KLINE_PARAM;
+        String response= HttpClient.doGet(url);
+        PlatFormOutputDto outputDto = JSONObject.parseObject(response, PlatFormOutputDto.class);
+        HashMap<String,Object> sh= Convert.convert(HashMap.class,outputDto.getData().get("sh000001"));
+        List<List<String>> daydataList=Convert.convert(new TypeReference<List<List<String>>>() {
+        }, sh.get("day"));
+        //List<daydata> list=new ArrayList<>();
+        List<List<String>> list1=new ArrayList<>();
+        daydataList.forEach(data1->{
+//            daydata daydata1=new daydata();
+//            daydata1.setDate(data1.get(0));
+//            daydata1.setOpen(data1.get(1));
+//            daydata1.setClose(data1.get(2));
+//            daydata1.setLowest(data1.get(4));
+//            daydata1.setHighest(data1.get(3));
+//            daydata1.setZs(data1.get(5));
+            data1.remove(5);
+            list1.add(data1);
+        });
+        return list1;
+
+    }
 }

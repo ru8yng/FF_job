@@ -1,6 +1,6 @@
 package com.yyr.service;
 
-import com.yyr.dto.FamExpenseForm;
+import bills8002.dto.FamExpenseForm;
 import com.yyr.pojo.FamExpense;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -20,5 +20,6 @@ public interface FamExpenseService extends IService<FamExpense> {
     void updateFamExpense(FamExpenseForm form);
 
     List<FamExpense> queryFamExpense(FamExpenseForm form);
+
 
 }

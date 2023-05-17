@@ -1,12 +1,12 @@
 package com.yyr.service;
 
-import com.yyr.dto.CommonResponse;
-import com.yyr.dto.UserQueryForm;
+import account8001.dto.UserQueryForm;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import utils.CommonResponse;
 
 /**
  * @Author 杨亚茹

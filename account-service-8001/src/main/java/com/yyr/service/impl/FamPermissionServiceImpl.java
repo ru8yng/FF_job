@@ -1,16 +1,15 @@
 package com.yyr.service.impl;
 
+import account8001.dto.FamPermQueryForm;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yyr.dto.FamPermQueryForm;
-import com.yyr.mapper.FamRolePermissionMapper;
 import com.yyr.pojo.FamPermission;
-import com.yyr.pojo.FamilyRole;
 import com.yyr.service.FamPermissionService;
 import com.yyr.mapper.FamPermissionMapper;
 import com.yyr.service.FamilyRoleService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -39,10 +38,12 @@ public class FamPermissionServiceImpl extends ServiceImpl<FamPermissionMapper, F
     * @throws:
     * @author:杨亚茹
     */
-    public void addFamPermission(FamPermission famPermission) {
+    public void addFamPermission(FamPermQueryForm famPermission) {
         Assert.isTrue(famPermission.getFamPermissionName()!=null&&famPermission.getFamPermissionPath()!=null,"家庭权限名及路径不为空！");
         famPermission.setFamPermissionId("");
-        famPermissionMapper.insert(famPermission);
+        FamPermission famPermission1=new FamPermission();
+        BeanUtils.copyProperties(famPermission,famPermission1);
+        famPermissionMapper.insert(famPermission1);
     }
 
     @Override
@@ -67,7 +68,7 @@ public class FamPermissionServiceImpl extends ServiceImpl<FamPermissionMapper, F
     * @throws:
     * @author:杨亚茹
     */
-    public void updateFamPermission(FamPermission famPermission) {
+    public void updateFamPermission(FamPermQueryForm famPermission) {
         FamPermission famPermission1=famPermissionMapper.selectById(famPermission.getFamPermissionId());
         Assert.notNull(famPermission1,"该家庭权限不存在");
 

@@ -1,23 +1,21 @@
 package com.yyr.service.impl;
 
+import account8001.dto.*;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yyr.dto.FamQueryForm;
-import com.yyr.dto.FamRolePermissionForm;
-import com.yyr.dto.FamRolePermissionUpdateDto;
-import com.yyr.dto.FamRoleQueryForm;
-import com.yyr.enums.FamPermissionIconEnum;
 import com.yyr.mapper.FamRolePermissionMapper;
+import com.yyr.mapper.FamilyMapper;
 import com.yyr.pojo.FamPermission;
 import com.yyr.pojo.FamRolePermission;
+import com.yyr.pojo.Family;
 import com.yyr.pojo.FamilyRole;
 import com.yyr.service.FamPermissionService;
 import com.yyr.service.FamRolePermissionService;
 import com.yyr.service.FamilyRoleService;
 import com.yyr.mapper.FamilyRoleMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -35,6 +33,10 @@ public class FamilyRoleServiceImpl extends ServiceImpl<FamilyRoleMapper, FamilyR
     implements FamilyRoleService{
     @Autowired
     private FamilyRoleMapper familyRoleMapper;
+
+    @Autowired
+    private FamilyMapper familyMapper;
+
     @Autowired
     private FamRolePermissionService famRolePermissionService;
 
@@ -52,16 +54,21 @@ public class FamilyRoleServiceImpl extends ServiceImpl<FamilyRoleMapper, FamilyR
     * @author:杨亚茹
     */
     @Override
-    public void addFamRole(FamilyRole familyRole) {
-       // System.out.println("+++++++++++++++++++++++++role"+familyRole);
+    public void addFamRole(FamRoleQueryForm familyRole) {
+        //角色权限
         Assert.isTrue(familyRole.getFamId()!=null && familyRole.getFamRoleName()!=null,"家庭id且角色名不为空");
-        List<FamPermission> list=familyRole.getPermissionList();
-        familyRoleMapper.insert(familyRole);
+        List<FamPermQueryForm> list=familyRole.getPermissionList();
+        //添加角色
+        FamilyRole familyRole1=new FamilyRole();
+        BeanUtils.copyProperties(familyRole,familyRole1);
+        familyRoleMapper.insert(familyRole1);
+        //获取该角色id
         FamRoleQueryForm form=new FamRoleQueryForm();
         form.setFamId(familyRole.getFamId());
         form.setFamRoleName(familyRole.getFamRoleName());
         String roleId=this.queryFamRoleList(form).get(0).getFamRoleId();
-        if (!list.isEmpty()){
+        //
+        if (list.size() != 0){
             list.forEach(famPermission -> {
                 FamRolePermission famRolePermission=new FamRolePermission();
                 famRolePermission.setFamRoleId(roleId);
@@ -144,7 +151,8 @@ public class FamilyRoleServiceImpl extends ServiceImpl<FamilyRoleMapper, FamilyR
     * @author:杨亚茹
     */
     @Override
-    public List<FamilyRole> queryFamRoleList(FamRoleQueryForm familyRole) {
+    public List<FamRoleQueryForm> queryFamRoleList(FamRoleQueryForm familyRole) {
+
         LambdaQueryWrapper<FamilyRole> queryWrapper=new LambdaQueryWrapper<>();
         if(familyRole.getFamRoleDesc()!= null && familyRole.getFamRoleDesc().length()!=0){
             queryWrapper.like(FamilyRole::getFamRoleDesc,familyRole.getFamRoleDesc());
@@ -153,7 +161,7 @@ public class FamilyRoleServiceImpl extends ServiceImpl<FamilyRoleMapper, FamilyR
             queryWrapper.like(FamilyRole::getFamRoleName,familyRole.getFamRoleName());
         }
         if(familyRole.getFamRoleId()!= null && familyRole.getFamRoleId().length()!=0){
-            queryWrapper.eq(FamilyRole::getFamRoleId,familyRole.getFamId());
+            queryWrapper.eq(FamilyRole::getFamRoleId,familyRole.getFamRoleId());
         }
         if(familyRole.getFamId()!=null && familyRole.getFamId().length()!=0){
             queryWrapper.eq(FamilyRole::getFamId,familyRole.getFamId());
@@ -162,18 +170,21 @@ public class FamilyRoleServiceImpl extends ServiceImpl<FamilyRoleMapper, FamilyR
             queryWrapper.eq(FamilyRole::getCreatedBy,familyRole.getCreatedBy());
         }
         List<FamilyRole> list=this.list(queryWrapper);
+        List<FamRoleQueryForm> forms=new ArrayList<>();
         list.forEach(role->{
             role.setPermissionList(this.queryFamPermissionByFamRoleId(role.getFamRoleId(),true));
+            FamRoleQueryForm form=new FamRoleQueryForm();
+            role.setFamId(familyMapper.selectById(role.getFamId()).getFamilyName());
+            BeanUtils.copyProperties(role,form);
+            forms.add(form);
         });
-        return list;
+        return forms;
     }
 
     @Override
     public List<FamPermission> queryFamPermissionByFamRoleId(String roleId, boolean isFilter) {
         List<FamPermission> permissionList = famPermissionService.list();
-
         List<String> permissIdList = famRolePermissionMapper.selectPermissionIdByRoleId(roleId);
-        //System.out.println("+++++++++++++++++++++++++=roleperm"+permissIdList);
         permissionList.forEach(permission -> {
             permission.setCheck("0");
             if (permissIdList.contains(permission.getFamPermissionId()) && roleId != null && !roleId.isEmpty()) {
@@ -192,12 +203,6 @@ public class FamilyRoleServiceImpl extends ServiceImpl<FamilyRoleMapper, FamilyR
 //            }
 //        });
 
-        //设置icon
-//        for(FamPermission permission:permissionList){
-//            FamPermissionIconEnum iconEnum= FamPermissionIconEnum.getTypeByCode(permission.getFamPermissionName());
-//            permission.setIcon(iconEnum.getIcon());
-//
-//        }
         //建立权限树状图关系
         List<FamPermission> tree=buildTree(permissionList);
 

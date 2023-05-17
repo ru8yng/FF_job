@@ -1,9 +1,8 @@
 package com.yyr.controller;
 
+import bills8002.dto.FamBudgetForm;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.yyr.dto.CommonResponse;
-import com.yyr.dto.FamBudgetForm;
 import com.yyr.pojo.FamBudget;
 import com.yyr.service.FamBudgetService;
 import io.swagger.annotations.Api;
@@ -11,10 +10,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import utils.CommonResponse;
 
 import java.util.List;
 
@@ -39,7 +36,7 @@ public class FamBudgetController {
 
     @ApiOperation("新增家庭预算")
     //@logCustom(description = "新增家庭预算")
-    @PostMapping("/addFamIncom")
+    @PostMapping("/addFamFamBudget")
     public CommonResponse<?> addFamBudget(@RequestBody FamBudgetForm form){
         Assert.notNull(form,"新增家庭预算不能为空！");
         famBudgetService.addFamBudget(form);
@@ -48,8 +45,8 @@ public class FamBudgetController {
 
     @ApiOperation("删除家庭预算")
     //@logCustom(description = "删除家庭预算")
-    @PostMapping("/deleteFamBudget")
-    public CommonResponse<?> deleteFamBudget(String famBudgetId){
+    @GetMapping("/deleteFamBudget/{famBudgetId}")
+    public CommonResponse<?> deleteFamBudget(@PathVariable String famBudgetId){
         Assert.notNull(famBudgetId,"家庭预算id不能为空！");
         famBudgetService.deleteFamBudget(famBudgetId);
         return CommonResponse.ok("删除家庭预算成功！");

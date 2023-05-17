@@ -1,9 +1,9 @@
 package com.yyr.service;
 
-import com.yyr.dto.SysRoleQueryForm;
-import com.yyr.pojo.SysRole;
+
+import account8001.dto.SysRoleQueryForm;
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.springframework.stereotype.Service;
+import com.yyr.pojo.SysRole;
 
 import java.util.List;
 
@@ -14,8 +14,8 @@ import java.util.List;
 */
 
 public interface SysRoleService extends IService<SysRole> {
-    void addSysRole (SysRole sysRole);
+    void addSysRole (SysRoleQueryForm sysRole);
     void deleteSysRole(String id);
     void updateSysRole(SysRole sysRole);
-    List<SysRole> querySysRole(SysRoleQueryForm sysRole);
+    List<SysRoleQueryForm> querySysRole(SysRoleQueryForm sysRole);
 }

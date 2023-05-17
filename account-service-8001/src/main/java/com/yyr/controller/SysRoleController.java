@@ -1,10 +1,9 @@
 package com.yyr.controller;
 
+import account8001.dto.SysRoleQueryForm;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yyr.config.logCustom;
-import com.yyr.dto.CommonResponse;
-import com.yyr.dto.SysRoleQueryForm;
 import com.yyr.pojo.SysRole;
 import com.yyr.service.SysRoleService;
 import io.swagger.annotations.Api;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import utils.CommonResponse;
 
 import java.util.List;
 
@@ -38,7 +38,7 @@ public class SysRoleController {
     @ApiOperation("新增系统角色")
     @logCustom(description = "新增系统角色")
     @PostMapping("/addSysRole")
-    public CommonResponse<?> addSysRole(@RequestBody SysRole sysRole){
+    public CommonResponse<?> addSysRole(@RequestBody SysRoleQueryForm sysRole){
         Assert.notNull(sysRole,"新增角色不能为空！");
         sysRoleService.addSysRole(sysRole);
         return CommonResponse.ok("");
@@ -69,7 +69,7 @@ public class SysRoleController {
         if (null != form && null != form.getPage() && null != form.getSize()) {
             PageHelper.startPage(form.getPage(), form.getSize());
         }
-        List<SysRole> list=sysRoleService.querySysRole(form);
+        List<SysRoleQueryForm> list=sysRoleService.querySysRole(form);
         return CommonResponse.ok(new PageInfo<>(list));
 
     }

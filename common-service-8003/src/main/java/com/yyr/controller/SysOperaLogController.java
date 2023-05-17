@@ -2,15 +2,15 @@ package com.yyr.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.yyr.dto.CommonResponse;
-import com.yyr.dto.OperaLogForm;
 import com.yyr.pojo.SysOperaLog;
 import com.yyr.service.SysOperaLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import log8003.dto.OperaLogForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
+import utils.CommonResponse;
 
 import java.util.List;
 
@@ -36,7 +36,6 @@ public class SysOperaLogController {
         if (null != form && null != form.getPage() && null != form.getSize()) {
             PageHelper.startPage(form.getPage(), form.getSize());
         }
-        //System.out.println("+++++++++++++++++++++++++++++++++++++"+form);
         List<SysOperaLog> list=sysOperaLogService.querySysOperaLog(form);
         return CommonResponse.ok(new PageInfo<>(list));
     }

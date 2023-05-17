@@ -1,6 +1,6 @@
 package com.yyr.service;
 
-import com.yyr.dto.IncomeTypeForm;
+import bills8002.dto.IncomeTypeForm;
 import com.yyr.pojo.IncomeType;
 import com.baomidou.mybatisplus.extension.service.IService;
 

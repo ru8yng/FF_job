@@ -1,10 +1,8 @@
 package com.yyr.controller;
 
+import bills8002.dto.ExpenseTypeForm;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.yyr.config.logCustom;
-import com.yyr.dto.CommonResponse;
-import com.yyr.dto.ExpenseTypeForm;
 import com.yyr.pojo.ExpensesType;
 import com.yyr.service.ExpensesTypeService;
 import io.swagger.annotations.Api;
@@ -12,10 +10,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import utils.CommonResponse;
 
 import java.util.List;
 
@@ -47,8 +43,8 @@ public class ExpenseTypeController {
 
     @ApiOperation("删除支出类型")
     //@logCustom(description = "删除支出类型")
-    @PostMapping("/deleteExpenseType")
-    public CommonResponse<?> deleteExpenseType(String ExpenseTypeId){
+    @GetMapping("/deleteExpenseType/{ExpenseTypeId}")
+    public CommonResponse<?> deleteExpenseType(@PathVariable String ExpenseTypeId){
         Assert.notNull(ExpenseTypeId,"支出类型id不能为空！");
         expensesTypeService.deleteExpensesType(ExpenseTypeId);
         return CommonResponse.ok("删除支出类型成功！");

@@ -1,13 +1,16 @@
 package com.yyr.service.impl;
 
+import account8001.dto.FamQueryForm;
+import account8001.dto.UserQueryForm;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yyr.dto.FamQueryForm;
 import com.yyr.pojo.Family;
 import com.yyr.service.FamilyService;
 import com.yyr.mapper.FamilyMapper;
+import com.yyr.service.UserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -26,6 +29,9 @@ public class FamilyServiceImpl extends ServiceImpl<FamilyMapper, Family>
     @Autowired
     private FamilyMapper familyMapper;
 
+    @Autowired
+    UserService userService;
+
     /**
     * @description:新增家庭
     * @Param: [fm]
@@ -34,22 +40,10 @@ public class FamilyServiceImpl extends ServiceImpl<FamilyMapper, Family>
     * @author:杨亚茹
     */
     @Override
-    public void addFamily(Family fm) {
+    public void addFamily(FamQueryForm fm) {
         Assert.isTrue(fm.getFamilyName()!=null,"家庭名不为空");
         Family family=new Family();
-        if(fm.getFamilyName()!=null &&fm.getFamilyName().length()!=0){
-            family.setFamilyName(fm.getFamilyName());
-        }
-        if(fm.getFamilyDesc()!=null &&fm.getFamilyDesc().length()!=0){
-            family.setFamilyDesc(fm.getFamilyDesc());
-        }
-        if(fm.getCreatedBy()!=null &&fm.getCreatedBy().length()!=0){
-            family.setCreatedBy(fm.getCreatedBy());
-        }
-
-        if(fm.getUpdatedBy()!=null &&fm.getUpdatedBy().length()!=0){
-            family.setUpdatedBy(fm.getUpdatedBy());
-        }
+        BeanUtils.copyProperties(fm,family);
         familyMapper.insert(family);
     }
 
@@ -75,7 +69,7 @@ public class FamilyServiceImpl extends ServiceImpl<FamilyMapper, Family>
     * @author:杨亚茹
     */
     @Override
-    public void updateFamily(Family fm) {
+    public void updateFamily(FamQueryForm fm) {
         Family family=familyMapper.selectById(fm.getFamilyId());
         Assert.notNull(family,"该家庭不存在！");
 
@@ -119,6 +113,9 @@ public class FamilyServiceImpl extends ServiceImpl<FamilyMapper, Family>
         if(form.getCreatedBy()!=null && form.getCreatedBy().length()!=0){
             queryWrapper.like(Family::getCreatedBy,form.getCreatedBy());
         }
+        if(form.getStartTime()!=null && form.getEndTime()!=null){
+            queryWrapper.between(Family::getCreatedTime,form.getStartTime(),form.getEndTime());
+        }
         queryWrapper.orderByAsc(Family::getFamilyId);
 
         return this.list(queryWrapper);
@@ -139,6 +136,12 @@ public class FamilyServiceImpl extends ServiceImpl<FamilyMapper, Family>
         Family fm= familyMapper.selectById(form.getFamilyId());
         Assert.notNull(fm,"该家庭不存在！");
         fm.setStatus(form.getStatus());
+        UserQueryForm form1=new UserQueryForm();
+        form1.setFamilyId(form.getFamilyId());
+        List<UserQueryForm> list=userService.queryUserListByFrom(form1);
+        list.forEach(user->{
+            userService.enable(user.getUserId(),form.getStatus());
+        });
         familyMapper.updateById(fm);
     }
 }

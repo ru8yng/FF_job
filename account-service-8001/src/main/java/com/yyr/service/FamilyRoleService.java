@@ -1,10 +1,12 @@
 package com.yyr.service;
 
-import com.yyr.dto.FamRolePermissionUpdateDto;
-import com.yyr.dto.FamRoleQueryForm;
+import account8001.dto.FamQueryForm;
+import account8001.dto.FamRolePermissionUpdateDto;
+import account8001.dto.FamRoleQueryForm;
+
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.yyr.pojo.FamPermission;
 import com.yyr.pojo.FamilyRole;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 
@@ -14,10 +16,10 @@ import java.util.List;
 * @createDate 2022-11-29 12:15:54
 */
 public interface FamilyRoleService extends IService<FamilyRole> {
-    void addFamRole(FamilyRole familyRole);
+    void addFamRole(FamRoleQueryForm familyRole);
     void deleteFamRole(String id);
     void updateFamRole(FamRolePermissionUpdateDto dto);
-    List<FamilyRole> queryFamRoleList(FamRoleQueryForm familyRole);
+    List<FamRoleQueryForm> queryFamRoleList(FamRoleQueryForm familyRole);
 
     List<FamPermission> queryFamPermissionByFamRoleId(String roleId, boolean isFilter);
 

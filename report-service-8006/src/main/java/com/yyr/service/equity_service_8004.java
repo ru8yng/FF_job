@@ -9,16 +9,15 @@ package com.yyr.service;
  * @Version 1.0
  */
 
-import com.yyr.dto.BillsForm;
-import com.yyr.dto.CommonResponse;
+import equity8004.dto.AcdaForm;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import utils.CommonResponse;
 
 @FeignClient(value ="ffjob-equity-service8004")
 public interface equity_service_8004 {
-    @PostMapping("/cada/queryBills")
-    public CommonResponse<?> queryBills(@RequestBody BillsForm form);
+    @PostMapping("/acad/queryAcad")
+    public CommonResponse<?> queryAcad(@RequestBody AcdaForm form);
 
 }

@@ -1,9 +1,8 @@
 package com.yyr.service;
 
-import com.yyr.dto.FamAssetsForm;
-import com.yyr.pojo.FamAssets;
 import com.baomidou.mybatisplus.extension.service.IService;
-
+import equity8004.dto.FamAssetsForm;
+import com.yyr.pojo.FamAssets;
 import java.util.List;
 
 /**

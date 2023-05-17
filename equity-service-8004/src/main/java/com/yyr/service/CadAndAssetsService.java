@@ -1,9 +1,7 @@
 package com.yyr.service;
 
-import com.yyr.dto.BillsForm;
-import org.springframework.stereotype.Service;
 
-import java.util.List;
+import equity8004.dto.AcdaForm;
 
 /**
  * @Author 杨亚茹
@@ -17,5 +15,5 @@ import java.util.List;
 
 public interface CadAndAssetsService {
 
-    BillsForm queryBills(BillsForm form);
+    AcdaForm queryAcad(AcdaForm form);
 }

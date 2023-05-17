@@ -2,10 +2,10 @@ package com.yyr.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yyr.dto.LoginLogForm;
 import com.yyr.pojo.SysLoginLog;
 import com.yyr.service.SysLoginLogService;
 import com.yyr.mapper.SysLoginLogMapper;
+import log8003.dto.LoginLogForm;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -61,7 +61,6 @@ implements SysLoginLogService{
         if(form.getIpAddr()!=null && form.getIpAddr().length()!=0){
             loginLog.setLoginTime(form.getLoginTime());
         }
-        //System.out.println("++++++++++++++++++++++==login"+loginLog);
 
         this.baseMapper.insert(loginLog);
 

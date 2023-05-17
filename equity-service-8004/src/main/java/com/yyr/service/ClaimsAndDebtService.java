@@ -1,9 +1,9 @@
 package com.yyr.service;
 
 
-import com.yyr.dto.ClaimsAndDebtForm;
 import com.yyr.pojo.ClaimsAndDebt;
 import com.baomidou.mybatisplus.extension.service.IService;
+import equity8004.dto.ClaimsAndDebtForm;
 
 
 import java.util.List;

@@ -1,10 +1,9 @@
 package com.yyr.controller;
 
+import bills8002.dto.IncomeTypeForm;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yyr.config.logCustom;
-import com.yyr.dto.CommonResponse;
-import com.yyr.dto.IncomeTypeForm;
 import com.yyr.pojo.IncomeType;
 import com.yyr.service.IncomeTypeService;
 import io.swagger.annotations.Api;
@@ -12,10 +11,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import utils.CommonResponse;
 
 import java.util.List;
 
@@ -47,8 +44,8 @@ public class IncomeTypeController {
 
     @ApiOperation("删除收入类型")
     //@logCustom(description = "删除收入类型")
-    @PostMapping("/deleteIncomeType")
-    public CommonResponse<?> deleteIncomeType(String IncomeTypeId){
+    @GetMapping("/deleteIncomeType/{IncomeTypeId}")
+    public CommonResponse<?> deleteIncomeType(@PathVariable String IncomeTypeId){
         Assert.notNull(IncomeTypeId,"收入类型id不能为空！");
         incomeTypeService.deleteIncomeType(IncomeTypeId);
         return CommonResponse.ok("删除收入类型成功！");

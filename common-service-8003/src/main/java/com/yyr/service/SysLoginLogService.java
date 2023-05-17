@@ -1,9 +1,9 @@
 package com.yyr.service;
 
 
-import com.yyr.dto.LoginLogForm;
 import com.yyr.pojo.SysLoginLog;
 import com.baomidou.mybatisplus.extension.service.IService;
+import log8003.dto.LoginLogForm;
 
 import java.util.List;
 

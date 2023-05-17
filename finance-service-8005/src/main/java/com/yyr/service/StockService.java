@@ -1,10 +1,11 @@
 package com.yyr.service;
 
-import com.yyr.dto.StockForm;
-import com.yyr.dto.StockVS;
-import com.yyr.dto.StockVSForm;
+
 import com.yyr.pojo.Stock;
 import com.baomidou.mybatisplus.extension.service.IService;
+import finance8005.dto.StockForm;
+import finance8005.dto.StockVS;
+import finance8005.dto.StockVSForm;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public interface StockService extends IService<Stock> {
 
     void updateStock(StockForm form);
 
-    List<Stock> queryStock(StockForm form);
+    List<StockForm> queryStock(StockForm form);
 
     StockVS queryStockCurrent(StockVSForm form);
 

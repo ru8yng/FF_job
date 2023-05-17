@@ -1,9 +1,9 @@
 package com.yyr.service.impl;
 
+import bills8002.dto.IncomeTypeForm;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yyr.dto.IncomeTypeForm;
 import com.yyr.pojo.ExpensesType;
 import com.yyr.pojo.IncomeType;
 import com.yyr.service.IncomeTypeService;
@@ -40,6 +40,9 @@ implements IncomeTypeService{
         }
         if(form.getIncomeTypeDesc()!=null &&form.getIncomeTypeDesc().length()!=0){
             type.setIncomeTypeDesc(form.getIncomeTypeDesc());
+        }
+        if(form.getFamId()!=null &&form.getFamId().length()!=0){
+            type.setFamId(form.getFamId());
         }
 
         incomeTypeMapper.insert(type);
@@ -86,6 +89,9 @@ implements IncomeTypeService{
         if(form.getUpdatedBy()!=null &&form.getUpdatedBy().length()!=0){
             queryWrapper.eq(IncomeType::getUpdatedBy,form.getUpdatedBy());
         }
+        if(form.getFamId()!=null &&form.getFamId().length()!=0){
+            queryWrapper.eq(IncomeType::getFamId,form.getFamId());
+        }
         if(form.getIncomeTypeName()!=null &&form.getIncomeTypeName().length()!=0){
             queryWrapper.like(IncomeType::getIncomeTypeName,form.getIncomeTypeName());
         }
@@ -95,6 +101,7 @@ implements IncomeTypeService{
         if(form.getStartTime()!=null &&form.getEndTime()!=null) {
             queryWrapper.between(IncomeType::getCreatedTime,form.getStartTime(),form.getEndTime());
         }
+
         return this.list(queryWrapper);
     }
 }

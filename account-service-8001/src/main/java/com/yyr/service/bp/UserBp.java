@@ -1,16 +1,12 @@
 package com.yyr.service.bp;
 
-import com.netflix.discovery.converters.Auto;
-import com.yyr.dto.FamPermQueryForm;
-import com.yyr.dto.FamRoleQueryForm;
+import account8001.dto.FamRoleQueryForm;
 import com.yyr.pojo.FamilyRole;
-import com.yyr.pojo.SysRole;
 import com.yyr.pojo.User;
 import com.yyr.service.FamilyRoleService;
 import com.yyr.service.SysRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 
 /**
@@ -31,7 +27,7 @@ public class UserBp {
     private FamilyRoleService familyRoleService;
 
     public User addUserPermission(User user) {
-        List<FamilyRole> famRoleList = familyRoleService.queryFamRoleList(new FamRoleQueryForm());
+        List<FamRoleQueryForm> famRoleList = familyRoleService.queryFamRoleList(new FamRoleQueryForm());
         famRoleList.forEach(role -> {
             if (role.getFamRoleId().equals(user.getFamRoleId())) {
                 user.setFamRoleId(role.getFamRoleId());

@@ -2,15 +2,16 @@ package com.yyr.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.yyr.dto.*;
-import com.yyr.pojo.Fund;
 import com.yyr.service.FundService;
+import finance8005.dto.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
+import utils.CommonResponse;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,8 +33,8 @@ public class FundController {
 
     @ApiOperation("查询基金当前净值")
     //@logCustom(description = "新增基金类型")
-    @PostMapping("/queryCurrentFundNetValueByCode")
-    public CommonResponse<?> queryCurrentFundNetValueByCode(String fundCode){
+    @GetMapping("/queryCurrentFundNetValueByCode/{fundCode}")
+    public CommonResponse<?> queryCurrentFundNetValueByCode(@PathVariable String fundCode){
         Assert.notNull(fundCode,"基金代码不能为空！");
         CurrentFundNetValue value=fundService.queryCurrentFundNetValueByCode(fundCode);
         return CommonResponse.ok(value);
@@ -50,7 +51,7 @@ public class FundController {
     @ApiOperation("获取历史基金净值获取")
     //@logCustom(description = "新增基金类型")
     @GetMapping("/getHistoricalFundNetValue")
-    public CommonResponse<?> getHistoricalFundNetValue(String fundCode){
+    public CommonResponse<?> getHistoricalFundNetValue( String fundCode){
        HistoricalFundNetValue value=fundService.queryHistoricalFundNetValueByCode(fundCode);
         return CommonResponse.ok(value);
     }
@@ -76,8 +77,8 @@ public class FundController {
 
     @ApiOperation("删除基金")
     //@logCustom(description = "删除基金类型")
-    @PostMapping("/deleteFund")
-    public CommonResponse<?> deleteFund(String fundId){
+    @GetMapping("/deleteFund/{fundId}")
+    public CommonResponse<?> deleteFund(@PathVariable String fundId){
         Assert.notNull(fundId,"基金类型id不能为空！");
         fundService.deleteFund(fundId);
         return CommonResponse.ok("删除基金成功！");
@@ -100,8 +101,17 @@ public class FundController {
         if (null != form && null != form.getPage() && null != form.getSize()) {
             PageHelper.startPage(form.getPage(), form.getSize());
         }
-        List<Fund> list=fundService.queryFund(form);
+        List<FundForm> list=fundService.queryFund(form);
         return CommonResponse.ok(new PageInfo<>(list));
+
+    }
+
+    @ApiOperation("获取日k线")
+    @PostMapping("/getKLine")
+    public CommonResponse<?> getKLine(@RequestBody Date date){
+        Assert.notNull(date,"起始时间不能为空！");
+        List<List<String>> list=fundService.getKLine(date);
+        return CommonResponse.ok(list);
 
     }
 

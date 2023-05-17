@@ -1,9 +1,9 @@
 package com.yyr.pojo;
 
+import lombok.Data;
 import com.baomidou.mybatisplus.annotation.*;
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * 收入类型
@@ -49,6 +49,8 @@ public class IncomeType implements Serializable {
      * 
      */
     private String incomeTypeDesc;
+
+    private String famId;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

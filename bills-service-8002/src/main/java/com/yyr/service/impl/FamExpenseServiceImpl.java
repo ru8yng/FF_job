@@ -1,11 +1,16 @@
 package com.yyr.service.impl;
 
+import account8001.dto.UserQueryForm;
+import bills8002.dto.FamExpenseForm;
+import cn.hutool.core.convert.Convert;
+import cn.hutool.core.lang.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-
-import com.yyr.dto.FamExpenseForm;
+import com.yyr.mapper.ExpensesTypeMapper;
+import com.yyr.pojo.ExpensesType;
 import com.yyr.pojo.FamExpense;
+import com.yyr.service.AccountService8001;
 import com.yyr.service.FamExpenseService;
 import com.yyr.mapper.FamExpenseMapper;
 import org.apache.commons.lang.StringUtils;
@@ -26,6 +31,12 @@ implements FamExpenseService{
 
     @Autowired
     private FamExpenseMapper famExpenseMapper;
+
+    @Autowired
+    private ExpensesTypeMapper expensesTypeMapper;
+
+    @Autowired
+    private AccountService8001 accountService8001;
 
     /**
     * @description:新增家庭支出
@@ -54,8 +65,6 @@ implements FamExpenseService{
             famExpense.setFamId(form.getFamId());
         }
         if(form.getFamExpenseAmount()!=null &&form.getFamExpenseAmount().length()!=0){
-            //校验字符串是否是数字
-            Assert.isTrue(StringUtils.isNumeric(form.getFamExpenseAmount()));
 
             famExpense.setFamExpenseAmount(form.getFamExpenseAmount());
         }
@@ -114,9 +123,6 @@ implements FamExpenseService{
             updateWrapper.set(FamExpense::getFamId,form.getFamId());
         }
         if(form.getFamExpenseAmount()!=null &&form.getFamExpenseAmount().length()!=0){
-            //校验字符串是否是数字
-            Assert.isTrue(StringUtils.isNumeric(form.getFamExpenseAmount()));
-
             updateWrapper.set(FamExpense::getFamExpenseAmount,form.getFamExpenseAmount());
         }
         if(form.getFamExpenseTypeId()!=null &&form.getFamExpenseTypeId().length()!=0){
@@ -160,8 +166,6 @@ implements FamExpenseService{
             queryWrapper.eq(FamExpense::getFamId,form.getFamId());
         }
         if(form.getFamExpenseAmount()!=null &&form.getFamExpenseAmount().length()!=0){
-            //校验字符串是否是数字
-            Assert.isTrue(StringUtils.isNumeric(form.getFamExpenseAmount()));
 
             queryWrapper.eq(FamExpense::getFamExpenseAmount,form.getFamExpenseAmount());
         }
@@ -175,7 +179,16 @@ implements FamExpenseService{
         if(form.getStartTime()!=null &&form.getEndTime()!=null){
             queryWrapper.between(FamExpense::getExpenseTime,form.getStartTime(),form.getEndTime());
         }
+        List<FamExpense> famExpenses=this.list(queryWrapper);
+        for (FamExpense famExpense : famExpenses) {
+            famExpense.setFamExpenseTypeId(expensesTypeMapper.selectById(famExpense.getFamExpenseTypeId()).getExpenseTypeName());
+            UserQueryForm userQueryForm=new UserQueryForm();
+            userQueryForm.setUserId(famExpense.getUserId());
+            List<UserQueryForm> list= Convert.convert(new TypeReference<List<UserQueryForm>>(){},accountService8001.queryUserList(userQueryForm).getData());
+            famExpense.setUserId(list.get(0).getUserName());
+        }
 
-        return this.list(queryWrapper);
+        return famExpenses;
     }
+
 }

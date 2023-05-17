@@ -1,21 +1,25 @@
 package com.yyr.service.impl;
 
+import account8001.dto.UserQueryForm;
+import cn.hutool.core.convert.Convert;
+import cn.hutool.core.lang.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yyr.dto.StockForm;
-import com.yyr.dto.StockTypeEnum;
-import com.yyr.dto.StockVS;
-import com.yyr.dto.StockVSForm;
 import com.yyr.pojo.Stock;
+import com.yyr.service.AccountService8001;
 import com.yyr.service.StockService;
 import com.yyr.mapper.StockMapper;
 import com.yyr.service.bp.StockBp;
-import org.checkerframework.checker.units.qual.A;
+import finance8005.dto.*;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-
+import org.springframework.util.CollectionUtils;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +37,9 @@ public class StockServiceImpl extends ServiceImpl<StockMapper, Stock>
 
     @Autowired
     private StockBp stockBp;
+
+    @Autowired
+    private AccountService8001 accountService8001;
 
     @Override
     public void addStock(StockForm form) {
@@ -67,6 +74,9 @@ public class StockServiceImpl extends ServiceImpl<StockMapper, Stock>
         if(form.getFamId()!=null &&form.getFamId().length()!=0){
             stock.setFamId(form.getFamId());
         }
+        if(form.getCurrentProfit()!=null){
+            stock.setCurrentProfit(form.getCurrentProfit());
+        }
         stockMapper.insert(stock);
 
     }
@@ -83,7 +93,7 @@ public class StockServiceImpl extends ServiceImpl<StockMapper, Stock>
         Stock stock=stockMapper.selectById(form.getStockId());
         Assert.notNull(stock,"该收藏股票不存在");
         LambdaUpdateWrapper<Stock> updateWrapper=new LambdaUpdateWrapper<>();
-        updateWrapper.set(Stock::getStockId,form.getStockId());
+        updateWrapper.eq(Stock::getStockId,form.getStockId());
         if(form.getCreatedBy()!=null &&form.getCreatedBy().length()!=0){
             updateWrapper.set(Stock::getStockId,form.getCreatedBy());
         }
@@ -114,12 +124,15 @@ public class StockServiceImpl extends ServiceImpl<StockMapper, Stock>
         if(form.getFamId()!=null &&form.getFamId().length()!=0){
             updateWrapper.set(Stock::getFamId,form.getFamId());
         }
+        if(form.getCurrentProfit()!=null){
+            updateWrapper.set(Stock::getCurrentProfit,form.getCurrentProfit());
+        }
         this.update(updateWrapper);
 
     }
 
     @Override
-    public List<Stock> queryStock(StockForm form) {
+    public List<StockForm> queryStock(StockForm form) {
         LambdaQueryWrapper<Stock> queryWrapper=new LambdaQueryWrapper<>();
         if(form.getStockId()!=null &&form.getStockId().length()!=0){
             queryWrapper.eq(Stock::getStockId,form.getStockId());
@@ -148,7 +161,17 @@ public class StockServiceImpl extends ServiceImpl<StockMapper, Stock>
         if(form.getFamId()!=null &&form.getFamId().length()!=0){
             queryWrapper.eq(Stock::getFamId,form.getFamId());
         }
-        return null;
+        List<StockForm> forms=new ArrayList<>();
+        this.list(queryWrapper).forEach(stock -> {
+            UserQueryForm userQueryForm=new UserQueryForm();
+            userQueryForm.setUserId(stock.getUserId());
+            List<UserQueryForm> list= Convert.convert(new TypeReference<List<UserQueryForm>>(){},accountService8001.queryUserList(userQueryForm).getData());
+            StockForm form1=new StockForm();
+            BeanUtils.copyProperties(stock,form1);
+            form1.setUserId(list.get(0).getUserName());
+            forms.add(form1);
+        });
+        return forms;
     }
 
     @Override
@@ -167,9 +190,28 @@ public class StockServiceImpl extends ServiceImpl<StockMapper, Stock>
         stock.setStockPrice(vs.getCurrent());
         stock.setStockTime(new Date());
         stock.setUserId(form.getUserId());
-        stock.setFamId(form.getFmId());
+        stock.setFamId(form.getFamId());
+        stock.setCurrentProfit(new BigDecimal(0));
+        stock.setStockNum(new BigDecimal(0));
 
         stockMapper.insert(stock);
+    }
+
+    @Scheduled(cron = "0 30 22 ? * *")
+    void updateProfits(){
+        List<StockForm> forms=queryStock(new StockForm());
+        if(!CollectionUtils.isEmpty(forms)){
+            forms.forEach(stockForm -> {
+                StockVSForm stockVSForm=new StockVSForm();
+                stockVSForm.setType(stockForm.getStockType());
+                stockVSForm.setStockCode(stockForm.getStockCode());
+                StockVS stockVS=queryStockCurrent(stockVSForm);
+                BigDecimal profit=stockForm.getStockPrice().subtract(stockVS.getCurrent()).multiply(stockForm.getStockNum());
+                stockForm.setCurrentProfit(profit);
+                updateStock(stockForm);
+            });
+        }
+
     }
 }
 

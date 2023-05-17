@@ -1,12 +1,11 @@
 package com.yyr.config;
 
 
+import account8001.dto.UserQueryForm;
 import cn.hutool.core.convert.Convert;
-import com.yyr.dto.OperaLogForm;
-import com.yyr.pojo.User;
 import com.yyr.service.AccountService8001;
 import com.yyr.service.CommonService8003;
-import com.yyr.utils.IPUtil;
+import log8003.dto.OperaLogForm;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -16,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import utils.IPUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
@@ -68,7 +68,7 @@ public class LogCustomAspect {
             return;
         }
         String token = httpServletRequest.getHeader("X-Token");
-        User user = Convert.convert(User.class,accountService8001.getUserInfo(token));
+        UserQueryForm user = Convert.convert(UserQueryForm.class,accountService8001.getUserInfo(token));
         if (null == user) {
             return;
         }
@@ -82,7 +82,7 @@ public class LogCustomAspect {
         sysLog.setOperaLogName(servletPath);
         sysLog.setIpaddr(ip);
         sysLog.setOperaLogOperaby(user.getUserId());
-        sysLog.setOperaLogSysroleId(user.getSysRoleId());
+        //sysLog.setOperaLogSysroleId(user.getSysRoleId());
         commonService8003.addSysOperaLog(sysLog);
     }
 

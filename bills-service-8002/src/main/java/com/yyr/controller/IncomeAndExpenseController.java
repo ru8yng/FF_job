@@ -1,8 +1,6 @@
 package com.yyr.controller;
 
-
-import com.yyr.dto.CommonResponse;
-import com.yyr.dto.IAEForm;
+import bills8002.dto.IAEForm;
 import com.yyr.service.FamExpenseService;
 import com.yyr.service.FamIncomeService;
 import com.yyr.service.IAEService;
@@ -11,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import utils.CommonResponse;
 
 /**
  * @Author 杨亚茹
@@ -21,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
  * @Version 1.0
  */
 
-@Api(tags = "收入支出类型接口")
+@Api(tags = "收入支出接口")
 @RequestMapping("/IAE")
 @RestController
 @Slf4j(topic = "IAE")
@@ -39,4 +38,22 @@ public class IncomeAndExpenseController {
 
         return CommonResponse.ok(iaeService.queryIaeCurrent(iae));
     }
+
+
+    @ApiOperation("查询支出预算")
+    //@logCustom(description = "查询本月收入支出")
+    @PostMapping("/getExpenseBudgentLine")
+    public CommonResponse<?> getExpenseBudgentLine(@RequestBody IAEForm iae){
+
+        return CommonResponse.ok(iaeService.getExpenseBudgentLine(iae));
+    }
+
+    @ApiOperation("查询支出及类型")
+    //@logCustom(description = "查询本月收入支出")
+    @PostMapping("/getExpenseAndType")
+    public CommonResponse<?> getExpenseAndType(@RequestBody IAEForm iae){
+
+        return CommonResponse.ok(iaeService.getExpenseAndType(iae));
+    }
+
 }

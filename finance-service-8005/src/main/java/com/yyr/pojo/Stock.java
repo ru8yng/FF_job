@@ -1,11 +1,11 @@
 package com.yyr.pojo;
 
 import com.baomidou.mybatisplus.annotation.*;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * 收藏股票
@@ -41,7 +41,7 @@ public class Stock implements Serializable {
     private BigDecimal stockPrice;
 
     /**
-     * 购买数量
+     * 购买数量(百股)
      */
     private BigDecimal stockNum;
 
@@ -81,6 +81,8 @@ public class Stock implements Serializable {
      * 家庭id
      */
     private String famId;
+
+    private BigDecimal currentProfit;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
