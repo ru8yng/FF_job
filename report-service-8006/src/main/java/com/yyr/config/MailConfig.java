@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 
 import javax.mail.Message;
 import javax.mail.internet.InternetAddress;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -51,11 +52,12 @@ public class MailConfig {
     private finance_service_8005 service8005;
 
 
-    //@Scheduled(cron = "0 30 22 31 12 ? ")  //每年12月2号22点30分00秒触发任务
+    @Scheduled(cron = "0 30 22 31 12 ? ")  //每年12月2号22点30分00秒触发任务
     @Bean
     public String senderMailYearly() {
 
-        List<UserQueryForm> userList= Convert.convert(new TypeReference<List<UserQueryForm>>() {}, service8001.queryUserList(new UserQueryForm()).getData());
+        List<UserQueryForm> userList1= Convert.convert(new TypeReference<List<UserQueryForm>>() {}, service8001.queryUserList1(new UserQueryForm()).getData());
+        List<UserQueryForm> userList=userList1.stream().filter(user->user.getEmail()!=null && user.getEmail().length()!=0).collect(Collectors.toList());
         Map<String,List<UserQueryForm>> famEmails=userList.stream().collect(Collectors.groupingBy(UserQueryForm::getFamilyId));
 
         for(List<UserQueryForm> users:famEmails.values()){
@@ -72,7 +74,8 @@ public class MailConfig {
 
                 FundAndStockForm form=new FundAndStockForm();
                 form.setUserId(user.getUserId());
-
+                form.setStockFormList(new ArrayList<>());
+                form.setFundFormList(new ArrayList<>());
                 IAEForm iaes= Convert.convert(IAEForm.class,service8002.queryIaeCurrent(iae).getData());
                 AcdaForm acadForm= Convert.convert(AcdaForm.class,service8004.queryAcad(acad).getData()) ;
                 FundAndStockForm finances=Convert.convert(FundAndStockForm.class,service8005.queryProfits(form).getData());
@@ -117,12 +120,12 @@ public class MailConfig {
                 }
                 htmlhead.append(assets);
                 htmlhead.append("</tbody></table>");
-                htmlhead.append(" <p>&nbsp; &nbsp; &nbsp;  \uD83E\uDD2D与您有关的借贷有：</p><table style=\"border-collapse: collapse; width: 100%;\" border=\"1\"><tbody><tr><td style=\"width: 12.5%;\">借贷(0借入1借出)</td><td style=\"width: 12.5%;\">债权人</td><td style=\"width: 12.5%;\">债务人</td><td style=\"width: 12.5%;\">债权人联系方式</td><td style=\"width: 12.5%;\">债务人联系方式</td><td style=\"width: 12.5%;\">借贷金额</td><td style=\"width: 12.5%;\">借入/借出时间</td><td style=\"width: 12.5%;\">备注</td></tr>");
+                htmlhead.append(" <p>&nbsp; &nbsp; &nbsp;  \uD83E\uDD2D与您有关的借贷有：</p><table style=\"border-collapse: collapse; width: 100%;\" border=\"1\"><tbody><tr><td style=\"width: 12.5%;\">是否完成</td><td style=\"width: 12.5%;\">债权人</td><td style=\"width: 12.5%;\">债务人</td><td style=\"width: 12.5%;\">债权人联系方式</td><td style=\"width: 12.5%;\">债务人联系方式</td><td style=\"width: 12.5%;\">借贷金额</td><td style=\"width: 12.5%;\">借入/借出时间</td><td style=\"width: 12.5%;\">备注</td></tr>");
                 StringBuffer cads=new StringBuffer();
                 if (acadForm.getCads()!=null){
                     acadForm.getCads().forEach(cad->{
                         String cadhtml=" <tr>\n" +
-                                "                 <td style=\"width: 12.5%;\">"+cad.getCadType()+"</td>\n" +
+                                "                 <td style=\"width: 12.5%;\">"+cad.getCadStatus()+"</td>\n" +
                                 "                 <td style=\"width: 12.5%;\">"+cad.getCreditor()+"</td>\n" +
                                 "                 <td style=\"width: 12.5%;\">"+cad.getObligor()+"</td>\n" +
                                 "                 <td style=\"width: 12.5%;\">"+cad.getCreditorTel()+"</td>\n" +
@@ -218,7 +221,8 @@ public class MailConfig {
     @Bean
     public String senderMailMonthly() {
 
-        List<UserQueryForm> userList= Convert.convert(new TypeReference<List<UserQueryForm>>() {}, service8001.queryUserList(new UserQueryForm()).getData());
+        List<UserQueryForm> userList1= Convert.convert(new TypeReference<List<UserQueryForm>>() {}, service8001.queryUserList1(new UserQueryForm()).getData());
+        List<UserQueryForm> userList=userList1.stream().filter(user->user.getEmail()!=null && user.getEmail().length()!=0).collect(Collectors.toList());
         Map<String,List<UserQueryForm>> famEmails=userList.stream().collect(Collectors.groupingBy(UserQueryForm::getFamilyId));
 
         for(List<UserQueryForm> users:famEmails.values()){
@@ -249,8 +253,8 @@ public class MailConfig {
                         "                         </head>\n" +
                         "                         <body id=\"tinymce\" class=\"mce-content-body \" data-id=\"content\" contenteditable=\"true\" spellcheck=\"false\">\n" +
                         "                         <p>您的月报已送达！\uD83D\uDE00</p>"+
-                        "                         <p>&nbsp; &nbsp; &nbsp;  \uD83D\uDE06您今年的消费是："+iaes.getExpense()+"元；</p>\n" +
-                        "                         <p>&nbsp; &nbsp; &nbsp;  \uD83E\uDD29您今年的收入是："+iaes.getIncome()+"元；</p>\n" +
+                        "                         <p>&nbsp; &nbsp; &nbsp;  \uD83D\uDE06您这个月的消费是："+iaes.getExpense()+"元；</p>\n" +
+                        "                         <p>&nbsp; &nbsp; &nbsp;  \uD83E\uDD29您这个月的收入是："+iaes.getIncome()+"元；</p>\n" +
                         "                         <p>&nbsp; &nbsp; &nbsp;  \uD83E\uDD13与您有关的固定资产有：</p>\n" +
                                 "                 <table style=\"border-collapse: collapse; width: 100%;\" border=\"1\">\n" +
                                 "                 <tbody>\n" +
@@ -280,12 +284,12 @@ public class MailConfig {
                 }
                 htmlhead.append(assets);
                 htmlhead.append("</tbody></table>");
-                htmlhead.append(" <p>&nbsp; &nbsp; &nbsp;  \uD83E\uDD2D与您有关的借贷有：</p><table style=\"border-collapse: collapse; width: 100%;\" border=\"1\"><tbody><tr><td style=\"width: 12.5%;\">借贷(0借入1借出)</td><td style=\"width: 12.5%;\">债权人</td><td style=\"width: 12.5%;\">债务人</td><td style=\"width: 12.5%;\">债权人联系方式</td><td style=\"width: 12.5%;\">债务人联系方式</td><td style=\"width: 12.5%;\">借贷金额</td><td style=\"width: 12.5%;\">借入/借出时间</td><td style=\"width: 12.5%;\">备注</td></tr>");
+                htmlhead.append(" <p>&nbsp; &nbsp; &nbsp;  \uD83E\uDD2D与您有关的借贷有：</p><table style=\"border-collapse: collapse; width: 100%;\" border=\"1\"><tbody><tr><td style=\"width: 12.5%;\">是否完成</td><td style=\"width: 12.5%;\">债权人</td><td style=\"width: 12.5%;\">债务人</td><td style=\"width: 12.5%;\">债权人联系方式</td><td style=\"width: 12.5%;\">债务人联系方式</td><td style=\"width: 12.5%;\">借贷金额</td><td style=\"width: 12.5%;\">借入/借出时间</td><td style=\"width: 12.5%;\">备注</td></tr>");
                 StringBuffer cads=new StringBuffer();
                 if (acadForm.getCads()!=null){
                     acadForm.getCads().forEach(cad->{
                         String cadhtml=" <tr>\n" +
-                                "                 <td style=\"width: 12.5%;\">"+cad.getCadType()+"</td>\n" +
+                                "                 <td style=\"width: 12.5%;\">"+cad.getCadStatus()+"</td>\n" +
                                 "                 <td style=\"width: 12.5%;\">"+cad.getCreditor()+"</td>\n" +
                                 "                 <td style=\"width: 12.5%;\">"+cad.getObligor()+"</td>\n" +
                                 "                 <td style=\"width: 12.5%;\">"+cad.getCreditorTel()+"</td>\n" +
@@ -375,11 +379,12 @@ public class MailConfig {
         return "success!";
     }
 
-    //@Scheduled(cron = "0 30 22 ? * FRI")  //每年12月2号22点30分00秒触发任务
+    @Scheduled(cron = "0 30 22 ? * FRI")  //每年12月2号22点30分00秒触发任务
     @Bean
     public String senderMailWeekly() {
 
-        List<UserQueryForm> userList= Convert.convert(new TypeReference<List<UserQueryForm>>() {}, service8001.queryUserList(new UserQueryForm()).getData());
+        List<UserQueryForm> userList1= Convert.convert(new TypeReference<List<UserQueryForm>>() {}, service8001.queryUserList1(new UserQueryForm()).getData());
+        List<UserQueryForm> userList=userList1.stream().filter(user->user.getEmail()!=null && user.getEmail().length()!=0).collect(Collectors.toList());
         Map<String,List<UserQueryForm>> famEmails=userList.stream().collect(Collectors.groupingBy(UserQueryForm::getFamilyId));
 
         for(List<UserQueryForm> users:famEmails.values()){
@@ -410,8 +415,8 @@ public class MailConfig {
                         "                         </head>\n" +
                         "                         <body id=\"tinymce\" class=\"mce-content-body \" data-id=\"content\" contenteditable=\"true\" spellcheck=\"false\">\n" +
                         "                         <p>您的周报已送达！\uD83D\uDE00</p>"+
-                        "                         <p>&nbsp; &nbsp; &nbsp;  \uD83D\uDE06您今年的消费是："+iaes.getExpense()+"元；</p>\n" +
-                        "                         <p>&nbsp; &nbsp; &nbsp;  \uD83E\uDD29您今年的收入是："+iaes.getIncome()+"元；</p>\n" +
+                        "                         <p>&nbsp; &nbsp; &nbsp;  \uD83D\uDE06您这周的消费是："+iaes.getExpense()+"元；</p>\n" +
+                        "                         <p>&nbsp; &nbsp; &nbsp;  \uD83E\uDD29您这周的收入是："+iaes.getIncome()+"元；</p>\n" +
                         "                         <p>&nbsp; &nbsp; &nbsp;  \uD83E\uDD13与您有关的固定资产有：</p>\n" +
                         "                 <table style=\"border-collapse: collapse; width: 100%;\" border=\"1\">\n" +
                         "                 <tbody>\n" +
@@ -441,12 +446,12 @@ public class MailConfig {
                 }
                 htmlhead.append(assets);
                 htmlhead.append("</tbody></table>");
-                htmlhead.append(" <p>&nbsp; &nbsp; &nbsp;  \uD83E\uDD2D与您有关的借贷有：</p><table style=\"border-collapse: collapse; width: 100%;\" border=\"1\"><tbody><tr><td style=\"width: 12.5%;\">借贷(0借入1借出)</td><td style=\"width: 12.5%;\">债权人</td><td style=\"width: 12.5%;\">债务人</td><td style=\"width: 12.5%;\">债权人联系方式</td><td style=\"width: 12.5%;\">债务人联系方式</td><td style=\"width: 12.5%;\">借贷金额</td><td style=\"width: 12.5%;\">借入/借出时间</td><td style=\"width: 12.5%;\">备注</td></tr>");
+                htmlhead.append(" <p>&nbsp; &nbsp; &nbsp;  \uD83E\uDD2D与您有关的借贷有：</p><table style=\"border-collapse: collapse; width: 100%;\" border=\"1\"><tbody><tr><td style=\"width: 12.5%;\">是否完成</td><td style=\"width: 12.5%;\">债权人</td><td style=\"width: 12.5%;\">债务人</td><td style=\"width: 12.5%;\">债权人联系方式</td><td style=\"width: 12.5%;\">债务人联系方式</td><td style=\"width: 12.5%;\">借贷金额</td><td style=\"width: 12.5%;\">借入/借出时间</td><td style=\"width: 12.5%;\">备注</td></tr>");
                 StringBuffer cads=new StringBuffer();
                 if (acadForm.getCads()!=null){
                     acadForm.getCads().forEach(cad->{
                         String cadhtml=" <tr>\n" +
-                                "                 <td style=\"width: 12.5%;\">"+cad.getCadType()+"</td>\n" +
+                                "                 <td style=\"width: 12.5%;\">"+cad.getCadStatus()+"</td>\n" +
                                 "                 <td style=\"width: 12.5%;\">"+cad.getCreditor()+"</td>\n" +
                                 "                 <td style=\"width: 12.5%;\">"+cad.getObligor()+"</td>\n" +
                                 "                 <td style=\"width: 12.5%;\">"+cad.getCreditorTel()+"</td>\n" +

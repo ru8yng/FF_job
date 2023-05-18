@@ -29,5 +29,6 @@ public interface UserService extends IService<User> {
     void changePwd(String id,String pwd);
 
     List<UserQueryForm> queryUserListByFrom(UserQueryForm form);
+    List<UserQueryForm> queryUserListByFrom1(UserQueryForm form);
 
 }

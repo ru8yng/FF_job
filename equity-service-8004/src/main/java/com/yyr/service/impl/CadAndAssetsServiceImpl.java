@@ -61,12 +61,12 @@ public class CadAndAssetsServiceImpl implements CadAndAssetsService {
         assetsForm.setStartTime(begin);
         assetsForm.setEndTime(end);
         if (form.getFamId()!=null){
-            //cadForm.setFamId(iae.getFamId());
             assetsForm.setFamId(form.getFamId());
+            cadForm.setFamId(form.getFamId());
             }
 
         if(form.getUserId()!=null){
-            cadForm.setCreatedBy(form.getUserId());
+            //cadForm.setCreatedBy(form.getUserId());
             assetsForm.setCreatedBy(form.getUserId());
 
         }

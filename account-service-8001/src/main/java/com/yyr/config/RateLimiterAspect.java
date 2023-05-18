@@ -30,7 +30,7 @@ import java.util.Collections;
  */
 @Slf4j(topic = "RateLimterHandler")
 @Aspect
-@Component
+//@Component
 public class RateLimiterAspect {
 
     @Resource
@@ -41,7 +41,7 @@ public class RateLimiterAspect {
     private DefaultRedisScript luaRateLimiterScript;
 
 
-    @Pointcut("@annotation(com.scjydz.config.RateLimiter)")
+    //@Pointcut("@annotation(com.scjydz.config.RateLimiter)")
     public void rateLimiter() {
 
     }

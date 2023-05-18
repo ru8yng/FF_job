@@ -22,6 +22,9 @@ public interface account_service_8001 {
     @PostMapping("/user/queryUserList")
     public CommonResponse<?> queryUserList(@RequestBody UserQueryForm form);
 
+    @PostMapping("/user/queryUserList1")
+    public CommonResponse<?> queryUserList1(@RequestBody UserQueryForm form);
+
     @GetMapping(value = "/user/getUserInfo", produces = "application/json;charset=UTF-8")
     public CommonResponse<?> getUserInfo(@RequestHeader(value ="X-Token") String token);
 

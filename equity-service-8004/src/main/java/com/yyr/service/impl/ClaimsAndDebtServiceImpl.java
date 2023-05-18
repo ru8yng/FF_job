@@ -66,6 +66,9 @@ implements ClaimsAndDebtService{
             cad.setRemark(form.getRemark());
         }
 
+        if(form.getFamId()!=null &&form.getFamId().length()!=0){
+            cad.setFamId(form.getFamId());
+        }
         cad.setCadStatus("1");
 
         claimsAndDebtMapper.insert(cad);
@@ -84,6 +87,8 @@ implements ClaimsAndDebtService{
         Assert.notNull(cad,"该借贷不存在");
         LambdaUpdateWrapper<ClaimsAndDebt> updateWrapper=new LambdaUpdateWrapper<>();
         updateWrapper.eq(ClaimsAndDebt::getCadId,form.getCadId());
+
+
 
         if(form.getCreatedBy()!=null &&form.getCreatedBy().length()!=0){
             updateWrapper.set(ClaimsAndDebt::getCreatedBy,form.getCreatedBy());
@@ -155,6 +160,10 @@ implements ClaimsAndDebtService{
         if(form.getObligorTel()!=null &&form.getObligorTel().length()!=0){
             queryWrapper.eq(ClaimsAndDebt::getObligorTel,form.getObligorTel());
         }
+        if(form.getFamId()!=null &&form.getFamId().length()!=0){
+            queryWrapper.eq(ClaimsAndDebt::getFamId,form.getFamId());
+        }
+
         if(form.getCadTime()!=null ){
             queryWrapper.eq(ClaimsAndDebt::getCadTime,form.getCadTime());
         }

@@ -165,7 +165,7 @@ public class FundServiceImpl extends ServiceImpl<FundMapper, Fund>
             queryWrapper.eq(Fund::getFundType,form.getFundType());
         }
         if(form.getUserId()!=null && form.getUserId().length()!=0){
-            queryWrapper.like(Fund::getUserId,form.getUserId());
+            queryWrapper.eq(Fund::getUserId,form.getUserId());
         }
         if(form.getFamId()!=null && form.getFamId().length()!=0){
             queryWrapper.eq(Fund::getFamId,form.getFamId());

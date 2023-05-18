@@ -120,5 +120,15 @@ public class UserController {
         return CommonResponse.ok(userList);
     }
 
+    @ApiOperation("根据UserQueryFrom查询用户列表")
+    @PostMapping("/queryUserList1")
+    public CommonResponse<?> queryUserList1(@RequestBody UserQueryForm form){
+        Assert.isTrue(form!=null,"UserQueryForm不为空");
+        if (null != form && null != form.getPage() && null != form.getSize()) {
+            PageHelper.startPage(form.getPage(), form.getSize());
+        }
+        List<UserQueryForm> userList= userService.queryUserListByFrom1(form);
+        return CommonResponse.ok(userList);
+    }
 
 }

@@ -69,14 +69,14 @@ public class FamilyRoleServiceImpl extends ServiceImpl<FamilyRoleMapper, FamilyR
         String roleId=this.queryFamRoleList(form).get(0).getFamRoleId();
         //
         if (list.size() != 0){
-            list.forEach(famPermission -> {
+            list.forEach(form1 -> {
                 FamRolePermission famRolePermission=new FamRolePermission();
                 famRolePermission.setFamRoleId(roleId);
-                famRolePermission.setFamPermissionId(famPermission.getFamPermissionId());
+                famRolePermission.setFamPermissionId(form1.getFamPermissionId());
                 famRolePermissionMapper.insert(famRolePermission);
-                if(!famPermission.getChild().isEmpty()){
+                if(!form1.getChild().isEmpty()){
                     //子菜单
-                    famPermission.getChild().forEach(child->{
+                    form1.getChild().forEach(child->{
                         FamRolePermission famRolePermission1=new FamRolePermission();
                         famRolePermission1.setFamRoleId(roleId);
                         famRolePermission1.setFamPermissionId(child.getFamPermissionId());

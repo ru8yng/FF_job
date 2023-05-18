@@ -3,6 +3,7 @@ package com.yyr.service;
 import finance8005.dto.FundAndStockForm;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import utils.CommonResponse;
 
 /**
@@ -18,5 +19,5 @@ import utils.CommonResponse;
 public interface finance_service_8005 {
 
     @PostMapping("/FundAndStock/queryProfits")
-    public CommonResponse<?> queryProfits(FundAndStockForm form);
+    public CommonResponse<?> queryProfits(@RequestBody FundAndStockForm form);
 }

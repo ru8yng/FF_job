@@ -32,7 +32,7 @@ public class ClaimsAndDebtForm {
     @ApiParam("userId")
     private String createdBy;
 
-
+    private String famId;
 
     /**
      * 更新人

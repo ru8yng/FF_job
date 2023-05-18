@@ -74,3 +74,16 @@ pagehelper:
   supportMethodsArguments: true
   params: count=countSql
   auto-runtime-dialect: true
+
+#ribbon:
+#  ReadTimeout: 60000
+#  ConnectTimeout: 60000
+#  MaxAutoRetries: 0
+#  MaxAutoRetriesNextServer: 1
+
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 10000
+        read-timeout: 20000

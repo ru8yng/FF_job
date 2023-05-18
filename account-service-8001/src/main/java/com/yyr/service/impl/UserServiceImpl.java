@@ -249,7 +249,48 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         return forms;
     }
 
+    @Override
+    public List<UserQueryForm> queryUserListByFrom1(UserQueryForm form) {
+        LambdaQueryWrapper<User> queryWrapper=new LambdaQueryWrapper<>();
+        if(form.getUserId()!=null && form.getUserId().length()!=0){
+            queryWrapper.eq(User::getUserId,form.getUserId());
+        }
+        if(form.getUserName()!=null && form.getUserName().length()!=0){
+            queryWrapper.like(User::getUserName,form.getUserName());
+        }
+        if(form.getSex()!=null && form.getSex().length()!=0){
+            queryWrapper.eq(User::getSex,form.getSex());
+        }
+        if(form.getEmail()!=null && form.getEmail().length()!=0){
+            queryWrapper.eq(User::getEmail,form.getEmail());
+        }
+        if(form.getQqnum()!=null && form.getQqnum().length()!=0){
+            queryWrapper.eq(User::getQqnum,form.getQqnum());
+        }
+        if(form.getFamilyId()!=null && form.getFamilyId().length()!=0){
+            queryWrapper.eq(User::getFamilyId,form.getFamilyId());
+        }
+        if(form.getFamRoleId()!=null && form.getFamRoleId().length()!=0){
+            queryWrapper.eq(User::getFamRoleId,form.getFamRoleId());
+        }
+        if(form.getStatus()!=null && form.getStatus().length()!=0){
+            queryWrapper.eq(User::getStatus,form.getStatus());
+        }
+        if(form.getStartTime()!=null && form.getEndTime()!=null){
+            queryWrapper.between(User::getCreatedTime,form.getStartTime(),form.getEndTime());
+        }
 
+        queryWrapper.orderByAsc(User::getUserId);
+
+        List<UserQueryForm> forms=new ArrayList<>();
+        List<User> list=this.list(queryWrapper).stream().filter(user -> !user.getFamilyId().isEmpty()).collect(Collectors.toList());
+        list.forEach(user -> {
+            UserQueryForm form1 = new UserQueryForm();
+            BeanUtils.copyProperties(user, form1);
+            forms.add(form1);
+        });
+        return forms;
+    }
 }
 
 

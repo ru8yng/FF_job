@@ -19,6 +19,7 @@ public class ClaimsAndDebt implements Serializable {
     @TableId(type=IdType.ASSIGN_ID)
     private String cadId;
 
+    private String famId;
     /**
      * 创建人
      */

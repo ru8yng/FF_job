@@ -5,9 +5,7 @@ import finance8005.dto.FundAndStockForm;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import utils.CommonResponse;
 
 /**
@@ -28,7 +26,7 @@ public class FundAndStockController {
     private FundAndStockService fundAndStockService;
 
     @PostMapping("/queryProfits")
-    public CommonResponse<?> queryProfits(FundAndStockForm form){
+    public CommonResponse<?> queryProfits(@RequestBody FundAndStockForm form){
         Assert.notNull(form,"用户id不能为空！");
         return CommonResponse.ok(fundAndStockService.getFundAndStock(form));
 
