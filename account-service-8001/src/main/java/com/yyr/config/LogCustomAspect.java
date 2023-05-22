@@ -81,7 +81,7 @@ public class LogCustomAspect {
         sysLog.setIpaddr(ip);
         sysLog.setOperaLogOperaby(user.getUserId());
         sysLog.setOperaLogSysroleId(user.getSysRoleId());
-        //commonService8003.addSysOperaLog(sysLog);
+        commonService8003.addSysOperaLog(sysLog);
     }
 
 

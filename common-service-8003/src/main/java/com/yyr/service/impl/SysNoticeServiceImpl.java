@@ -49,7 +49,7 @@ implements SysNoticeService{
         if(form.getNoticeContent()!= null && form.getNoticeContent().length()!=0){
             updateWrapper.set(SysNotice::getNoticeContent,form.getNoticeContent());
         }
-        if(form.getStartTime()!= null  && form.getEndTime()!=null){
+        if(form.getNoticeStarttime()!= null  && form.getNoticeEndtime()!=null){
             updateWrapper.set(SysNotice::getNoticeStarttime,form.getNoticeStarttime());
             updateWrapper.set(SysNotice::getNoticeEndtime,form.getNoticeEndtime());
         }
@@ -69,9 +69,9 @@ implements SysNoticeService{
         if(form.getNoticeContent()!=null && form.getNoticeContent().length()!=0){
             queryWrapper.like(SysNotice::getNoticeContent,form.getNoticeContent());
         }
-        if(form.getStartTime()!= null ){
-            queryWrapper.le(SysNotice::getNoticeStarttime,form.getStartTime());
-            queryWrapper.ge(SysNotice::getNoticeEndtime,form.getStartTime());
+        if(form.getNoticeStarttime()!= null && form.getNoticeEndtime()!=null){
+            queryWrapper.le(SysNotice::getNoticeStarttime,form.getNoticeStarttime());
+            queryWrapper.ge(SysNotice::getNoticeEndtime,form.getNoticeStarttime());
         }
         if(form.getCreatedBy()!=null && form.getCreatedBy().length()!=0){
             queryWrapper.eq(SysNotice::getCreatedBy,form.getCreatedBy());

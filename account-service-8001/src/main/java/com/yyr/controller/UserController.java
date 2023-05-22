@@ -131,4 +131,10 @@ public class UserController {
         return CommonResponse.ok(userList);
     }
 
+    @GetMapping("/test")
+    public CommonResponse<?> test(){
+        List<UserQueryForm> userList= userService.queryUserListByFrom1(new UserQueryForm());
+        return CommonResponse.ok(userList);
+    }
+
 }

@@ -7,7 +7,7 @@ eureka:
   client:
     registry-fetch-interval-seconds: 5
     service-url:
-      defaultZone: http://127.0.0.1:7001/eureka
+      defaultZone: http://43.139.26.87:7001/eureka/
 zuul:
   prefix: /ff_job # 路由路径前缀
   host:

@@ -238,10 +238,13 @@ public class FundServiceImpl extends ServiceImpl<FundMapper, Fund>
         List<FundForm> list = queryFund(new FundForm());
         if (!CollectionUtils.isEmpty(list)) {
             list.forEach(fund -> {
+                FundForm fundForm=new FundForm();
                 CurrentFundNetValue currentFundNetValue = queryCurrentFundNetValueByCode(fund.getFundCode());
                 BigDecimal profit = fund.getAmount().add(fund.getCurrentProfit()).multiply(currentFundNetValue.getDwjz()).subtract(fund.getAmount());
-                fund.setCurrentProfit(profit);
-                updateFund(fund);
+                BeanUtils.copyProperties(fund,fundForm);
+                fund.setCurrentNetValue(currentFundNetValue.getDwjz());
+                fundForm.setCurrentProfit(profit);
+                updateFund(fundForm);
             });
         }
     }

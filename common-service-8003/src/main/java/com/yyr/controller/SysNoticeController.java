@@ -1,5 +1,6 @@
 package com.yyr.controller;
 
+import cn.hutool.core.date.DateUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yyr.pojo.SysNotice;
@@ -70,8 +71,12 @@ public class SysNoticeController {
     @GetMapping("/querySysNoticeNow")
     public CommonResponse<?> querySysNotice(){
         //Assert.notNull(form,"查询表单不能为空！");
+        Date date=new Date();
+        Date day_begin = DateUtil.beginOfDay(date);
+        Date day_end = DateUtil.endOfDay(date);
         SysNoticeForm form=new SysNoticeForm();
-        form.setNoticeStarttime(new Date());
+        form.setNoticeStarttime(day_begin);
+        form.setNoticeEndtime(day_end);
         return CommonResponse.ok(service.queryNoticeList(form).get(0));
     }
 
