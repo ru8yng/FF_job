@@ -32,8 +32,8 @@ import java.time.Duration;
  * @Date:
  */
 @Slf4j(topic = "RateLimterHandler")
-@Configuration
-@EnableCaching//启用缓存
+//@Configuration
+//@EnableCaching//启用缓存
 public class RedisCacheConfig extends CachingConfigurerSupport {
 
     private String cacheName = "cache_redis_";

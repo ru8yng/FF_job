@@ -2,6 +2,7 @@ package com.yyr.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yyr.config.logCustom;
 import com.yyr.pojo.FamAssets;
 import com.yyr.service.FamAssetsService;
 import equity8004.dto.FamAssetsForm;
@@ -34,7 +35,7 @@ public class FamAssetsController {
     private FamAssetsService famAssetsService;
 
     @ApiOperation("新增固定资产")
-    //@logCustom(description = "新增固定资产")
+    @logCustom(description = "新增固定资产")
     @PostMapping("/addFamAssets")
     public CommonResponse<?> addFamAssets(@RequestBody FamAssetsForm form){
         Assert.notNull(form,"新增固定资产不能为空！");
@@ -43,7 +44,7 @@ public class FamAssetsController {
     }
 
     @ApiOperation("删除固定资产")
-    //@logCustom(description = "删除固定资产")
+    @logCustom(description = "删除固定资产")
     @GetMapping("/deleteFamAssets/{assetsId}")
     public CommonResponse<?> deleteFamAssets(@PathVariable String assetsId){
         Assert.notNull(assetsId,"固定资产id不能为空！");
@@ -52,7 +53,7 @@ public class FamAssetsController {
     }
 
     @ApiOperation("更新固定资产")
-    //@logCustom(description = "更新固定资产")
+    @logCustom(description = "更新固定资产")
     @PostMapping("/updateFamAssets")
     public CommonResponse<?> updateFamAssets(@RequestBody FamAssetsForm form){
         Assert.notNull(form,"更新的固定资产不能为空！");

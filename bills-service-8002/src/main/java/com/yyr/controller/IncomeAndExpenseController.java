@@ -1,6 +1,7 @@
 package com.yyr.controller;
 
 import bills8002.dto.IAEForm;
+import com.yyr.config.logCustom;
 import com.yyr.service.FamExpenseService;
 import com.yyr.service.FamIncomeService;
 import com.yyr.service.IAEService;
@@ -32,7 +33,7 @@ public class IncomeAndExpenseController {
     private IAEService iaeService;
 
     @ApiOperation("查询收入支出预算")
-    //@logCustom(description = "查询本月收入支出")
+    //@logCustom(description = "查询收入支出预算")
     @PostMapping("/queryIaeCurrent")
     public CommonResponse<?> queryIaeCurrent(@RequestBody IAEForm iae){
 
@@ -41,7 +42,7 @@ public class IncomeAndExpenseController {
 
 
     @ApiOperation("查询支出预算")
-    //@logCustom(description = "查询本月收入支出")
+    //@logCustom(description = "查询支出预算")
     @PostMapping("/getExpenseBudgentLine")
     public CommonResponse<?> getExpenseBudgentLine(@RequestBody IAEForm iae){
 
@@ -49,7 +50,7 @@ public class IncomeAndExpenseController {
     }
 
     @ApiOperation("查询支出及类型")
-    //@logCustom(description = "查询本月收入支出")
+    //@logCustom(description = "查询支出及类型")
     @PostMapping("/getExpenseAndType")
     public CommonResponse<?> getExpenseAndType(@RequestBody IAEForm iae){
 

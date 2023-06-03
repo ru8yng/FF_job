@@ -15,12 +15,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface logCustom {
-    /**
-     * 描述  日志的描述信息
-     *
-     * @return {@link null  }
-     * @throws
-     * @author 刘涛
-     */
+
     String description() default "";
 }

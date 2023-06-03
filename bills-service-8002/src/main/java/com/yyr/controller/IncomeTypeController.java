@@ -34,7 +34,7 @@ public class IncomeTypeController {
     private IncomeTypeService incomeTypeService;
 
     @ApiOperation("新增收入类型")
-    //@logCustom(description = "新增收入类型")
+    @logCustom(description = "新增收入类型")
     @PostMapping("/addIncomeType")
     public CommonResponse<?> addIncomeType(@RequestBody IncomeTypeForm form){
         Assert.notNull(form,"新增收入类型不能为空！");
@@ -43,7 +43,7 @@ public class IncomeTypeController {
     }
 
     @ApiOperation("删除收入类型")
-    //@logCustom(description = "删除收入类型")
+    @logCustom(description = "删除收入类型")
     @GetMapping("/deleteIncomeType/{IncomeTypeId}")
     public CommonResponse<?> deleteIncomeType(@PathVariable String IncomeTypeId){
         Assert.notNull(IncomeTypeId,"收入类型id不能为空！");
@@ -52,7 +52,7 @@ public class IncomeTypeController {
     }
 
     @ApiOperation("更新收入类型")
-    //@logCustom(description = "更新收入类型")
+    @logCustom(description = "更新收入类型")
     @PostMapping("/updateIncomeType")
     public CommonResponse<?> updateIncomeType(@RequestBody IncomeTypeForm form){
         Assert.notNull(form,"更新的收入类型不能为空！");

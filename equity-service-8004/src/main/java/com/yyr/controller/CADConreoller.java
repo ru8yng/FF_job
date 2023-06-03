@@ -2,6 +2,7 @@ package com.yyr.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yyr.config.logCustom;
 import com.yyr.pojo.ClaimsAndDebt;
 import com.yyr.service.ClaimsAndDebtService;
 import equity8004.dto.ClaimsAndDebtForm;
@@ -33,7 +34,7 @@ public class CADConreoller {
     private ClaimsAndDebtService claimsAndDebtService;
 
     @ApiOperation("新增借贷")
-    //@logCustom(description = "新增借贷")
+    @logCustom(description = "新增借贷")
     @PostMapping("/addCAD")
     public CommonResponse<?> addCAD(@RequestBody ClaimsAndDebtForm form){
         Assert.notNull(form,"新增借贷不能为空！");
@@ -42,7 +43,7 @@ public class CADConreoller {
     }
 
     @ApiOperation("删除借贷")
-    //@logCustom(description = "删除借贷")
+    @logCustom(description = "删除借贷")
     @GetMapping("/deleteCAD/{assetsId}")
     public CommonResponse<?> deleteCAD(@PathVariable String assetsId){
         Assert.notNull(assetsId,"借贷id不能为空！");
@@ -51,7 +52,7 @@ public class CADConreoller {
     }
 
     @ApiOperation("更新借贷")
-    //@logCustom(description = "更新借贷")
+    @logCustom(description = "更新借贷")
     @PostMapping("/updateCAD")
     public CommonResponse<?> updateCAD(@RequestBody ClaimsAndDebtForm form){
         Assert.notNull(form,"更新的借贷不能为空！");

@@ -6,7 +6,7 @@ import java.lang.annotation.*;
  * @Title : RateLimiter
  * @Package :com.example.demo3.config
  * @Description :TODO（限流annotaion）
- * @Author: 刘涛
+ * @Author: 杨亚茹
  * @Date: 创建时间 2022-04-02
  */
 @Target(ElementType.METHOD)

@@ -198,7 +198,7 @@ public class StockServiceImpl extends ServiceImpl<StockMapper, Stock>
     }
 
     @Scheduled(cron = "0 30 22 ? * *")
-    void updateProfits(){
+    void updateStockProfits(){
         List<StockForm> forms=queryStock(new StockForm());
         if(!CollectionUtils.isEmpty(forms)){
             forms.forEach(stockForm -> {
@@ -208,6 +208,7 @@ public class StockServiceImpl extends ServiceImpl<StockMapper, Stock>
                 StockVS stockVS=queryStockCurrent(stockVSForm);
                 BigDecimal profit=stockForm.getStockPrice().subtract(stockVS.getCurrent()).multiply(stockForm.getStockNum());
                 stockForm.setCurrentProfit(profit);
+                stockForm.setUserId(null);
                 updateStock(stockForm);
             });
         }

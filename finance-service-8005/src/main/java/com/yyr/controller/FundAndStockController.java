@@ -1,5 +1,6 @@
 package com.yyr.controller;
 
+import com.yyr.config.logCustom;
 import com.yyr.service.FundAndStockService;
 import finance8005.dto.FundAndStockForm;
 import io.swagger.annotations.Api;
@@ -26,6 +27,7 @@ public class FundAndStockController {
     private FundAndStockService fundAndStockService;
 
     @PostMapping("/queryProfits")
+    //@logCustom(description = "查询基金收益")
     public CommonResponse<?> queryProfits(@RequestBody FundAndStockForm form){
         Assert.notNull(form,"用户id不能为空！");
         return CommonResponse.ok(fundAndStockService.getFundAndStock(form));

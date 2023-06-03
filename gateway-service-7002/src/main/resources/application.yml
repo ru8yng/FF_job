@@ -22,4 +22,4 @@ zuul:
     ffjob-finance-service8005: /finance/** #基金与股票微服务
     ffjob-equity-service8004: /equity/** #固定资产与债务
     ffjob-report-service8006: /report/** #报表微服务
-    ffjob-common-service8003: /common/**
+    ffjob-common-service8003: /common/** #日志管理

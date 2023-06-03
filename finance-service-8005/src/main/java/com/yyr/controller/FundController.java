@@ -2,6 +2,7 @@ package com.yyr.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yyr.config.logCustom;
 import com.yyr.service.FundService;
 import finance8005.dto.*;
 import io.swagger.annotations.Api;
@@ -32,7 +33,7 @@ public class FundController {
     private FundService fundService;
 
     @ApiOperation("查询基金当前净值")
-    //@logCustom(description = "新增基金类型")
+    @logCustom(description = "新增基金类型")
     @GetMapping("/queryCurrentFundNetValueByCode/{fundCode}")
     public CommonResponse<?> queryCurrentFundNetValueByCode(@PathVariable String fundCode){
         Assert.notNull(fundCode,"基金代码不能为空！");
@@ -41,7 +42,7 @@ public class FundController {
     }
 
     @ApiOperation("获取基金名称列表代码")
-    //@logCustom(description = "新增基金类型")
+    @logCustom(description = "新增基金类型")
     @GetMapping("/getFundcodeSearch")
     public CommonResponse<?> getFundcodeSearch(){
         List<FundcodeSearch> value=fundService.queryFundcodeSearch();
@@ -49,7 +50,7 @@ public class FundController {
     }
 
     @ApiOperation("获取历史基金净值获取")
-    //@logCustom(description = "新增基金类型")
+    @logCustom(description = "新增基金类型")
     @GetMapping("/getHistoricalFundNetValue")
     public CommonResponse<?> getHistoricalFundNetValue( String fundCode){
        HistoricalFundNetValue value=fundService.queryHistoricalFundNetValueByCode(fundCode);
@@ -57,7 +58,7 @@ public class FundController {
     }
 
     @ApiOperation("收藏基金")
-    //@logCustom(description = "收藏基金")
+    @logCustom(description = "收藏基金")
     @PostMapping("/collectFund")
     public CommonResponse<?> addFucollectFundnd(@RequestBody FundCollectForm form){
         Assert.notNull(form,"基金代码不能为空！");
@@ -67,7 +68,7 @@ public class FundController {
 
 
     @ApiOperation("新增基金")
-    //@logCustom(description = "新增基金类型")
+    @logCustom(description = "新增基金")
     @PostMapping("/addFund")
     public CommonResponse<?> addFund(@RequestBody FundForm form){
         Assert.notNull(form,"新增基金不能为空！");
@@ -76,7 +77,7 @@ public class FundController {
     }
 
     @ApiOperation("删除基金")
-    //@logCustom(description = "删除基金类型")
+    @logCustom(description = "删除基金")
     @GetMapping("/deleteFund/{fundId}")
     public CommonResponse<?> deleteFund(@PathVariable String fundId){
         Assert.notNull(fundId,"基金类型id不能为空！");
@@ -85,7 +86,7 @@ public class FundController {
     }
 
     @ApiOperation("更新基金")
-    //@logCustom(description = "更新基金类型")
+    @logCustom(description = "更新基金")
     @PostMapping("/updateFund")
     public CommonResponse<?> updateFund(@RequestBody FundForm form){
         Assert.notNull(form,"更新的基金不能为空！");
@@ -107,6 +108,7 @@ public class FundController {
     }
 
     @ApiOperation("获取日k线")
+    @logCustom(description = "获取日k线")
     @PostMapping("/getKLine")
     public CommonResponse<?> getKLine(@RequestBody Date date){
         Assert.notNull(date,"起始时间不能为空！");

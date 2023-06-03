@@ -180,10 +180,10 @@ public class FundServiceImpl extends ServiceImpl<FundMapper, Fund>
             FundForm form1=new FundForm();
             BeanUtils.copyProperties(fund,form1);
             form1.setUserId(list1.get(0).getUserName());
-            HistoricalFundNetValue value=queryHistoricalFundNetValueByCode(fund.getFundCode());
+            //HistoricalFundNetValue value=queryHistoricalFundNetValueByCode(fund.getFundCode());
             CurrentFundNetValue value1=queryCurrentFundNetValueByCode(fund.getFundCode());
-            form1.setRate(value.getFund_Rate());
-            form1.setSourceRate(value.getFund_sourceRate());
+            //form1.setRate(value.getFund_Rate());
+            //form1.setSourceRate(value.getFund_sourceRate());
             form1.setCurrentNetValue(value1.getDwjz());
             list.add(form1);
         });
@@ -234,7 +234,7 @@ public class FundServiceImpl extends ServiceImpl<FundMapper, Fund>
     }
 
     @Scheduled(cron = "0 30 22 ? * *")
-    void updateProfits() {
+    void updateFundProfits() {
         List<FundForm> list = queryFund(new FundForm());
         if (!CollectionUtils.isEmpty(list)) {
             list.forEach(fund -> {
@@ -242,8 +242,9 @@ public class FundServiceImpl extends ServiceImpl<FundMapper, Fund>
                 CurrentFundNetValue currentFundNetValue = queryCurrentFundNetValueByCode(fund.getFundCode());
                 BigDecimal profit = fund.getAmount().add(fund.getCurrentProfit()).multiply(currentFundNetValue.getDwjz()).subtract(fund.getAmount());
                 BeanUtils.copyProperties(fund,fundForm);
-                fund.setCurrentNetValue(currentFundNetValue.getDwjz());
+                fundForm.setCurrentNetValue(currentFundNetValue.getDwjz());
                 fundForm.setCurrentProfit(profit);
+                fundForm.setUserId(null);
                 updateFund(fundForm);
             });
         }

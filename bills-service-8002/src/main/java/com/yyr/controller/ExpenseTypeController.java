@@ -3,6 +3,7 @@ package com.yyr.controller;
 import bills8002.dto.ExpenseTypeForm;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yyr.config.logCustom;
 import com.yyr.pojo.ExpensesType;
 import com.yyr.service.ExpensesTypeService;
 import io.swagger.annotations.Api;
@@ -33,7 +34,7 @@ public class ExpenseTypeController {
     private ExpensesTypeService expensesTypeService;
 
     @ApiOperation("新增支出类型")
-    //@logCustom(description = "新增支出类型")
+    @logCustom(description = "新增支出类型")
     @PostMapping("/addExpenseType")
     public CommonResponse<?> addExpenseType(@RequestBody ExpenseTypeForm form){
         Assert.notNull(form,"新增支出类型不能为空！");
@@ -42,7 +43,7 @@ public class ExpenseTypeController {
     }
 
     @ApiOperation("删除支出类型")
-    //@logCustom(description = "删除支出类型")
+    @logCustom(description = "删除支出类型")
     @GetMapping("/deleteExpenseType/{ExpenseTypeId}")
     public CommonResponse<?> deleteExpenseType(@PathVariable String ExpenseTypeId){
         Assert.notNull(ExpenseTypeId,"支出类型id不能为空！");
@@ -51,7 +52,7 @@ public class ExpenseTypeController {
     }
 
     @ApiOperation("更新支出类型")
-    //@logCustom(description = "更新支出类型")
+    @logCustom(description = "更新支出类型")
     @PostMapping("/updateExpenseType")
     public CommonResponse<?> updateExpenseType(@RequestBody ExpenseTypeForm form){
         Assert.notNull(form,"更新的支出类型不能为空！");

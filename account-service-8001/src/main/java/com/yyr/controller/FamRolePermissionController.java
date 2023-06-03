@@ -65,6 +65,7 @@ public class FamRolePermissionController {
 //    }
 
     @ApiOperation("根据家庭角色id查询该角色权限")
+    @logCustom(description = "根据家庭角色id查询该角色权限")
     @PostMapping("/queryFamRolePerm")
     public CommonResponse<?> queryFamRolePermissionByFamRoleId(@RequestBody FamRolePermissionForm form){
         Assert.notNull(form.getFam_role_id(),"角色id不能为空！");
@@ -76,6 +77,7 @@ public class FamRolePermissionController {
     }
 
     @ApiOperation("查询角色功能权限列表")
+    @logCustom(description = "查询角色功能权限列表")
     @GetMapping("/queryFamPermissionListByRoleId")
     public CommonResponse<?> queryFamPermissionListByRoleId(String roleId) {
 //        Assert.notNull(roleId,"角色id不能为空");

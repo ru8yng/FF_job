@@ -37,7 +37,7 @@ public class famIncomeController {
 
 
     @ApiOperation("新增家庭收入")
-    //@logCustom(description = "新增家庭收入")
+    @logCustom(description = "新增家庭收入")
     @PostMapping("/addFamIncom")
     public CommonResponse<?> addFamIncom(@RequestBody FamIncomeForm form){
         Assert.notNull(form,"新增家庭收入不能为空！");
@@ -46,7 +46,7 @@ public class famIncomeController {
     }
 
     @ApiOperation("删除家庭收入")
-    //@logCustom(description = "删除家庭收入")
+    @logCustom(description = "删除家庭收入")
     @GetMapping("/deleteFamIncome/{famIncomeId}")
     public CommonResponse<?> deleteFamIncome(@PathVariable String famIncomeId){
         Assert.notNull(famIncomeId,"家庭收入id不能为空！");
@@ -55,7 +55,7 @@ public class famIncomeController {
     }
 
     @ApiOperation("更新家庭收入")
-    //@logCustom(description = "更新家庭收入")
+    @logCustom(description = "更新家庭收入")
     @PostMapping("/updateFamIncome")
     public CommonResponse<?> updateFamIncome(@RequestBody FamIncomeForm form){
         Assert.notNull(form,"更新的家庭收入不能为空！");

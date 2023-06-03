@@ -35,7 +35,7 @@ public class famExpenseController {
     private FamExpenseService famExpenseService;
 
     @ApiOperation("新增家庭支出")
-    //@logCustom(description = "新增家庭支出")
+    @logCustom(description = "新增家庭支出")
     @PostMapping("/addFamExpense")
     public CommonResponse<?> addFamExpense(@RequestBody FamExpenseForm form){
         Assert.notNull(form,"新增家庭支出不能为空！");
@@ -44,7 +44,7 @@ public class famExpenseController {
     }
 
     @ApiOperation("删除家庭支出")
-    //@logCustom(description = "删除家庭支出")
+    @logCustom(description = "删除家庭支出")
     @GetMapping("/deleteFamExpense/{famExpenseId}")
     public CommonResponse<?> deleteFamExpense(@PathVariable String famExpenseId){
         Assert.notNull(famExpenseId,"家庭支出id不能为空！");
@@ -53,7 +53,7 @@ public class famExpenseController {
     }
 
     @ApiOperation("更新家庭支出")
-    //@logCustom(description = "更新家庭支出")
+    @logCustom(description = "更新家庭支出")
     @PostMapping("/updateFamExpense")
     public CommonResponse<?> updateFamExpense(@RequestBody FamExpenseForm form){
         Assert.notNull(form,"更新的家庭支出不能为空！");

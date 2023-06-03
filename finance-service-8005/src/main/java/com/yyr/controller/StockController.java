@@ -3,6 +3,7 @@ package com.yyr.controller;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import com.yyr.config.logCustom;
 import com.yyr.pojo.Stock;
 import com.yyr.service.StockService;
 import finance8005.dto.StockForm;
@@ -35,7 +36,7 @@ public class StockController {
     private StockService stockService;
 
     @ApiOperation("查询实时股票")
-    //@logCustom(description = "新增股票类型")
+    @logCustom(description = "查询实时股票")
     @PostMapping("/queryStockCurrent")
     public CommonResponse<?> queryStockCurrent(@RequestBody StockVSForm form){
         Assert.notNull(form,"查询股票不能为空！");
@@ -44,7 +45,7 @@ public class StockController {
     }
 
     @ApiOperation("收藏股票")
-    //@logCustom(description = "新增股票类型")
+    @logCustom(description = "收藏股票")
     @PostMapping("/collectStock")
     public CommonResponse<?> collectStock(@RequestBody StockVSForm form){
         Assert.notNull(form,"股票代码不能为空！");
@@ -54,7 +55,7 @@ public class StockController {
 
 
     @ApiOperation("新增股票")
-    //@logCustom(description = "新增股票类型")
+    @logCustom(description = "新增股票")
     @PostMapping("/addStock")
     public CommonResponse<?> addStock(@RequestBody StockForm form){
         Assert.notNull(form,"新增股票不能为空！");
@@ -63,7 +64,7 @@ public class StockController {
     }
 
     @ApiOperation("删除股票")
-    //@logCustom(description = "删除股票类型")
+    @logCustom(description = "删除股票")
     @GetMapping("/deleteStock/{StockId}")
     public CommonResponse<?> deleteStock(@PathVariable String StockId){
         Assert.notNull(StockId,"股票id不能为空！");
@@ -72,7 +73,7 @@ public class StockController {
     }
 
     @ApiOperation("更新股票")
-    //@logCustom(description = "更新股票类型")
+    @logCustom(description = "更新股票")
     @PostMapping("/updateStock")
     public CommonResponse<?> updateStock(@RequestBody StockForm form){
         Assert.notNull(form,"更新的股票不能为空！");

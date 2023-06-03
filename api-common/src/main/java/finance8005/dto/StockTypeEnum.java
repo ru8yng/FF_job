@@ -10,7 +10,7 @@ import lombok.Getter;
  * @Title : ScheduleEnum
  * @Package :com.scjydz.enums
  * @Description :TODO（）
- * @Author: 刘涛
+ * @Author: 杨亚茹
  * @Date: 创建时间 2022-05-16
  */
 @AllArgsConstructor

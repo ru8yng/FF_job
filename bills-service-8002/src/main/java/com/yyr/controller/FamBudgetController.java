@@ -3,6 +3,7 @@ package com.yyr.controller;
 import bills8002.dto.FamBudgetForm;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yyr.config.logCustom;
 import com.yyr.pojo.FamBudget;
 import com.yyr.service.FamBudgetService;
 import io.swagger.annotations.Api;
@@ -35,7 +36,7 @@ public class FamBudgetController {
 
 
     @ApiOperation("新增家庭预算")
-    //@logCustom(description = "新增家庭预算")
+    @logCustom(description = "新增家庭预算")
     @PostMapping("/addFamFamBudget")
     public CommonResponse<?> addFamBudget(@RequestBody FamBudgetForm form){
         Assert.notNull(form,"新增家庭预算不能为空！");
@@ -44,7 +45,7 @@ public class FamBudgetController {
     }
 
     @ApiOperation("删除家庭预算")
-    //@logCustom(description = "删除家庭预算")
+    @logCustom(description = "删除家庭预算")
     @GetMapping("/deleteFamBudget/{famBudgetId}")
     public CommonResponse<?> deleteFamBudget(@PathVariable String famBudgetId){
         Assert.notNull(famBudgetId,"家庭预算id不能为空！");
@@ -53,7 +54,7 @@ public class FamBudgetController {
     }
 
     @ApiOperation("更新家庭预算")
-    //@logCustom(description = "更新家庭预算")
+    @logCustom(description = "更新家庭预算")
     @PostMapping("/updateFamBudget")
     public CommonResponse<?> updateFamBudget(@RequestBody FamBudgetForm form){
         Assert.notNull(form,"更新的家庭预算不能为空！");
